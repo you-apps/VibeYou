@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">LibreMusic</string>
+    <string name="settings_title">Settings</string>
+    <string name="search">Search</string>
+    <string name="songs">Songs</string>
+    <string name="about_title">About</string>
+    <string name="readme">README</string>
+    <string name="check_repo_and_readme">Check Repository and README</string>
+    <string name="latest_release">Latest Release</string>
+    <string name="current_version">Current Version</string>
+    <string name="github_issue">Github Issue</string>
+    <string name="github_issue_description">Submit bug reports and feature requests</string>
+    <string name="about_setting_description">Version, Contact</string>
+    <string name="playing">Playing</string>
+    <string name="favourite_songs">Favourite Songs</string>
+</resources>
