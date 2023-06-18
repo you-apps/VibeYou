@@ -1,6 +1,7 @@
 package app.suhasdissa.libremusic.backend.api
 
 import app.suhasdissa.libremusic.backend.models.PipedSearchResult
+import app.suhasdissa.libremusic.backend.models.PipedSongAlbumResponse
 import app.suhasdissa.libremusic.backend.models.PipedSongResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -18,21 +19,29 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(pipedUrl)
     .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
     .build()
+private const val defaultHeader =
+    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
 
 interface ApiService {
-    @Headers("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+    @Headers(defaultHeader)
     @GET("search?filter=music_songs")
     suspend fun searchPiped(
         @Query("q") query: String
     ): PipedSearchResult
 
-    @Headers("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+    @Headers(defaultHeader)
+    @GET("search?filter=music_albums")
+    suspend fun searchPipedAlbums(
+        @Query("q") query: String
+    ): PipedSongAlbumResponse
+
+    @Headers(defaultHeader)
     @GET("streams/{videoid}")
     suspend fun getStreams(
         @Path("videoid") vidId: String
     ): PipedSongResponse
 
-    @Headers("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+    @Headers(defaultHeader)
     @GET("suggestions")
     suspend fun getSuggestions(
         @Query("query") query: String

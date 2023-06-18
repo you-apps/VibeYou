@@ -8,14 +8,15 @@ import app.suhasdissa.libremusic.backend.viewmodel.SongViewModel
 import app.suhasdissa.libremusic.ui.components.SongList
 
 @Composable
-fun SongsScreen(showFavourites:Boolean,
+fun SongsScreen(
+    showFavourites: Boolean,
     songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     LaunchedEffect(Unit) {
-        if(showFavourites){
+        if (showFavourites) {
             songViewModel.getFavouriteSongs()
-        }else {
+        } else {
             songViewModel.getAllSongs()
         }
     }

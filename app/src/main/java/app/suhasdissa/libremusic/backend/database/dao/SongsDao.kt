@@ -11,6 +11,9 @@ interface SongsDao {
     @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
     fun addSong(song: Song)
 
+    @Query("SELECT * from Song WHERE id=:id")
+    fun getSongById(id: String): Song?
+
     @Query("SELECT * from Song")
     fun getAllSongs(): List<Song>
 

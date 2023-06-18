@@ -5,6 +5,8 @@ import app.suhasdissa.libremusic.backend.database.entities.Song
 
 interface SongRepository {
     suspend fun addSong(song: Song)
+
+    suspend fun getSongById(id: String): Song?
     suspend fun getAllSongs(): List<Song>
     suspend fun getFavSongs(): List<Song>
 }
@@ -12,6 +14,10 @@ interface SongRepository {
 class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
     override suspend fun addSong(song: Song) {
         songsDao.addSong(song)
+    }
+
+    override suspend fun getSongById(id: String): Song? {
+        return songsDao.getSongById(id)
     }
 
     override suspend fun getAllSongs(): List<Song> {

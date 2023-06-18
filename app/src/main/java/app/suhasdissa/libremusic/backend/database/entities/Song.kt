@@ -18,4 +18,7 @@ data class Song(
             likedAt = if (likedAt == null) System.currentTimeMillis() else null
         )
     }
+
+    val isFavourite
+        get() = likedAt != null
 }

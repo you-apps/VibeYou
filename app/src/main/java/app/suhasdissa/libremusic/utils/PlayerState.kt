@@ -1,10 +1,9 @@
 package app.suhasdissa.libremusic.utils
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import kotlinx.coroutines.delay
@@ -14,13 +13,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Composable
 fun Player.positionAndDurationState(): State<Pair<Long, Long?>> {
-    val state = remember {
-        mutableStateOf(currentPosition to duration.let { if (it < 0) null else it })
-    }
-
-    LaunchedEffect(this) {
+    return produceState(
+        initialValue = (currentPosition to duration.let { if (it < 0) null else it }),
+        this
+    ) {
         var isSeeking = false
-
         val listener = object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 if (playbackState == Player.STATE_READY) {
@@ -29,7 +26,7 @@ fun Player.positionAndDurationState(): State<Pair<Long, Long?>> {
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                state.value = currentPosition to state.value.second
+                value = currentPosition to value.second
             }
 
             override fun onPositionDiscontinuity(
@@ -39,43 +36,33 @@ fun Player.positionAndDurationState(): State<Pair<Long, Long?>> {
             ) {
                 if (reason == Player.DISCONTINUITY_REASON_SEEK) {
                     isSeeking = true
-                    state.value = currentPosition to duration.let { if (it < 0) null else it }
+                    value = currentPosition to duration.let { if (it < 0) null else it }
                 }
             }
         }
-
         addListener(listener)
 
         val pollJob = launch {
             while (isActive) {
                 delay(1000)
                 if (!isSeeking) {
-                    state.value = currentPosition to duration.let { if (it < 0) null else it }
+                    value = currentPosition to duration.let { if (it < 0) null else it }
                 }
             }
         }
-
-        try {
-            suspendCancellableCoroutine<Nothing> { }
-        } finally {
+        if (!isActive) {
             pollJob.cancel()
             removeListener(listener)
         }
     }
-
-    return state
 }
 
 @Composable
 fun Player.mediaItemState(): State<MediaItem?> {
-    val state = remember {
-        mutableStateOf(currentMediaItem)
-    }
-
-    LaunchedEffect(this) {
+    return produceState(initialValue = currentMediaItem, this) {
         val listener = object : Player.Listener {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                state.value = mediaItem
+                value = mediaItem
             }
         }
         addListener(listener)
@@ -85,29 +72,28 @@ fun Player.mediaItemState(): State<MediaItem?> {
             removeListener(listener)
         }
     }
-
-    return state
 }
 
 @Composable
 fun Player.isPlayingState(): State<Boolean> {
-    val state = remember {
-        mutableStateOf(isPlaying)
-    }
-    LaunchedEffect(this) {
+    return produceState(initialValue = isPlaying, this) {
         val listener = object : Player.Listener {
-
             override fun onIsPlayingChanged(isPlaying: Boolean) {
-                state.value = isPlaying
+                value = isPlaying
             }
         }
         addListener(listener)
-        try {
-            suspendCancellableCoroutine<Nothing> { }
-        } finally {
+        if (!isActive) {
             removeListener(listener)
         }
     }
+}
 
-    return state
+@Composable
+inline fun Player.DisposableListener(crossinline listenerProvider: () -> Player.Listener) {
+    DisposableEffect(this) {
+        val listener = listenerProvider()
+        addListener(listener)
+        onDispose { removeListener(listener) }
+    }
 }

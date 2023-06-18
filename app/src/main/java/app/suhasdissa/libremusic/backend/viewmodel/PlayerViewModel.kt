@@ -1,5 +1,8 @@
 package app.suhasdissa.libremusic.backend.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -21,7 +24,7 @@ class PlayerViewModel(
     private val controllerFuture: ListenableFuture<MediaController>
 ) :
     ViewModel() {
-    lateinit var controller: MediaController
+    var controller: MediaController? by mutableStateOf(null)
         private set
 
     init {
@@ -34,28 +37,28 @@ class PlayerViewModel(
     }
 
     fun seekNext() {
-        if (controller.hasNextMediaItem())
-            controller.seekToNext()
+        if (controller!!.hasNextMediaItem())
+            controller!!.seekToNext()
     }
 
     fun seekTo(ms: Long) {
-        controller.seekTo(ms)
+        controller!!.seekTo(ms)
     }
 
     fun playPause() {
-        if (controller.isPlaying) {
-            controller.pause()
+        if (controller!!.isPlaying) {
+            controller!!.pause()
         } else {
-            controller.play()
+            controller!!.play()
         }
     }
 
     fun seekPrevious() {
-        controller.seekToPrevious()
+        controller!!.seekToPrevious()
     }
 
     fun playSong(song: Song) {
-        if (controller.isPlaying) {
+        if (controller!!.isPlaying) {
             enqueueSong(song.asMediaItem)
         } else {
             playSongImmediately(song.asMediaItem)
@@ -66,14 +69,38 @@ class PlayerViewModel(
         }
     }
 
+    fun shuffleSongs() {
+        viewModelScope.launch {
+            val shuffleQueue = songRepository.getAllSongs().shuffled().map { it.asMediaItem }
+            controller!!.stop()
+            if (controller!!.mediaItemCount > 1) {
+                controller!!.removeMediaItems(0, controller!!.mediaItemCount - 1)
+            }
+            controller!!.addMediaItems(shuffleQueue)
+            if (!controller!!.isPlaying) {
+                controller!!.prepare()
+                controller!!.play()
+            }
+        }
+    }
+
     private fun enqueueSong(mediaItem: MediaItem) {
-        controller.addMediaItem(mediaItem)
+        controller!!.addMediaItem(mediaItem)
     }
 
     private fun playSongImmediately(mediaItem: MediaItem) {
-        controller.setMediaItem(mediaItem)
-        controller.prepare()
-        controller.play()
+        controller!!.setMediaItem(mediaItem)
+        controller!!.prepare()
+        controller!!.play()
+    }
+
+    fun toggleFavourite(id: String) {
+        viewModelScope.launch {
+            val song = songRepository.getSongById(id)
+            song?.let {
+                songRepository.addSong(it.toggleLike())
+            }
+        }
     }
 
     companion object {
