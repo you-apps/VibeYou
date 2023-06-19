@@ -28,74 +28,74 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.libremusic.utils.isPlayingState
-import app.suhasdissa.libremusic.utils.mediaItemState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
 fun MiniPlayer(
     onClick: () -> Unit,
-    controller: MediaController, onPlayPause: () -> Unit, onSeekNext: () -> Unit
+    controller: MediaController,
+    mediaItem: MediaItem,
+    onPlayPause: () -> Unit,
+    onSeekNext: () -> Unit
 ) {
-    val mediaItem by controller.mediaItemState()
-    mediaItem?.let {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .clickable { onClick() },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .size(64.dp)
+                .padding(8.dp)
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(8.dp)),
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(mediaItem.mediaMetadata.artworkUri).crossfade(true).build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+        val title = mediaItem.mediaMetadata.title.toString()
+        val artist = mediaItem.mediaMetadata.artist.toString()
+        Column(
+            Modifier.weight(1f),
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(64.dp)
-                    .padding(8.dp)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(8.dp)),
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(it.mediaMetadata.artworkUri).crossfade(true).build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+            Text(
+                title,
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
-            val title = it.mediaMetadata.title.toString()
-            val artist = it.mediaMetadata.artist.toString()
-            Column(
-                Modifier.weight(1f),
-            ) {
-                Text(
-                    title,
-                    style = MaterialTheme.typography.titleSmall,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    artist,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+            Text(
+                artist,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            val playState by controller.isPlayingState()
+            IconButton(onClick = { onPlayPause() }) {
+                if (playState) {
+                    Icon(Icons.Default.Pause, contentDescription = null)
+                } else {
+                    Icon(Icons.Default.PlayArrow, contentDescription = null)
+                }
+            }
+            IconButton(onClick = { onSeekNext() }) {
+                Icon(Icons.Default.SkipNext, contentDescription = null)
             }
 
-            Row(
-                horizontalArrangement = Arrangement.Center
-            ) {
-                val playState by controller.isPlayingState()
-                IconButton(onClick = { onPlayPause() }) {
-                    if (playState) {
-                        Icon(Icons.Default.Pause, contentDescription = null)
-                    } else {
-                        Icon(Icons.Default.PlayArrow, contentDescription = null)
-                    }
-                }
-                IconButton(onClick = { onSeekNext() }) {
-                    Icon(Icons.Default.SkipNext, contentDescription = null)
-                }
-
-            }
         }
     }
 }

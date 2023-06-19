@@ -1,7 +1,6 @@
 package app.suhasdissa.libremusic.ui.screens.home
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +42,7 @@ import app.suhasdissa.libremusic.Settings
 import app.suhasdissa.libremusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.libremusic.ui.player.MiniPlayer
 import app.suhasdissa.libremusic.ui.player.PlayerSheet
+import app.suhasdissa.libremusic.utils.mediaItemState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,13 +89,16 @@ fun HomeScreen(
     }, bottomBar = {
         Column {
             playerViewModel.controller?.let { controller ->
-            AnimatedVisibility(visible = controller.currentMediaItem != null) {
+                val mediaItem by controller.mediaItemState()
+                mediaItem?.let {
                     MiniPlayer(
-                        onClick = {isPlayerSheetVisible = true},
+                        onClick = { isPlayerSheetVisible = true },
                         controller,
+                        it,
                         onPlayPause = { playerViewModel.playPause() },
                         onSeekNext = { playerViewModel.seekNext() })
                 }
+
             }
             NavigationBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
