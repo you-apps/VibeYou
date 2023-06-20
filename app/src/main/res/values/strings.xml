@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LibreMusic</string>
+    <string name="app_name">MellowMusic</string>
     <string name="settings_title">Settings</string>
     <string name="search">Search</string>
     <string name="songs">Songs</string>
@@ -13,4 +13,5 @@
     <string name="about_setting_description">Version, Contact</string>
     <string name="playing">Playing</string>
     <string name="favourite_songs">Favourite Songs</string>
+    <string name="recent_songs">Recent Songs</string>
 </resources>

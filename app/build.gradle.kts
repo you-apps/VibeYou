@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "app.suhasdissa.libremusic"
+    namespace = "app.suhasdissa.mellowmusic"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "app.suhasdissa.libremusic"
+        applicationId = "app.suhasdissa.mellowmusic"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
@@ -96,6 +96,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
