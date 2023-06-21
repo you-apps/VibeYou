@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.utils.isPlayingState
+import app.suhasdissa.mellowmusic.utils.positionAndDurationState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -98,4 +100,11 @@ fun MiniPlayer(
 
         }
     }
+    val positionAndDuration by controller.positionAndDurationState()
+    val progress =
+        positionAndDuration.second?.let { duration ->
+            positionAndDuration.first.toFloat().div(duration)
+        }
+            ?: 0f
+    LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), progress = progress)
 }
