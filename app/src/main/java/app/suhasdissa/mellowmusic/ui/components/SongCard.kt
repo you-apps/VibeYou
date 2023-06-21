@@ -1,7 +1,9 @@
 package app.suhasdissa.mellowmusic.ui.components
 
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,18 +29,21 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongCard(
     thumbnail: String?,
     title: String,
     artist: String?,
     duration: String?,
-    onClickVideoCard: () -> Unit
+    onClickCard: () -> Unit,
+    onLongPress: () -> Unit
 ) {
     Row(
         Modifier
             .fillMaxWidth()
-            .clickable { onClickVideoCard() },
+            .combinedClickable(onClick = { onClickCard() },
+                onLongClick = { onLongPress() }),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -146,7 +151,8 @@ private fun SongCardPreview() {
         title = "Song Name",
         artist = "Artist Name",
         duration = "8.37",
-        onClickVideoCard = {})
+        onClickCard = {},
+        onLongPress = {})
 }
 
 @Preview(showBackground = true)

@@ -13,7 +13,11 @@ import app.suhasdissa.mellowmusic.backend.database.entities.Song
 
 
 @Composable
-fun SongList(items: List<Song>, onClickVideoCard: (song: Song) -> Unit) {
+fun SongList(
+    items: List<Song>,
+    onClickCard: (song: Song) -> Unit,
+    onLongPress: (song: Song) -> Unit
+) {
     LazyColumn(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -26,8 +30,11 @@ fun SongList(items: List<Song>, onClickVideoCard: (song: Song) -> Unit) {
                 title = item.title,
                 artist = item.artistsText,
                 duration = item.durationText,
-                onClickVideoCard = {
-                    onClickVideoCard(item)
+                onClickCard = {
+                    onClickCard(item)
+                },
+                onLongPress = {
+                    onLongPress(item)
                 })
         }
     }

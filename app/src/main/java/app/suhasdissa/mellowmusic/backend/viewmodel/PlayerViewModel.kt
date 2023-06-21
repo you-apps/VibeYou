@@ -61,11 +61,11 @@ class PlayerViewModel(
         controller!!.seekToPrevious()
     }
 
-    fun playSong(song: Song) {
+    fun schedulePlay(song: Song) {
         if (controller!!.isPlaying) {
             enqueueSong(song.asMediaItem)
         } else {
-            playSongImmediately(song.asMediaItem)
+            prepareAndPlay(song.asMediaItem)
         }
 
         viewModelScope.launch {
@@ -105,8 +105,21 @@ class PlayerViewModel(
         controller!!.addMediaItem(mediaItem)
     }
 
+    fun playSong(song: Song) {
+        playSongImmediately(song.asMediaItem)
+    }
+
     private fun playSongImmediately(mediaItem: MediaItem) {
-        controller!!.setMediaItem(mediaItem)
+        controller!!.stop()
+        val currentIndex = controller!!.currentMediaItemIndex
+        controller!!.addMediaItem(currentIndex + 1, mediaItem)
+        controller!!.seekTo(currentIndex + 1, 0L)
+        controller!!.prepare()
+        controller!!.play()
+    }
+
+    private fun prepareAndPlay(mediaItem: MediaItem) {
+        controller!!.addMediaItem(mediaItem)
         controller!!.prepare()
         controller!!.play()
     }

@@ -14,4 +14,10 @@
     <string name="playing">Playing</string>
     <string name="favourite_songs">Favourite Songs</string>
     <string name="recent_songs">Recent Songs</string>
+    <string name="enqueue_song">Add to Queue</string>
+    <string name="play_song">Play Song</string>
+    <string name="delete_song">Remove Song</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="search_songs">Search Songs</string>
+    <string name="search_for_a_song">Search For a Song</string>
 </resources>

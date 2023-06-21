@@ -41,6 +41,12 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
         }
     }
 
+    fun removeSong(song: Song) {
+        viewModelScope.launch {
+            songRepository.removeSong(song)
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

@@ -1,6 +1,7 @@
 package app.suhasdissa.mellowmusic.backend.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -10,6 +11,9 @@ import app.suhasdissa.mellowmusic.backend.database.entities.Song
 interface SongsDao {
     @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
     fun addSong(song: Song)
+
+    @Delete(entity = Song::class)
+    fun removeSong(song: Song)
 
     @Query("SELECT * from Song WHERE id=:id")
     fun getSongById(id: String): Song?
@@ -21,5 +25,5 @@ interface SongsDao {
     fun getFavSongs(): List<Song>
 
     @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
-    fun getRecentSongs(limit:Int): List<Song>
+    fun getRecentSongs(limit: Int): List<Song>
 }

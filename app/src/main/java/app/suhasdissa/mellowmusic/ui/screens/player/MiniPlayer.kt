@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.player
+package app.suhasdissa.mellowmusic.ui.screens.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

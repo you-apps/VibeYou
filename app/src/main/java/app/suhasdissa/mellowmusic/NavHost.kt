@@ -5,10 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
-import app.suhasdissa.mellowmusic.ui.screens.home.SongsScreen
+import app.suhasdissa.mellowmusic.ui.screens.songs.SongsScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.AboutScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.SettingsScreen
-import app.suhasdissa.mellowmusic.ui.search.SearchScreen
+import app.suhasdissa.mellowmusic.ui.screens.search.SearchScreen
 
 @Composable
 fun AppNavHost(navHostController: NavHostController) {

@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.player
+package app.suhasdissa.mellowmusic.ui.screens.player
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement

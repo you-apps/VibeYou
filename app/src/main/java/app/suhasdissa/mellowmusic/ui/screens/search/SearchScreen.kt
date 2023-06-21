@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.search
+package app.suhasdissa.mellowmusic.ui.screens.search
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,10 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.ErrorScreen
@@ -40,7 +42,7 @@ import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
@@ -74,7 +76,7 @@ fun SearchScreen(
                 .focusRequester(focusRequester),
 
             singleLine = true,
-            placeholder = { Text("Search Songs") },
+            placeholder = { Text(stringResource(R.string.search_songs)) },
             shape = CircleShape,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
@@ -86,7 +88,10 @@ fun SearchScreen(
             }),
             trailingIcon = {
                 IconButton(onClick = { search = "" }) {
-                    Icons.Default.Clear
+                    Icon(
+                        Icons.Default.Clear,
+                        contentDescription = stringResource(R.string.clear_search)
+                    )
                 }
             }
         )
@@ -134,14 +139,14 @@ fun SearchScreen(
                 is PipedSearchViewModel.PipedSearchState.Success -> {
                     SongList(
                         items = searchState.items,
-                        onClickVideoCard = { song ->
+                        onClickCard = { song ->
 
-                            playerViewModel.playSong(song)
-                        })
+                            playerViewModel.schedulePlay(song)
+                        }, onLongPress = {})
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Empty -> {
-                    InfoScreen(info = "Search For a Song")
+                    InfoScreen(info = stringResource(R.string.search_for_a_song))
                 }
             }
         }

@@ -5,7 +5,7 @@ import app.suhasdissa.mellowmusic.backend.database.entities.Song
 
 interface SongRepository {
     suspend fun addSong(song: Song)
-
+    suspend fun removeSong(song: Song)
     suspend fun getSongById(id: String): Song?
     suspend fun getAllSongs(): List<Song>
     suspend fun getRecentSongs(limit: Int): List<Song>
@@ -30,6 +30,10 @@ class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
     }
     override suspend fun getFavSongs(): List<Song> {
         return songsDao.getFavSongs()
+    }
+
+    override suspend fun removeSong(song: Song) {
+        return songsDao.removeSong(song)
     }
 
 }

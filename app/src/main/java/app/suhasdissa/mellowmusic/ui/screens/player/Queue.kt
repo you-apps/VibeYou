@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.player
+package app.suhasdissa.mellowmusic.ui.screens.player
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -18,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline

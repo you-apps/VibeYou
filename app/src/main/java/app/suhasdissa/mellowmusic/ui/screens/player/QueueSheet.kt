@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.player
+package app.suhasdissa.mellowmusic.ui.screens.player
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
