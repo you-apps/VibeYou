@@ -14,8 +14,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ import org.burnoutcrew.reorderable.reorderable
 fun Queue(
     controller: MediaController
 ) {
-    val queueItems = remember { controller.currentTimeline.queue.toMutableStateList() }
+    var queueItems by remember { mutableStateOf(controller.currentTimeline.queue) }
     // This code seems to break the drag and drop animation
     /*
     controller.DisposableListener {
@@ -45,7 +46,7 @@ fun Queue(
     }
      */
     val state = rememberReorderableLazyListState(onMove = { from, to ->
-        queueItems.apply {
+        queueItems = queueItems.toMutableList().apply {
             val removedItem = removeAt(from.index)
             add(to.index, removedItem)
         }
@@ -68,7 +69,10 @@ fun Queue(
                     title = mediaItem.mediaMetadata.title.toString(),
                     artist = mediaItem.mediaMetadata.artist.toString(),
                     TrailingContent = {
-                        IconButton(onClick = { controller.removeMediaItem(queue.first) }) {
+                        IconButton(onClick = {
+                            controller.removeMediaItem(queue.first)
+                            queueItems = queueItems.toMutableList().apply { remove(queue) }
+                        }) {
                             Icon(Icons.Default.Clear, null)
                         }
                     },
