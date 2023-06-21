@@ -19,11 +19,8 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.Player
-import androidx.media3.common.Timeline
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.ui.components.SongCardCompact
-import app.suhasdissa.mellowmusic.utils.DisposableListener
 import app.suhasdissa.mellowmusic.utils.queue
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -36,6 +33,8 @@ fun Queue(
     controller: MediaController
 ) {
     val queueItems = remember { controller.currentTimeline.queue.toMutableStateList() }
+    // This code seems to break the drag and drop animation
+    /*
     controller.DisposableListener {
         object : Player.Listener {
             override fun onTimelineChanged(timeline: Timeline, reason: Int) {
@@ -44,6 +43,7 @@ fun Queue(
             }
         }
     }
+     */
     val state = rememberReorderableLazyListState(onMove = { from, to ->
         queueItems.apply {
             val removedItem = removeAt(from.index)
