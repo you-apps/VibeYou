@@ -23,8 +23,13 @@ import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.ShuffleOn
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,11 +58,24 @@ import app.suhasdissa.mellowmusic.utils.positionAndDurationState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FullScreenPlayer(
-    controller: MediaController, onToggleFavourite: (id: String) -> Unit
+    controller: MediaController,
+    onCollapse: () -> Unit,
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var showQueueSheet by remember { mutableStateOf(false) }
+    CenterAlignedTopAppBar(navigationIcon = {
+        IconButton(onCollapse) {
+            Icon(Icons.Rounded.ExpandMore, contentDescription = "Cancel")
+        }
+    }, title = { Text("Now Playing") }, actions = {
+        IconButton(onClick = { }) {
+            Icon(Icons.Rounded.MoreVert, contentDescription = "Save")
+        }
+    })
+    Divider(Modifier.fillMaxWidth())
     Column(
         Modifier
             .fillMaxSize(),
@@ -94,7 +112,7 @@ fun FullScreenPlayer(
             }
             PlayerController(
                 isfavourite = it.mediaMetadata.extras?.getBoolean("isFavourite") ?: false,
-                onToggleFavourite = { onToggleFavourite(it.mediaId) })
+                onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) })
         }
         Row(
             Modifier
@@ -102,7 +120,7 @@ fun FullScreenPlayer(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             IconButton(onClick = { showQueueSheet = true }) {
-                Icon(Icons.Default.QueueMusic,"Show Queue")
+                Icon(Icons.Default.QueueMusic, "Show Queue")
             }
         }
     }

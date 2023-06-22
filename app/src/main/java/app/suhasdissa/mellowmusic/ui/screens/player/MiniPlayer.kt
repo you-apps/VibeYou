@@ -29,8 +29,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
+import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
 import coil.compose.AsyncImage
@@ -41,8 +43,7 @@ fun MiniPlayer(
     onClick: () -> Unit,
     controller: MediaController,
     mediaItem: MediaItem,
-    onPlayPause: () -> Unit,
-    onSeekNext: () -> Unit
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     Row(
         Modifier
@@ -87,14 +88,14 @@ fun MiniPlayer(
             horizontalArrangement = Arrangement.Center
         ) {
             val playState by controller.isPlayingState()
-            IconButton(onClick = { onPlayPause() }) {
+            IconButton(onClick = { playerViewModel.playPause() }) {
                 if (playState) {
                     Icon(Icons.Default.Pause, contentDescription = null)
                 } else {
                     Icon(Icons.Default.PlayArrow, contentDescription = null)
                 }
             }
-            IconButton(onClick = { onSeekNext() }) {
+            IconButton(onClick = { playerViewModel.seekNext() }) {
                 Icon(Icons.Default.SkipNext, contentDescription = null)
             }
 
