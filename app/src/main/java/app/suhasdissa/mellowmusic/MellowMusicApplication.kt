@@ -7,7 +7,7 @@ import androidx.media3.session.SessionToken
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.services.PlayerService
 
-class LibreMusicApplication : Application() {
+class MellowMusicApplication : Application() {
 
     private val database by lazy { SongDatabase.getDatabase(this) }
     lateinit var container: AppContainer

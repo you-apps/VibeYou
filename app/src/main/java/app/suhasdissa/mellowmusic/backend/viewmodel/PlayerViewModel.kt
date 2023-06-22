@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
-import app.suhasdissa.mellowmusic.LibreMusicApplication
+import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
 import app.suhasdissa.mellowmusic.utils.addNext
@@ -111,7 +111,7 @@ class PlayerViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as LibreMusicApplication)
+                val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PlayerViewModel(
                     application.container.songRepository,
                     application.container.controllerFuture

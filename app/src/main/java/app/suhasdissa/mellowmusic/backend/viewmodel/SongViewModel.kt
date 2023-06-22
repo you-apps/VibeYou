@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import app.suhasdissa.mellowmusic.LibreMusicApplication
+import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
 import kotlinx.coroutines.launch
@@ -57,7 +57,7 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as LibreMusicApplication)
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MellowMusicApplication)
                 SongViewModel(
                     application.container.songRepository
                 )

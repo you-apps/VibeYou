@@ -31,9 +31,11 @@ import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.utils.mediaIdList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-class PlayerService : MediaSessionService(), MediaSession.Callback {
+class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
     private var mediaSession: MediaSession? = null
     private lateinit var cache: SimpleCache
     private lateinit var player: ExoPlayer
@@ -63,6 +65,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback {
 
         player.repeatMode = Player.REPEAT_MODE_OFF
         player.playWhenReady = true
+        player.addListener(this)
 
         mediaSession = MediaSession.Builder(this, player).setCallback(this).build()
     }
@@ -140,6 +143,24 @@ class PlayerService : MediaSessionService(), MediaSession.Callback {
             }.toMutableList()
         return Futures.immediateFuture(updatedMediaItems)
     }
+
+    private val scope = CoroutineScope(Dispatchers.Main)
+    /*
+     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+         mediaItem?.let {
+             if (player.mediaItemCount - player.currentMediaItemIndex <= 3) {
+                 val radioRepository =
+                     (application as MellowMusicApplication).container.radioRepository
+                 scope.launch(Dispatchers.Main) {
+                     kotlin.runCatching {
+                         val recommendedSongs = radioRepository.getRecommendedSongs(it.mediaId)
+                         player.addMediaItems(recommendedSongs)
+                     }
+                 }
+             }
+         }
+     }
+     */
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createRendersFactory(): RenderersFactory {

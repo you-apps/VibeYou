@@ -12,6 +12,9 @@ interface SongsDao {
     @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
     fun addSong(song: Song)
 
+    @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
+    fun addSongs(songs: List<Song>)
+
     @Delete(entity = Song::class)
     fun removeSong(song: Song)
 

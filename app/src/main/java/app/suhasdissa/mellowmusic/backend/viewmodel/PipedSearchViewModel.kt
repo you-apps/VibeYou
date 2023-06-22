@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import app.suhasdissa.mellowmusic.LibreMusicApplication
+import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
 import kotlinx.coroutines.launch
@@ -59,7 +59,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as LibreMusicApplication)
+                val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PipedSearchViewModel(
                     application.container.searchRepository
                 )

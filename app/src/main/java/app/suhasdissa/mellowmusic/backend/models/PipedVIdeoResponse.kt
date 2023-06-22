@@ -12,7 +12,8 @@ data class PipedSongResponse(
     @SerialName("thumbnailUrl") var thumbnailUrl: String? = null,
     @SerialName("hls") var hls: String? = null,
     @SerialName("duration") var duration: Int? = null,
-    @SerialName("audioStreams") var audioStreams: ArrayList<AudioStreams> = arrayListOf()
+    @SerialName("audioStreams") var audioStreams: ArrayList<AudioStreams> = arrayListOf(),
+    @SerialName("relatedStreams") var relatedStreams: ArrayList<Items> = arrayListOf()
 
 )
 
