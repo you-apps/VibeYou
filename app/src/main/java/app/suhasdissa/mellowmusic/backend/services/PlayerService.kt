@@ -28,6 +28,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
+import app.suhasdissa.mellowmusic.utils.mediaIdList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.runBlocking
@@ -130,8 +131,11 @@ class PlayerService : MediaSessionService(), MediaSession.Callback {
         controller: MediaSession.ControllerInfo,
         mediaItems: MutableList<MediaItem>
     ): ListenableFuture<MutableList<MediaItem>> {
+        val mediaIdList = mediaSession.player.currentTimeline.mediaIdList
         val updatedMediaItems =
-            mediaItems.map {
+            mediaItems.filterNot {
+                mediaIdList.contains(it.mediaId)
+            }.map {
                 it.buildUpon().setUri(it.mediaId).setCustomCacheKey(it.mediaId).build()
             }.toMutableList()
         return Futures.immediateFuture(updatedMediaItems)

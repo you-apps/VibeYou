@@ -51,9 +51,7 @@ fun Queue(
             add(to.index, removedItem)
         }
     }, onDragEnd = { from, to ->
-        val removedItem = controller.getMediaItemAt(from)
-        controller.removeMediaItem(from)
-        controller.addMediaItem(to, removedItem)
+        controller.moveMediaItem(from,to)
     })
     LazyColumn(
         state = state.listState,

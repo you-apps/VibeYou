@@ -16,7 +16,12 @@ import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.LibreMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
+import app.suhasdissa.mellowmusic.utils.addNext
 import app.suhasdissa.mellowmusic.utils.asMediaItem
+import app.suhasdissa.mellowmusic.utils.enqueue
+import app.suhasdissa.mellowmusic.utils.forcePlayFromBeginning
+import app.suhasdissa.mellowmusic.utils.playGracefully
+import app.suhasdissa.mellowmusic.utils.playPause
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.launch
@@ -41,8 +46,7 @@ class PlayerViewModel(
     }
 
     fun seekNext() {
-        if (controller!!.hasNextMediaItem())
-            controller!!.seekToNext()
+        controller!!.seekToNext()
     }
 
     fun seekTo(ms: Long) {
@@ -50,27 +54,11 @@ class PlayerViewModel(
     }
 
     fun playPause() {
-        if (controller!!.isPlaying) {
-            controller!!.pause()
-        } else {
-            controller!!.play()
-        }
+        controller!!.playPause()
     }
 
     fun seekPrevious() {
         controller!!.seekToPrevious()
-    }
-
-    fun schedulePlay(song: Song) {
-        if (controller!!.isPlaying) {
-            enqueueSong(song.asMediaItem)
-        } else {
-            prepareAndPlay(song.asMediaItem)
-        }
-
-        viewModelScope.launch {
-            songRepository.addSong(song)
-        }
     }
 
     fun shuffleFavourites() {
@@ -89,39 +77,26 @@ class PlayerViewModel(
 
     private fun shuffleSongs(shuffleQueue: List<MediaItem>) {
         viewModelScope.launch {
-            controller!!.stop()
-            if (controller!!.mediaItemCount > 1) {
-                controller!!.removeMediaItems(0, controller!!.mediaItemCount - 1)
-            }
-            controller!!.addMediaItems(shuffleQueue)
-            if (!controller!!.isPlaying) {
-                controller!!.prepare()
-                controller!!.play()
-            }
+            controller!!.forcePlayFromBeginning(shuffleQueue)
         }
     }
 
-    private fun enqueueSong(mediaItem: MediaItem) {
-        controller!!.addMediaItem(mediaItem)
+    fun saveSong(song: Song) {
+        viewModelScope.launch {
+            songRepository.addSong(song)
+        }
+    }
+
+    fun playNext(song: Song) {
+        controller!!.addNext(song.asMediaItem)
+    }
+
+    fun enqueueSong(song: Song) {
+        controller!!.enqueue(song.asMediaItem)
     }
 
     fun playSong(song: Song) {
-        playSongImmediately(song.asMediaItem)
-    }
-
-    private fun playSongImmediately(mediaItem: MediaItem) {
-        controller!!.stop()
-        val currentIndex = controller!!.currentMediaItemIndex
-        controller!!.addMediaItem(currentIndex + 1, mediaItem)
-        controller!!.seekTo(currentIndex + 1, 0L)
-        controller!!.prepare()
-        controller!!.play()
-    }
-
-    private fun prepareAndPlay(mediaItem: MediaItem) {
-        controller!!.addMediaItem(mediaItem)
-        controller!!.prepare()
-        controller!!.play()
+        controller!!.playGracefully(song.asMediaItem)
     }
 
     fun toggleFavourite(id: String) {

@@ -30,7 +30,7 @@ fun SongListView(
     var selectedSong by remember { mutableStateOf<Song?>(null) }
     SongList(
         items = (if (showFavourites) songViewModel.favSongs else songViewModel.songs),
-        onClickCard = { song -> playerViewModel.schedulePlay(song) },
+        onClickCard = { song -> playerViewModel.playSong(song) },
         onLongPress = { song ->
             selectedSong = song
             showSongSettings = true

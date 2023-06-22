@@ -12,11 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddToQueue
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.QueueMusic
+import androidx.compose.material.icons.filled.QueuePlayNext
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -126,10 +127,17 @@ fun SongSettingsSheet(
                     onDismissRequest()
                 })
             SheetSettingItem(
-                icon = Icons.Default.AddToQueue,
+                icon = Icons.Default.QueuePlayNext,
+                description = R.string.play_next,
+                onClick = {
+                    playerViewModel.playNext(song)
+                    onDismissRequest()
+                })
+            SheetSettingItem(
+                icon = Icons.Default.QueueMusic,
                 description = R.string.enqueue_song,
                 onClick = {
-                    playerViewModel.schedulePlay(song)
+                    playerViewModel.enqueueSong(song)
                     onDismissRequest()
                 })
             SheetSettingItem(

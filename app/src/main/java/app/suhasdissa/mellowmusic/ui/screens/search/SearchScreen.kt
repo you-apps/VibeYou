@@ -140,8 +140,8 @@ fun SearchScreen(
                     SongList(
                         items = searchState.items,
                         onClickCard = { song ->
-
-                            playerViewModel.schedulePlay(song)
+                            playerViewModel.playSong(song)
+                            playerViewModel.saveSong(song)
                         }, onLongPress = {})
                 }
 
