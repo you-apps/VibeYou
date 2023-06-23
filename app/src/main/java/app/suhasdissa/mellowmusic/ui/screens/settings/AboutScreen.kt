@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.viewmodel.CheckUpdateViewModel
 import app.suhasdissa.mellowmusic.ui.components.SettingItem
 import app.suhasdissa.mellowmusic.utils.openBrowser
 
@@ -21,6 +23,7 @@ import app.suhasdissa.mellowmusic.utils.openBrowser
 @Composable
 fun AboutScreen(
     modifier: Modifier = Modifier,
+    updateViewModel: CheckUpdateViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val githubRepo = "https://github.com/SuhasDissa/MellowMusic"
@@ -44,7 +47,7 @@ fun AboutScreen(
             item {
                 SettingItem(
                     title = stringResource(R.string.latest_release),
-                    description = "",
+                    description = "${updateViewModel.latestVersion}",
                     onClick = {
                         openBrowser(
                             context, "$githubRepo/releases/latest"
@@ -68,7 +71,7 @@ fun AboutScreen(
             item {
                 SettingItem(
                     title = stringResource(R.string.current_version),
-                    description = "",
+                    description = "${updateViewModel.currentVersion}",
                     onClick = {},
                     icon = Icons.Default.Info
                 )

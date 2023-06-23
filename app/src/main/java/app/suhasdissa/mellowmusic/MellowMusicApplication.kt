@@ -6,6 +6,7 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.services.PlayerService
+import app.suhasdissa.mellowmusic.utils.UpdateUtil
 
 class MellowMusicApplication : Application() {
 
@@ -21,5 +22,6 @@ class MellowMusicApplication : Application() {
             )
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         container = DefaultAppContainer(database, controllerFuture)
+        UpdateUtil.getCurrentVersion(this.applicationContext)
     }
 }
