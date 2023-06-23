@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.ui.screens.songs.SongsScreen
 import kotlinx.coroutines.launch
 
@@ -31,7 +33,7 @@ fun HomeScreenView() {
             }
         }) {
             Text(
-                "Songs",
+                stringResource(R.string.songs),
                 Modifier.padding(10.dp),
                 style = MaterialTheme.typography.titleMedium
             )
@@ -44,7 +46,7 @@ fun HomeScreenView() {
             }
         }) {
             Text(
-                "Favourites",
+                stringResource(R.string.favourite_songs),
                 Modifier.padding(10.dp),
                 style = MaterialTheme.typography.titleMedium
             )

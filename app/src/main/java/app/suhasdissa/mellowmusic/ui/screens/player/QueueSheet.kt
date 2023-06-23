@@ -16,9 +16,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.Player
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.DisposableListener
 import kotlinx.coroutines.launch
@@ -61,9 +63,9 @@ fun QueueSheet(
                     onDismissRequest()
                 }
             }) {
-                Icon(Icons.Rounded.ExpandMore, contentDescription = "Cancel")
+                Icon(Icons.Rounded.ExpandMore, contentDescription = stringResource(R.string.close_queue))
             }
-        }, title = { Text("Player Queue") })
+        }, title = { Text(stringResource(R.string.player_queue)) })
         Divider(Modifier.fillMaxWidth())
         playerViewModel.controller?.let { controller ->
             Queue(controller)

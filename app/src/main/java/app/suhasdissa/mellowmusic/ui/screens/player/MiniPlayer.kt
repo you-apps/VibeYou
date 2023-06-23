@@ -26,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
@@ -61,7 +63,7 @@ fun MiniPlayer(
                 .clip(RoundedCornerShape(8.dp)),
             model = ImageRequest.Builder(context = LocalContext.current)
                 .data(mediaItem.mediaMetadata.artworkUri).crossfade(true).build(),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.song_album_art),
             contentScale = ContentScale.Crop
         )
         val title = mediaItem.mediaMetadata.title.toString()
@@ -90,13 +92,13 @@ fun MiniPlayer(
             val playState by controller.isPlayingState()
             IconButton(onClick = { playerViewModel.playPause() }) {
                 if (playState) {
-                    Icon(Icons.Default.Pause, contentDescription = null)
+                    Icon(Icons.Default.Pause, contentDescription = stringResource(R.string.pause))
                 } else {
-                    Icon(Icons.Default.PlayArrow, contentDescription = null)
+                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.play))
                 }
             }
             IconButton(onClick = { playerViewModel.seekNext() }) {
-                Icon(Icons.Default.SkipNext, contentDescription = null)
+                Icon(Icons.Default.SkipNext, contentDescription = stringResource(R.string.skip_next))
             }
 
         }

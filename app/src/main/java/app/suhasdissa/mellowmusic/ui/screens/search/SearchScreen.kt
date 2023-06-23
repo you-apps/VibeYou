@@ -36,8 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.ui.components.ErrorScreen
-import app.suhasdissa.mellowmusic.ui.components.InfoScreen
+import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import kotlinx.coroutines.delay
@@ -129,11 +128,11 @@ fun SearchScreen(
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Error -> {
-                    ErrorScreen(error = searchState.error, onRetry = {
-                        if (search.isNotEmpty()) {
-                            pipedSearchViewModel.searchPiped(search)
-                        }
-                    })
+                    IllustratedMessageScreen(
+                        image = R.drawable.sad_mellow,
+                        message = R.string.something_went_wrong
+                    )
+
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Success -> {
@@ -146,7 +145,11 @@ fun SearchScreen(
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Empty -> {
-                    InfoScreen(info = stringResource(R.string.search_for_a_song))
+                    IllustratedMessageScreen(
+                        image = R.drawable.ic_launcher_monochrome,
+                        message = R.string.search_for_a_song,
+                        messageColor = MaterialTheme.colorScheme.tertiary
+                    )
                 }
             }
         }

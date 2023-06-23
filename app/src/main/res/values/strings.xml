@@ -12,7 +12,7 @@
     <string name="github_issue_description">Submit bug reports and feature requests</string>
     <string name="about_setting_description">Version, Contact</string>
     <string name="playing">Playing</string>
-    <string name="favourite_songs">Favourite Songs</string>
+    <string name="favourite_songs">Favourites</string>
     <string name="recent_songs">Recent Songs</string>
     <string name="enqueue_song">Add to Queue</string>
     <string name="play_song">Play Song</string>
@@ -22,4 +22,19 @@
     <string name="search_for_a_song">Search For a Song</string>
     <string name="play_next">Play Next</string>
     <string name="settings">Settings</string>
+    <string name="repeat_off">Repeat Off</string>
+    <string name="repeat_all">Repeat All</string>
+    <string name="repeat_one">Repeat One</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="song_options">Song Options</string>
+    <string name="close_player">Close Player</string>
+    <string name="song_album_art">Song Album Art</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="skip_next">Skip Next</string>
+    <string name="remove_item_from_queue">Remove Item From Queue</string>
+    <string name="close_queue">Close Queue</string>
+    <string name="player_queue">Player Queue</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="something_went_wrong">Something Went Wrong</string>
 </resources>

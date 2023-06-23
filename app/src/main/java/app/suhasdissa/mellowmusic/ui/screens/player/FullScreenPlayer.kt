@@ -46,11 +46,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.session.MediaController
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.models.PlayerRepeatMode
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
@@ -70,11 +72,11 @@ fun FullScreenPlayer(
     var showQueueSheet by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(navigationIcon = {
         IconButton(onCollapse) {
-            Icon(Icons.Rounded.ExpandMore, contentDescription = "Cancel")
+            Icon(Icons.Rounded.ExpandMore, contentDescription = stringResource(R.string.close_player))
         }
-    }, title = { Text("Now Playing") }, actions = {
+    }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
         IconButton(onClick = { }) {
-            Icon(Icons.Rounded.MoreVert, contentDescription = "Save")
+            Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
         }
     })
     Divider(Modifier.fillMaxWidth())
@@ -227,7 +229,7 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.ALL
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.Repeat, contentDescription = null)
+                            Icon(Icons.Default.Repeat, contentDescription = stringResource(R.string.repeat_off))
                         }
                     }
 
@@ -236,7 +238,7 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.ONE
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.RepeatOn, contentDescription = null)
+                            Icon(Icons.Default.RepeatOn, contentDescription = stringResource(R.string.repeat_all))
                         }
                     }
 
@@ -245,7 +247,7 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.OFF
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.RepeatOneOn, contentDescription = null)
+                            Icon(Icons.Default.RepeatOneOn, contentDescription = stringResource(R.string.repeat_one))
                         }
                     }
                 }

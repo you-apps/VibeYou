@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 
 
@@ -18,6 +19,9 @@ fun SongList(
     onClickCard: (song: Song) -> Unit,
     onLongPress: (song: Song) -> Unit
 ) {
+    if (items.isEmpty()) {
+        IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
+    }
     LazyColumn(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

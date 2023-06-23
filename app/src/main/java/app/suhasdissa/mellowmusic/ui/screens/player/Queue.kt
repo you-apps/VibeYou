@@ -19,8 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.session.MediaController
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.ui.components.SongCardCompact
 import app.suhasdissa.mellowmusic.utils.queue
 import org.burnoutcrew.reorderable.ReorderableItem
@@ -71,7 +73,7 @@ fun Queue(
                             controller.removeMediaItem(queue.first)
                             queueItems = queueItems.toMutableList().apply { remove(queue) }
                         }) {
-                            Icon(Icons.Default.Clear, null)
+                            Icon(Icons.Default.Clear, stringResource(R.string.remove_item_from_queue))
                         }
                     },
                     onClickVideoCard = { controller.seekTo(queue.first, 0L) },

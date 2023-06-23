@@ -23,7 +23,7 @@ fun AboutScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val githubRepo = "https://github.com/SuhasDissa/LibreMusic"
+    val githubRepo = "https://github.com/SuhasDissa/MellowMusic"
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(stringResource(R.string.about_title)) })
