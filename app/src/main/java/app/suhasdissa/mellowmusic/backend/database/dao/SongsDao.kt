@@ -21,12 +21,12 @@ interface SongsDao {
     @Query("SELECT * from Song WHERE id=:id")
     fun getSongById(id: String): Song?
 
-    @Query("SELECT * from Song")
+    @Query("SELECT * from Song ORDER BY lastModifiedTime DESC")
     fun getAllSongs(): List<Song>
 
     @Query("SELECT * from Song WHERE likedAt IS NOT NULL")
     fun getFavSongs(): List<Song>
 
-    @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
+    @Query("SELECT * from Song ORDER BY lastModifiedTime DESC LIMIT :limit")
     fun getRecentSongs(limit: Int): List<Song>
 }
