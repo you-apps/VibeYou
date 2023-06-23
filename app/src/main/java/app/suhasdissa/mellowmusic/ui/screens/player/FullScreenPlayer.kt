@@ -19,8 +19,9 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.filled.Shuffle
-import androidx.compose.material.icons.filled.ShuffleOn
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.RepeatOn
+import androidx.compose.material.icons.filled.RepeatOneOn
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -50,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.session.MediaController
+import app.suhasdissa.mellowmusic.backend.models.PlayerRepeatMode
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.maxResThumbnail
@@ -217,15 +219,36 @@ fun PlayerController(
                         Icon(Icons.Default.SkipNext, contentDescription = null)
                     }
                 }
-                var shuffleState by remember { mutableStateOf(false) }
-                IconButton(onClick = { shuffleState = !shuffleState }) {
-                    if (shuffleState) {
-                        Icon(Icons.Default.ShuffleOn, contentDescription = null)
-                    } else {
-                        Icon(Icons.Default.Shuffle, contentDescription = null)
+                var repeatState by remember { mutableStateOf(PlayerRepeatMode.values()[controller.repeatMode]) }
+
+                when (repeatState) {
+                    PlayerRepeatMode.OFF -> {
+                        IconButton(onClick = {
+                            repeatState = PlayerRepeatMode.ALL
+                            controller.repeatMode = repeatState.mode
+                        }) {
+                            Icon(Icons.Default.Repeat, contentDescription = null)
+                        }
+                    }
+
+                    PlayerRepeatMode.ALL -> {
+                        IconButton(onClick = {
+                            repeatState = PlayerRepeatMode.ONE
+                            controller.repeatMode = repeatState.mode
+                        }) {
+                            Icon(Icons.Default.RepeatOn, contentDescription = null)
+                        }
+                    }
+
+                    PlayerRepeatMode.ONE -> {
+                        IconButton(onClick = {
+                            repeatState = PlayerRepeatMode.OFF
+                            controller.repeatMode = repeatState.mode
+                        }) {
+                            Icon(Icons.Default.RepeatOneOn, contentDescription = null)
+                        }
                     }
                 }
-
             }
         }
     }
