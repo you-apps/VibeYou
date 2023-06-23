@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".backend.services.PlayerService"
+        <service android:name="app.suhasdissa.mellowmusic.backend.services.PlayerService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="true">
             <intent-filter>

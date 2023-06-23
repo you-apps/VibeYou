@@ -1,6 +1,5 @@
 package app.suhasdissa.mellowmusic.backend.services
 
-import android.content.Intent
 import android.media.audiofx.LoudnessEnhancer
 import android.os.Handler
 import androidx.core.net.toUri
@@ -73,12 +72,9 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
         mediaSession
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
-    }
-
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onDestroy() {
+        player.removeListener(this)
         mediaSession?.run {
             player.stop()
             player.release()
