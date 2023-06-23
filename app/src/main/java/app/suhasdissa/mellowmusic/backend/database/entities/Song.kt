@@ -11,8 +11,7 @@ data class Song(
     val durationText: String?,
     val thumbnailUrl: String?,
     val likedAt: Long? = null,
-    val totalPlayTimeMs: Long = 0,
-    val lastModifiedTime: String = System.currentTimeMillis().toString()
+    val totalPlayTimeMs: Long = 0
 ) {
     fun toggleLike(): Song {
         return copy(
