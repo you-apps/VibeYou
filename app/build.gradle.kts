@@ -21,10 +21,31 @@ android {
             useSupportLibrary = true
         }
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file("../key.jks")
+            storePassword = "lolcat"
+            keyAlias = "key0"
+            keyPassword = "lolcat"
+        }
+    }
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+        }
+        create("releaseGithub") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
