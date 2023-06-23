@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.Destinations
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.Search
+import app.suhasdissa.mellowmusic.Settings
 import app.suhasdissa.mellowmusic.backend.viewmodel.SongViewModel
 import app.suhasdissa.mellowmusic.ui.components.MainScaffold
 
@@ -67,6 +70,10 @@ fun HomeScreen(
                         contentDescription = null
                     )
                 }
+            }
+        }, actions = {
+            IconButton(onClick = { onNavigate(Settings) }) {
+                Icon(imageVector = Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
             }
         })
     }) {

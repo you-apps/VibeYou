@@ -21,4 +21,5 @@
     <string name="search_songs">Search Songs</string>
     <string name="search_for_a_song">Search For a Song</string>
     <string name="play_next">Play Next</string>
+    <string name="settings">Settings</string>
 </resources>
