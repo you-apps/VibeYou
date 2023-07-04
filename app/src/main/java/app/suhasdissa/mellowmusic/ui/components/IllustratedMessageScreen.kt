@@ -70,6 +70,6 @@ fun IllustratedMessageScreen(
 @Preview(showBackground = true)
 private fun IllustratedMsgScreenPreview() {
     IllustratedMessageScreen(
-        image = R.drawable.sad_mellow,message = R.string.something_went_wrong
+        image = R.drawable.sad_mellow, message = R.string.something_went_wrong
     )
 }

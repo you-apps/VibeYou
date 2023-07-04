@@ -73,7 +73,10 @@ fun HomeScreen(
             }
         }, actions = {
             IconButton(onClick = { onNavigate(Settings) }) {
-                Icon(imageVector = Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(R.string.settings)
+                )
             }
         })
     }) {

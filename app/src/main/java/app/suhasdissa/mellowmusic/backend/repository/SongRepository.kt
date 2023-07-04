@@ -25,9 +25,10 @@ class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
         return songsDao.getAllSongs()
     }
 
-    override suspend fun getRecentSongs(limit:Int): List<Song> {
+    override suspend fun getRecentSongs(limit: Int): List<Song> {
         return songsDao.getRecentSongs(limit)
     }
+
     override suspend fun getFavSongs(): List<Song> {
         return songsDao.getFavSongs()
     }

@@ -151,6 +151,90 @@ fun SongSettingsSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SongSettingsSheetSearchPage(
+    onDismissRequest: () -> Unit,
+    song: Song,
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+) {
+    val songSettingsSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        sheetState = songSettingsSheetState,
+        dragHandle = null,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(8.dp)),
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(song.thumbnailUrl).crossfade(true).build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+            Column(
+                Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+            ) {
+                Text(
+                    song.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                song.artistsText?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+            }
+        }
+        Column(Modifier.padding(vertical = 16.dp)) {
+            SheetSettingItem(
+                icon = Icons.Default.PlayArrow,
+                description = R.string.play_song,
+                onClick = {
+                    playerViewModel.playSong(song)
+                    playerViewModel.saveSong(song)
+                    onDismissRequest()
+                })
+            SheetSettingItem(
+                icon = Icons.Default.QueuePlayNext,
+                description = R.string.play_next,
+                onClick = {
+                    playerViewModel.playNext(song)
+                    playerViewModel.saveSong(song)
+                    onDismissRequest()
+                })
+            SheetSettingItem(
+                icon = Icons.Default.QueueMusic,
+                description = R.string.enqueue_song,
+                onClick = {
+                    playerViewModel.enqueueSong(song)
+                    playerViewModel.saveSong(song)
+                    onDismissRequest()
+                })
+        }
+    }
+}
+
+
 @Composable
 fun SheetSettingItem(icon: ImageVector, @StringRes description: Int, onClick: () -> Unit) {
     Row(

@@ -22,13 +22,17 @@ fun SongsScreen(
 ) {
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = { if (showFavourites) playerViewModel.shuffleFavourites() else playerViewModel.shuffleAll() }) {
-            Icon(imageVector = Icons.Default.Shuffle, contentDescription = stringResource(R.string.shuffle))
+            Icon(
+                imageVector = Icons.Default.Shuffle,
+                contentDescription = stringResource(R.string.shuffle)
+            )
         }
     }) { innerPadding ->
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(innerPadding)) {
+                .padding(innerPadding)
+        ) {
             SongListView(showFavourites)
         }
     }

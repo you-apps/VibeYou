@@ -53,7 +53,7 @@ fun Queue(
             add(to.index, removedItem)
         }
     }, onDragEnd = { from, to ->
-        controller.moveMediaItem(from,to)
+        controller.moveMediaItem(from, to)
     })
     LazyColumn(
         state = state.listState,
@@ -73,7 +73,10 @@ fun Queue(
                             controller.removeMediaItem(queue.first)
                             queueItems = queueItems.toMutableList().apply { remove(queue) }
                         }) {
-                            Icon(Icons.Default.Clear, stringResource(R.string.remove_item_from_queue))
+                            Icon(
+                                Icons.Default.Clear,
+                                stringResource(R.string.remove_item_from_queue)
+                            )
                         }
                     },
                     onClickVideoCard = { controller.seekTo(queue.first, 0L) },

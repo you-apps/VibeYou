@@ -63,7 +63,10 @@ fun QueueSheet(
                     onDismissRequest()
                 }
             }) {
-                Icon(Icons.Rounded.ExpandMore, contentDescription = stringResource(R.string.close_queue))
+                Icon(
+                    Icons.Rounded.ExpandMore,
+                    contentDescription = stringResource(R.string.close_queue)
+                )
             }
         }, title = { Text(stringResource(R.string.player_queue)) })
         Divider(Modifier.fillMaxWidth())

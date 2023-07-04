@@ -94,11 +94,17 @@ fun MiniPlayer(
                 if (playState) {
                     Icon(Icons.Default.Pause, contentDescription = stringResource(R.string.pause))
                 } else {
-                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.play))
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        contentDescription = stringResource(R.string.play)
+                    )
                 }
             }
             IconButton(onClick = { playerViewModel.seekNext() }) {
-                Icon(Icons.Default.SkipNext, contentDescription = stringResource(R.string.skip_next))
+                Icon(
+                    Icons.Default.SkipNext,
+                    contentDescription = stringResource(R.string.skip_next)
+                )
             }
 
         }

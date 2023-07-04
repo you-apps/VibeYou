@@ -22,6 +22,7 @@ import app.suhasdissa.mellowmusic.ui.screens.player.FullScreenPlayer
 import app.suhasdissa.mellowmusic.ui.screens.player.MiniPlayer
 import app.suhasdissa.mellowmusic.utils.mediaItemState
 import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScaffold(

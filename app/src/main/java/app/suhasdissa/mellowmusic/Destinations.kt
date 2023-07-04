@@ -23,6 +23,7 @@ object About : Destinations {
 object Songs : Destinations {
     override val route = "songs"
 }
+
 object FavouriteSongs : Destinations {
     override val route = "favsongs"
 }

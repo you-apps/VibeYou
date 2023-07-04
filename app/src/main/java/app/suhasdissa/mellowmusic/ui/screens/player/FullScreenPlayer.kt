@@ -72,7 +72,10 @@ fun FullScreenPlayer(
     var showQueueSheet by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(navigationIcon = {
         IconButton(onCollapse) {
-            Icon(Icons.Rounded.ExpandMore, contentDescription = stringResource(R.string.close_player))
+            Icon(
+                Icons.Rounded.ExpandMore,
+                contentDescription = stringResource(R.string.close_player)
+            )
         }
     }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
         IconButton(onClick = { }) {
@@ -229,7 +232,10 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.ALL
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.Repeat, contentDescription = stringResource(R.string.repeat_off))
+                            Icon(
+                                Icons.Default.Repeat,
+                                contentDescription = stringResource(R.string.repeat_off)
+                            )
                         }
                     }
 
@@ -238,7 +244,10 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.ONE
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.RepeatOn, contentDescription = stringResource(R.string.repeat_all))
+                            Icon(
+                                Icons.Default.RepeatOn,
+                                contentDescription = stringResource(R.string.repeat_all)
+                            )
                         }
                     }
 
@@ -247,7 +256,10 @@ fun PlayerController(
                             repeatState = PlayerRepeatMode.OFF
                             controller.repeatMode = repeatState.mode
                         }) {
-                            Icon(Icons.Default.RepeatOneOn, contentDescription = stringResource(R.string.repeat_one))
+                            Icon(
+                                Icons.Default.RepeatOneOn,
+                                contentDescription = stringResource(R.string.repeat_one)
+                            )
                         }
                     }
                 }

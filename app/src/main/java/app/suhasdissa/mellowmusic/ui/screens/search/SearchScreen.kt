@@ -34,11 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.SongList
+import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -136,12 +138,27 @@ fun SearchScreen(
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Success -> {
+                    var showSongSettings by remember { mutableStateOf(false) }
+                    var selectedSong by remember { mutableStateOf<Song?>(null) }
+
                     SongList(
                         items = searchState.items,
                         onClickCard = { song ->
                             playerViewModel.playSong(song)
                             playerViewModel.saveSong(song)
-                        }, onLongPress = {})
+                        }, onLongPress = { song ->
+                            selectedSong = song
+                            showSongSettings = true
+                        })
+
+                    if (showSongSettings) {
+                        selectedSong?.let {
+                            SongSettingsSheetSearchPage(
+                                onDismissRequest = { showSongSettings = false },
+                                song = selectedSong!!
+                            )
+                        }
+                    }
                 }
 
                 is PipedSearchViewModel.PipedSearchState.Empty -> {
