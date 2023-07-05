@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScaffold(
-    fab: @Composable () -> Unit,
+    fab: @Composable () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit
 ) {

@@ -39,6 +39,7 @@ import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
+import app.suhasdissa.mellowmusic.ui.components.MainScaffold
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 import kotlinx.coroutines.delay
@@ -59,114 +60,116 @@ fun SearchScreen(
         keyboard?.show()
         pipedSearchViewModel.setSearchHistory()
     }
-    Column(modifier.fillMaxSize()) {
-        var expanded by remember { mutableStateOf(false) }
+    MainScaffold() {
+        Column(modifier.fillMaxSize()) {
+            var expanded by remember { mutableStateOf(false) }
 
-        TextField(
-            value = search,
-            onValueChange = {
-                search = it
-                expanded = true
-                if (search.length >= 3) {
-                    pipedSearchViewModel.getSuggestions(search)
-                }
-            },
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .focusRequester(focusRequester),
+            TextField(
+                value = search,
+                onValueChange = {
+                    search = it
+                    expanded = true
+                    if (search.length >= 3) {
+                        pipedSearchViewModel.getSuggestions(search)
+                    }
+                },
+                modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .focusRequester(focusRequester),
 
-            singleLine = true,
-            placeholder = { Text(stringResource(R.string.search_songs)) },
-            shape = CircleShape,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = {
-                keyboard?.hide()
-                expanded = false
-                if (search.isNotEmpty()) {
-                    pipedSearchViewModel.searchPiped(search)
+                singleLine = true,
+                placeholder = { Text(stringResource(R.string.search_songs)) },
+                shape = CircleShape,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = {
+                    keyboard?.hide()
+                    expanded = false
+                    if (search.isNotEmpty()) {
+                        pipedSearchViewModel.searchPiped(search)
+                    }
+                }),
+                trailingIcon = {
+                    IconButton(onClick = { search = "" }) {
+                        Icon(
+                            Icons.Default.Clear,
+                            contentDescription = stringResource(R.string.clear_search)
+                        )
+                    }
                 }
-            }),
-            trailingIcon = {
-                IconButton(onClick = { search = "" }) {
-                    Icon(
-                        Icons.Default.Clear,
-                        contentDescription = stringResource(R.string.clear_search)
-                    )
-                }
-            }
-        )
-        Box {
-            if (expanded) {
-                Surface(
-                    modifier = Modifier.zIndex(1f),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shadowElevation = 2.dp
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth()
+            )
+            Box {
+                if (expanded) {
+                    Surface(
+                        modifier = Modifier.zIndex(1f),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shadowElevation = 2.dp
                     ) {
-                        pipedSearchViewModel.suggestions.forEach { suggestion ->
-                            DropdownMenuItem(text = {
-                                Text(
-                                    text = suggestion,
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-                            }, onClick = {
-                                search = suggestion
-                                keyboard?.hide()
-                                expanded = false
-                                if (search.isNotEmpty()) {
-                                    pipedSearchViewModel.searchPiped(search)
-                                }
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            pipedSearchViewModel.suggestions.forEach { suggestion ->
+                                DropdownMenuItem(text = {
+                                    Text(
+                                        text = suggestion,
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }, onClick = {
+                                    search = suggestion
+                                    keyboard?.hide()
+                                    expanded = false
+                                    if (search.isNotEmpty()) {
+                                        pipedSearchViewModel.searchPiped(search)
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+                when (val searchState = pipedSearchViewModel.state) {
+                    is PipedSearchViewModel.PipedSearchState.Loading -> {
+                        LoadingScreen()
+                    }
+
+                    is PipedSearchViewModel.PipedSearchState.Error -> {
+                        IllustratedMessageScreen(
+                            image = R.drawable.sad_mellow,
+                            message = R.string.something_went_wrong
+                        )
+
+                    }
+
+                    is PipedSearchViewModel.PipedSearchState.Success -> {
+                        var showSongSettings by remember { mutableStateOf(false) }
+                        var selectedSong by remember { mutableStateOf<Song?>(null) }
+
+                        SongList(
+                            items = searchState.items,
+                            onClickCard = { song ->
+                                playerViewModel.playSong(song)
+                                playerViewModel.saveSong(song)
+                            }, onLongPress = { song ->
+                                selectedSong = song
+                                showSongSettings = true
                             })
+
+                        if (showSongSettings) {
+                            selectedSong?.let {
+                                SongSettingsSheetSearchPage(
+                                    onDismissRequest = { showSongSettings = false },
+                                    song = selectedSong!!
+                                )
+                            }
                         }
                     }
-                }
-            }
-            when (val searchState = pipedSearchViewModel.state) {
-                is PipedSearchViewModel.PipedSearchState.Loading -> {
-                    LoadingScreen()
-                }
 
-                is PipedSearchViewModel.PipedSearchState.Error -> {
-                    IllustratedMessageScreen(
-                        image = R.drawable.sad_mellow,
-                        message = R.string.something_went_wrong
-                    )
-
-                }
-
-                is PipedSearchViewModel.PipedSearchState.Success -> {
-                    var showSongSettings by remember { mutableStateOf(false) }
-                    var selectedSong by remember { mutableStateOf<Song?>(null) }
-
-                    SongList(
-                        items = searchState.items,
-                        onClickCard = { song ->
-                            playerViewModel.playSong(song)
-                            playerViewModel.saveSong(song)
-                        }, onLongPress = { song ->
-                            selectedSong = song
-                            showSongSettings = true
-                        })
-
-                    if (showSongSettings) {
-                        selectedSong?.let {
-                            SongSettingsSheetSearchPage(
-                                onDismissRequest = { showSongSettings = false },
-                                song = selectedSong!!
-                            )
-                        }
+                    is PipedSearchViewModel.PipedSearchState.Empty -> {
+                        IllustratedMessageScreen(
+                            image = R.drawable.ic_launcher_monochrome,
+                            message = R.string.search_for_a_song,
+                            messageColor = MaterialTheme.colorScheme.tertiary
+                        )
                     }
-                }
-
-                is PipedSearchViewModel.PipedSearchState.Empty -> {
-                    IllustratedMessageScreen(
-                        image = R.drawable.ic_launcher_monochrome,
-                        message = R.string.search_for_a_song,
-                        messageColor = MaterialTheme.colorScheme.tertiary
-                    )
                 }
             }
         }
