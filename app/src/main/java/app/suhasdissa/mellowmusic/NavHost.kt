@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.SearchScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.AboutScreen
+import app.suhasdissa.mellowmusic.ui.screens.settings.NetworkSettingsScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.SettingsScreen
 import app.suhasdissa.mellowmusic.ui.screens.songs.SongsScreen
 
@@ -34,6 +35,10 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(route = About.route) {
             AboutScreen()
+        }
+
+        composable(route = NetworkSettings.route) {
+            NetworkSettingsScreen()
         }
 
         composable(Songs.route) {

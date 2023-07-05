@@ -3,6 +3,7 @@ package app.suhasdissa.mellowmusic.backend.api
 import app.suhasdissa.mellowmusic.backend.models.PipedSearchResult
 import app.suhasdissa.mellowmusic.backend.models.PipedSongAlbumResponse
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
+import app.suhasdissa.mellowmusic.utils.Pref
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,7 +14,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 private val json = Json { ignoreUnknownKeys = true }
-private const val pipedUrl = "https://watchapi.whatever.social/"
+private val pipedUrl =
+    Pref.pipedUrl?.let { Pref.pipedInstances[it].second } ?: Pref.pipedInstances.first().second
 
 private val retrofit = Retrofit.Builder()
     .baseUrl(pipedUrl)

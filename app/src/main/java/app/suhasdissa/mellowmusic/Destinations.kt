@@ -20,6 +20,10 @@ object About : Destinations {
     override val route = "about"
 }
 
+object NetworkSettings : Destinations {
+    override val route = "net_settings"
+}
+
 object Songs : Destinations {
     override val route = "songs"
 }

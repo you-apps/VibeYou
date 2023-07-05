@@ -37,4 +37,7 @@
     <string name="player_queue">Player Queue</string>
     <string name="shuffle">Shuffle</string>
     <string name="something_went_wrong">Something Went Wrong</string>
+    <string name="network_settings">Network Settings</string>
+    <string name="network_settings_description">Change server to fix playback issues</string>
+    <string name="change_server">Change server</string>
 </resources>
