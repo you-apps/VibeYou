@@ -19,6 +19,7 @@ import app.suhasdissa.mellowmusic.backend.repository.SongRepository
 import app.suhasdissa.mellowmusic.utils.addNext
 import app.suhasdissa.mellowmusic.utils.asMediaItem
 import app.suhasdissa.mellowmusic.utils.enqueue
+import app.suhasdissa.mellowmusic.utils.forcePlay
 import app.suhasdissa.mellowmusic.utils.forcePlayFromBeginning
 import app.suhasdissa.mellowmusic.utils.playGracefully
 import app.suhasdissa.mellowmusic.utils.playPause
@@ -34,11 +35,16 @@ class PlayerViewModel(
     var controller: MediaController? by mutableStateOf(null)
         private set
 
+    private var toBePlayed: MediaItem? = null
+
     init {
         controllerFuture.addListener(
             {
                 Handler(Looper.getMainLooper()).post {
                     controller = controllerFuture.get()
+                    toBePlayed?.let {
+                        controller?.forcePlay(it)
+                    }
                 }
             },
             MoreExecutors.directExecutor()
@@ -104,6 +110,19 @@ class PlayerViewModel(
             val song = songRepository.getSongById(id)
             song?.let {
                 songRepository.addSong(it.toggleLike())
+            }
+        }
+    }
+
+    fun tryToPlayId(id: String) {
+        viewModelScope.launch {
+            val song: Song? = songRepository.searchSongId(id)
+            song?.let {
+                if (controller == null) {
+                    toBePlayed = song.asMediaItem
+                } else {
+                    controller?.forcePlay(song.asMediaItem)
+                }
             }
         }
     }
