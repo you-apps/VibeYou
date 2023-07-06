@@ -19,15 +19,16 @@ val Items.asSong: Song
         thumbnailUrl = thumbnail
     )
 
-fun PipedSongResponse.asSong(id:String):Song {
+fun PipedSongResponse.asSong(id: String): Song {
     return Song(
         id = id,
         title = title!!,
-        artistsText = uploader?:"",
-        durationText = DateUtils.formatElapsedTime(duration?.toLong()?:0L),
-        thumbnailUrl = thumbnailUrl?:""
+        artistsText = uploader ?: "",
+        durationText = DateUtils.formatElapsedTime(duration?.toLong() ?: 0L),
+        thumbnailUrl = thumbnailUrl ?: ""
     )
 }
+
 val Song.asMediaItem: MediaItem
     @SuppressLint("UnsafeOptInUsageError")
     get() = MediaItem.Builder()
@@ -46,4 +47,7 @@ val Song.asMediaItem: MediaItem
         .build()
 
 val MediaItem.maxResThumbnail: String
-    get() = "https://watchproxy-nl.whatever.social/vi_webp/${mediaId}/maxresdefault.webp?host=i.ytimg.com"
+    get() {
+        val pipedUrl = Pref.pipedUrl?.let { Pref.pipedInstances[it] } ?: Pref.pipedInstances.first()
+        return "${pipedUrl}vi_webp/${mediaId}/maxresdefault.webp?host=i.ytimg.com"
+    }
