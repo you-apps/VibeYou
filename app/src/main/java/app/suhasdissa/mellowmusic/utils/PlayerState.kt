@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import app.suhasdissa.mellowmusic.backend.models.PlayerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -75,11 +76,33 @@ fun Player.mediaItemState(): State<MediaItem?> {
 }
 
 @Composable
-fun Player.isPlayingState(): State<Boolean> {
-    return produceState(initialValue = isPlaying, this) {
+fun Player.isPlayingState(): State<PlayerState> {
+    return produceState(
+        initialValue = if (isPlaying) {
+            PlayerState.Play
+        } else if (playbackState == 2) {
+            PlayerState.Buffer
+        } else {
+            PlayerState.Pause
+        },
+        this
+    ) {
         val listener = object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == 2) {
+                    value = PlayerState.Buffer
+                }
+            }
+
             override fun onIsPlayingChanged(isPlaying: Boolean) {
-                value = isPlaying
+                playbackState
+                value = if (isPlaying) {
+                    PlayerState.Play
+                } else if (playbackState == 2) {
+                    PlayerState.Buffer
+                } else {
+                    PlayerState.Pause
+                }
             }
         }
         addListener(listener)

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -34,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.models.PlayerState
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
@@ -91,13 +93,24 @@ fun MiniPlayer(
         ) {
             val playState by controller.isPlayingState()
             IconButton(onClick = { playerViewModel.playPause() }) {
-                if (playState) {
-                    Icon(Icons.Default.Pause, contentDescription = stringResource(R.string.pause))
-                } else {
-                    Icon(
-                        Icons.Default.PlayArrow,
-                        contentDescription = stringResource(R.string.play)
-                    )
+                when (playState) {
+                    PlayerState.Buffer -> {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    }
+
+                    PlayerState.Play -> {
+                        Icon(
+                            Icons.Default.Pause,
+                            contentDescription = stringResource(R.string.pause)
+                        )
+                    }
+
+                    PlayerState.Pause -> {
+                        Icon(
+                            Icons.Default.PlayArrow,
+                            contentDescription = stringResource(R.string.play)
+                        )
+                    }
                 }
             }
             IconButton(onClick = { playerViewModel.seekNext() }) {

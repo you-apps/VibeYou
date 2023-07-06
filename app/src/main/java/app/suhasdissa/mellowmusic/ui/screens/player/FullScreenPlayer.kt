@@ -28,6 +28,7 @@ import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,6 +55,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.models.PlayerRepeatMode
+import app.suhasdissa.mellowmusic.backend.models.PlayerState
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.maxResThumbnail
@@ -199,18 +201,26 @@ fun PlayerController(
                         onClick = { playerViewModel.playPause() },
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        if (playState) {
-                            Icon(
-                                Icons.Default.Pause,
-                                modifier = Modifier.size(36.dp),
-                                contentDescription = null
-                            )
-                        } else {
-                            Icon(
-                                Icons.Default.PlayArrow,
-                                modifier = Modifier.size(36.dp),
-                                contentDescription = null
-                            )
+                        when (playState) {
+                            PlayerState.Buffer -> {
+                                CircularProgressIndicator(modifier = Modifier.size(36.dp))
+                            }
+
+                            PlayerState.Play -> {
+                                Icon(
+                                    Icons.Default.Pause,
+                                    modifier = Modifier.size(36.dp),
+                                    contentDescription = stringResource(R.string.pause)
+                                )
+                            }
+
+                            PlayerState.Pause -> {
+                                Icon(
+                                    Icons.Default.PlayArrow,
+                                    modifier = Modifier.size(36.dp),
+                                    contentDescription = stringResource(R.string.play)
+                                )
+                            }
                         }
                     }
                 }
