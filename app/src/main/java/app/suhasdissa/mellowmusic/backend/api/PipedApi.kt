@@ -15,7 +15,8 @@ import retrofit2.http.Query
 
 private val json = Json { ignoreUnknownKeys = true }
 private val pipedUrl =
-    Pref.pipedUrl?.let { Pref.pipedInstances[it].second } ?: Pref.pipedInstances.first().second
+    Pref.pipedUrl?.let { Pref.pipedInstances.getOrNull(it)?.url }
+        ?: Pref.pipedInstances.first().url
 
 private val retrofit = Retrofit.Builder()
     .baseUrl(pipedUrl)

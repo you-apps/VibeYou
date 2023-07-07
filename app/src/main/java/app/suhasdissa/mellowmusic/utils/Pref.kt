@@ -1,16 +1,41 @@
 package app.suhasdissa.mellowmusic.utils
 
+import app.suhasdissa.mellowmusic.backend.models.PipedInstance
+
 object Pref {
     const val pipedInstanceKey = "PipedInstanceKey"
 
     val pipedInstances = listOf(
-        "lunar.icu" to "https://piped-api.lunar.icu/",
-        "whatever.social" to "https://watchapi.whatever.social/",
-        "tokhmi.xyz" to "https://pipedapi.tokhmi.xyz/",
-        "mha.fi" to "https://api-piped.mha.fi/",
-        "garudalinux.org" to "https://piped-api.garudalinux.org/",
-        "piped.yt" to "https://api.piped.yt/",
-        "kavin.rocks" to "https://pipedapi.kavin.rocks/",
+        PipedInstance(
+            "lunar.icu",
+            "https://piped-api.lunar.icu/",
+            "https://piped-proxy.lunar.icu/"
+        ),
+        PipedInstance(
+            "whatever.social",
+            "https://watchapi.whatever.social/",
+            "https://watchproxy-nl.whatever.social"
+        ),
+        PipedInstance(
+            "tokhmi.xyz",
+            "https://pipedapi.tokhmi.xyz/"
+        ),
+        PipedInstance(
+            "mha.fi",
+            "https://api-piped.mha.fi/"
+        ),
+        PipedInstance(
+            "garudalinux.org",
+            "https://piped-api.garudalinux.org/"
+        ),
+        PipedInstance(
+            "piped.yt",
+            "https://api.piped.yt/"
+        ),
+        PipedInstance(
+            "kavin.rocks",
+            "https://pipedapi.kavin.rocks/"
+        )
     )
 
     var pipedUrl: Int? = null
