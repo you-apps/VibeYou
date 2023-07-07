@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "app.suhasdissa.mellowmusic"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "app.suhasdissa.mellowmusic"
         minSdk = 26
-        targetSdk = 33
-        versionCode = 2
-        versionName = "1.1"
+        targetSdk = 34
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
