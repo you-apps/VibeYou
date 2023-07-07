@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,6 +102,8 @@ fun FullScreenPlayer(
                     .clip(RoundedCornerShape(16.dp)),
                 model = ImageRequest.Builder(context = LocalContext.current)
                     .data(it.maxResThumbnail).crossfade(true).build(),
+                error = painterResource(R.drawable.ic_launcher_monochrome),
+                fallback = painterResource(R.drawable.ic_launcher_monochrome),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

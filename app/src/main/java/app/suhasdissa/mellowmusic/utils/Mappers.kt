@@ -48,6 +48,5 @@ val Song.asMediaItem: MediaItem
 
 val MediaItem.maxResThumbnail: String
     get() {
-        val pipedUrl = Pref.pipedUrl?.let { Pref.pipedInstances[it] } ?: Pref.pipedInstances.first()
-        return "${pipedUrl}vi_webp/${mediaId}/maxresdefault.webp?host=i.ytimg.com"
+        return "https://piped-proxy.lunar.icu/vi_webp/${mediaId}/maxresdefault.webp?host=i.ytimg.com"
     }

@@ -4,20 +4,13 @@ object Pref {
     const val pipedInstanceKey = "PipedInstanceKey"
 
     val pipedInstances = listOf(
-        "kavin.rocks" to "https://pipedapi.kavin.rocks/",
-        "tokhmi,xyz" to "https://pipedapi.tokhmi.xyz/",
+        "lunar.icu" to "https://piped-api.lunar.icu/",
         "whatever.social" to "https://watchapi.whatever.social/",
-        "moomoo.me" to "https://pipedapi.moomoo.me/",
-        "syncpundit.io" to "https://pipedapi.syncpundit.io/",
+        "tokhmi.xyz" to "https://pipedapi.tokhmi.xyz/",
         "mha.fi" to "https://api-piped.mha.fi/",
         "garudalinux.org" to "https://piped-api.garudalinux.org/",
-        "rivo.io" to "https://pipedapi.rivo.lol/",
-        "aeong.one" to "https://pipedapi.aeong.one/",
-        "leptons.xyz" to "https://pipedapi.leptons.xyz/",
-        "lunar.icu" to "https://piped-api.lunar.icu/",
-        "dc09.ru" to "https://ytapi.dc09.ru/",
-        "colinslegacy.com" to "https://pipedapi.colinslegacy.com/",
-        "vyper.me" to "https://yapi.vyper.me/"
+        "piped.yt" to "https://api.piped.yt/",
+        "kavin.rocks" to "https://pipedapi.kavin.rocks/",
     )
 
     var pipedUrl: Int? = null
