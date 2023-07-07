@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -27,7 +28,8 @@ import app.suhasdissa.mellowmusic.utils.rememberPreference
 
 @Composable
 fun InstanceSelectDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onSelectionChange: (name: String) -> Unit
 ) {
     var selectedOption by rememberPreference(key = Pref.pipedInstanceKey, defaultValue = 0)
     val optionsList = Pref.pipedInstances
@@ -46,15 +48,18 @@ fun InstanceSelectDialog(
                                 .fillMaxWidth()
                                 .clickable(onClick = {
                                     selectedOption = index
+                                    onSelectionChange(item.name)
                                 })
-                                .padding(horizontal = 16.dp)
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(selected = (index == selectedOption),
                                 onClick = {
                                     selectedOption = index
+                                    onSelectionChange(item.name)
                                 })
                             Text(
-                                text = item.first, modifier = Modifier.padding(start = 16.dp)
+                                text = item.name, modifier = Modifier.padding(start = 16.dp)
                             )
                         }
                     }

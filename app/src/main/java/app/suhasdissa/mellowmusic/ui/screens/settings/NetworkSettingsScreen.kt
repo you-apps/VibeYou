@@ -28,8 +28,11 @@ import app.suhasdissa.mellowmusic.utils.rememberPreference
 fun NetworkSettingsScreen() {
     val currentServerId by rememberPreference(key = Pref.pipedInstanceKey, defaultValue = 0)
     var showDialog by remember { mutableStateOf(false) }
-    val currentServer = remember(currentServerId) {
-        Pref.pipedInstances.getOrNull(currentServerId)?.name ?: Pref.pipedInstances.first().url
+    var currentServer by remember {
+        mutableStateOf(
+            Pref.pipedInstances.getOrNull(currentServerId)?.name ?: Pref.pipedInstances.first().name
+        )
+
     }
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(stringResource(R.string.network_settings)) })
@@ -53,9 +56,11 @@ fun NetworkSettingsScreen() {
         }
     }
     if (showDialog) {
-        InstanceSelectDialog {
+        InstanceSelectDialog(onDismissRequest = {
             showDialog = false
-        }
+        }, onSelectionChange = { name ->
+            currentServer = name
+        })
     }
 
 }
