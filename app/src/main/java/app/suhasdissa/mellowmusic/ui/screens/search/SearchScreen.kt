@@ -41,7 +41,7 @@ import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
-import app.suhasdissa.mellowmusic.ui.components.MainScaffold
+import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 import app.suhasdissa.mellowmusic.ui.components.SpinnerSelector
@@ -63,7 +63,7 @@ fun SearchScreen(
         keyboard?.show()
         pipedSearchViewModel.setSearchHistory()
     }
-    MainScaffold() {
+    MiniPlayerScaffold() {
         Column(modifier.fillMaxSize()) {
             var expanded by remember { mutableStateOf(false) }
 

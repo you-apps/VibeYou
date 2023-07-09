@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScaffold(
+fun MiniPlayerScaffold(
     fab: @Composable () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit

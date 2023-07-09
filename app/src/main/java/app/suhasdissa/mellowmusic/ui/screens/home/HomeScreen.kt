@@ -30,7 +30,7 @@ import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.Search
 import app.suhasdissa.mellowmusic.Settings
 import app.suhasdissa.mellowmusic.backend.viewmodel.SongViewModel
-import app.suhasdissa.mellowmusic.ui.components.MainScaffold
+import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +41,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         songViewModel.getRecentSongs()
     }
-    MainScaffold(fab = {}, topBar = {
+    MiniPlayerScaffold(fab = {}, topBar = {
         CenterAlignedTopAppBar(title = {
             Card(
                 modifier = Modifier
