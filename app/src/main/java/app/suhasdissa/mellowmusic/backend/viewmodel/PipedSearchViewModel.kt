@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
+    var searchFilter = SearchFilter.Songs
     var searchText = ""
         private set
 
@@ -48,7 +50,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
             searchRepository.saveSearchQuery(query)
             state = try {
                 PipedSearchState.Success(
-                    searchRepository.getSearchResult(query)
+                    searchRepository.getSearchResult(query, searchFilter)
                 )
             } catch (e: Exception) {
                 PipedSearchState.Error(e.toString())

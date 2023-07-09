@@ -27,9 +27,10 @@ private const val defaultHeader =
 
 interface ApiService {
     @Headers(defaultHeader)
-    @GET("search?filter=music_songs")
+    @GET("search")
     suspend fun searchPiped(
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("filter") filter: String
     ): PipedSearchResult
 
     @Headers(defaultHeader)

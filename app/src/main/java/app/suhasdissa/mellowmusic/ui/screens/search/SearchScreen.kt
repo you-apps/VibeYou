@@ -1,7 +1,9 @@
 package app.suhasdissa.mellowmusic.ui.screens.search
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -42,6 +44,7 @@ import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.MainScaffold
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
+import app.suhasdissa.mellowmusic.ui.components.SpinnerSelector
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -143,15 +146,23 @@ fun SearchScreen(
                         var showSongSettings by remember { mutableStateOf(false) }
                         var selectedSong by remember { mutableStateOf<Song?>(null) }
 
-                        SongList(
-                            items = searchState.items,
-                            onClickCard = { song ->
-                                playerViewModel.playSong(song)
-                                playerViewModel.saveSong(song)
-                            }, onLongPress = { song ->
-                                selectedSong = song
-                                showSongSettings = true
-                            })
+                        Column {
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                                SpinnerSelector(onItemSelected = {
+                                    pipedSearchViewModel.searchFilter = it
+                                    pipedSearchViewModel.searchPiped(search)
+                                }, defaultValue = pipedSearchViewModel.searchFilter)
+                            }
+                            SongList(
+                                items = searchState.items,
+                                onClickCard = { song ->
+                                    playerViewModel.playSong(song)
+                                    playerViewModel.saveSong(song)
+                                }, onLongPress = { song ->
+                                    selectedSong = song
+                                    showSongSettings = true
+                                })
+                        }
 
                         if (showSongSettings) {
                             selectedSong?.let {
