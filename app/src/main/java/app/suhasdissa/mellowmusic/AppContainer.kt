@@ -11,6 +11,7 @@ import app.suhasdissa.mellowmusic.backend.repository.SongRepositoryImpl
 import com.google.common.util.concurrent.ListenableFuture
 
 interface AppContainer {
+    val database:SongDatabase
     val searchRepository: SearchRepository
     val songRepository: SongRepository
     val radioRepository: RadioRepository
@@ -18,7 +19,7 @@ interface AppContainer {
 }
 
 class DefaultAppContainer(
-    database: SongDatabase,
+    override val database: SongDatabase,
     override val controllerFuture: ListenableFuture<MediaController>
 ) : AppContainer {
 

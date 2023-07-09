@@ -6,8 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
+import app.suhasdissa.mellowmusic.backend.database.dao.RawDao
 import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
+
 
 @Database(
     entities = [
@@ -19,6 +21,7 @@ abstract class SongDatabase : RoomDatabase() {
 
     abstract fun songsDao(): SongsDao
     abstract fun searchDao(): SearchDao
+    abstract fun rawDao():RawDao
 
     companion object {
         @Volatile

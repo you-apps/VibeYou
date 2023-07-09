@@ -40,4 +40,10 @@
     <string name="network_settings">Network Settings</string>
     <string name="network_settings_description">Change server to fix playback issues</string>
     <string name="change_server">Change server</string>
+    <string name="backup_restore">Backup and Restore</string>
+    <string name="backup_restore_setting_description">Backup your song list or restore an old backup.</string>
+    <string name="backup">Backup Database</string>
+    <string name="backup_description">Create a backup file</string>
+    <string name="restore_description">Restore a previous backup file</string>
+    <string name="restore">Restore Database</string>
 </resources>

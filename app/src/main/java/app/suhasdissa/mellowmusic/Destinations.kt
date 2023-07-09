@@ -23,6 +23,9 @@ object About : Destinations {
 object NetworkSettings : Destinations {
     override val route = "net_settings"
 }
+object DatabaseSettings : Destinations {
+    override val route = "database_settings"
+}
 
 object Songs : Destinations {
     override val route = "songs"
