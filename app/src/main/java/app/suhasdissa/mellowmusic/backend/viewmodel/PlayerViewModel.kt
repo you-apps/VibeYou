@@ -113,6 +113,11 @@ class PlayerViewModel(
             }
         }
     }
+    suspend fun isFavourite(id:String):Boolean{
+        val song = songRepository.getSongById(id)
+        song?: return false
+        return song.isFavourite
+    }
 
     fun tryToPlayId(id: String) {
         viewModelScope.launch {

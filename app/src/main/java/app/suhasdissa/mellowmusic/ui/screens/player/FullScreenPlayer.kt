@@ -97,6 +97,9 @@ fun FullScreenPlayer(
         Alignment.CenterHorizontally
     ) {
         val mediaItem by controller.mediaItemState()
+        var isFavourite by remember {
+            mutableStateOf(false)
+        }
         mediaItem?.let {
             var placeholder: Drawable? by remember { mutableStateOf(null) }
             val context = LocalContext.current
@@ -108,6 +111,9 @@ fun FullScreenPlayer(
                 if (result is SuccessResult) {
                     placeholder = result.drawable
                 }
+            }
+            LaunchedEffect(mediaItem) {
+                isFavourite = playerViewModel.isFavourite(mediaItem!!.mediaId)
             }
             AsyncImage(
                 modifier = Modifier
@@ -138,7 +144,7 @@ fun FullScreenPlayer(
                 Text(artist, style = MaterialTheme.typography.titleMedium)
             }
             PlayerController(
-                isfavourite = it.mediaMetadata.extras?.getBoolean("isFavourite") ?: false,
+                isfavourite = isFavourite,
                 onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) }
             )
         }
@@ -191,7 +197,7 @@ fun PlayerController(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                var favouriteState by remember { mutableStateOf(isfavourite) }
+                var favouriteState by remember(isfavourite) { mutableStateOf(isfavourite) }
                 IconButton(onClick = {
                     onToggleFavourite()
                     favouriteState = !favouriteState

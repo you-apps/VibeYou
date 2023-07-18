@@ -107,7 +107,7 @@ fun SongSettingsSheet(
             ) {
                 var favouriteState by remember { mutableStateOf(song.isFavourite) }
                 IconButton(onClick = {
-                    playerViewModel.toggleFavourite(song.id)
+                    songViewModel.toggleFavourite(song.id)
                     favouriteState = !favouriteState
                 }) {
                     if (favouriteState) {

@@ -53,6 +53,18 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
         }
     }
 
+    fun toggleFavourite(id: String) {
+        viewModelScope.launch {
+            val song = songRepository.getSongById(id)
+            song ?: return@launch
+            val alreadyFav = song.isFavourite
+            song.let {
+                songRepository.addSong(it.toggleLike())
+            }
+            if (alreadyFav) getFavouriteSongs() else getAllSongs()
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
