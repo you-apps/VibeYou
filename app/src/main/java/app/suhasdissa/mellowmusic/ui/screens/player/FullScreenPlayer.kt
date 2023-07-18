@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.player
 
+import android.graphics.drawable.Drawable
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,8 +64,10 @@ import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.maxResThumbnail
 import app.suhasdissa.mellowmusic.utils.mediaItemState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.request.SuccessResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,13 +98,24 @@ fun FullScreenPlayer(
     ) {
         val mediaItem by controller.mediaItemState()
         mediaItem?.let {
+            var placeholder: Drawable? by remember { mutableStateOf(null) }
+            val context = LocalContext.current
+            LaunchedEffect(mediaItem) {
+                val imageLoader = ImageLoader.Builder(context).build()
+                val request =
+                    ImageRequest.Builder(context).data(mediaItem!!.mediaMetadata.artworkUri).build()
+                val result = imageLoader.execute(request)
+                if (result is SuccessResult) {
+                    placeholder = result.drawable
+                }
+            }
             AsyncImage(
                 modifier = Modifier
                     .size(300.dp)
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = ImageRequest.Builder(context = LocalContext.current)
+                model = ImageRequest.Builder(context).placeholder(placeholder)
                     .data(it.maxResThumbnail).crossfade(true).build(),
                 error = painterResource(R.drawable.ic_launcher_monochrome),
                 fallback = painterResource(R.drawable.ic_launcher_monochrome),
@@ -124,7 +139,8 @@ fun FullScreenPlayer(
             }
             PlayerController(
                 isfavourite = it.mediaMetadata.extras?.getBoolean("isFavourite") ?: false,
-                onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) })
+                onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) }
+            )
         }
         Row(
             Modifier
@@ -151,7 +167,8 @@ fun PlayerController(
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(DateUtils.formatElapsedTime(positionAndDuration.first / 1000))
                 var tempSliderPosition by remember { mutableStateOf<Float?>(null) }
-                Slider(modifier = Modifier.weight(1f),
+                Slider(
+                    modifier = Modifier.weight(1f),
                     value = tempSliderPosition ?: positionAndDuration.first.toFloat(),
                     onValueChange = { tempSliderPosition = it },
                     valueRange = 0f.rangeTo(
@@ -164,8 +181,10 @@ fun PlayerController(
                         tempSliderPosition = null
                     }
                 )
-                Text(positionAndDuration.second?.let { DateUtils.formatElapsedTime(it / 1000) }
-                    ?: "")
+                Text(
+                    positionAndDuration.second?.let { DateUtils.formatElapsedTime(it / 1000) }
+                        ?: ""
+                )
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -197,7 +216,8 @@ fun PlayerController(
                     colors = CardDefaults.elevatedCardColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                    ), shape = CircleShape
+                    ),
+                    shape = CircleShape
                 ) {
                     val playState by controller.isPlayingState()
                     IconButton(
@@ -237,7 +257,9 @@ fun PlayerController(
                         Icon(Icons.Default.SkipNext, contentDescription = null)
                     }
                 }
-                var repeatState by remember { mutableStateOf(PlayerRepeatMode.values()[controller.repeatMode]) }
+                var repeatState by remember {
+                    mutableStateOf(PlayerRepeatMode.values()[controller.repeatMode])
+                }
 
                 when (repeatState) {
                     PlayerRepeatMode.OFF -> {

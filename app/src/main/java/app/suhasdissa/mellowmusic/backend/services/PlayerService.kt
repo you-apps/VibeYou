@@ -1,7 +1,12 @@
 package app.suhasdissa.mellowmusic.backend.services
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
 import android.media.audiofx.LoudnessEnhancer
+import android.net.Uri
 import android.os.Handler
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -24,14 +29,21 @@ import androidx.media3.exoplayer.audio.SonicAudioProcessor
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.utils.mediaIdList
+import coil.ImageLoader
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.SettableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
@@ -66,11 +78,38 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         player.playWhenReady = true
         player.addListener(this)
 
-        mediaSession = MediaSession.Builder(this, player).setCallback(this).build()
+        mediaSession = MediaSession.Builder(this, player).setCallback(this)
+            .setBitmapLoader(CustomBitmapLoader(this)).build()
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
         mediaSession
+
+    @SuppressLint("UnsafeOptInUsageError")
+    class CustomBitmapLoader(private val context: Context) : BitmapLoader {
+        private val scope = CoroutineScope(Dispatchers.IO)
+        override fun decodeBitmap(data: ByteArray): ListenableFuture<Bitmap> {
+            TODO("Not yet implemented")
+        }
+
+        override fun loadBitmap(uri: Uri): ListenableFuture<Bitmap> {
+            val future = SettableFuture.create<Bitmap>()
+
+            scope.launch {
+                val imageLoader = ImageLoader.Builder(context).build()
+                val request = ImageRequest.Builder(context)
+                    .data(uri)
+                    .build()
+                val result = imageLoader.execute(request)
+                if (result is SuccessResult) {
+                    future.set(result.drawable.toBitmap())
+                } else if (result is ErrorResult) {
+                    future.setException(result.throwable)
+                }
+            }
+            return future
+        }
+    }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onDestroy() {
@@ -94,7 +133,9 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 DefaultHttpDataSource.Factory()
                     .setConnectTimeoutMs(16000)
                     .setReadTimeoutMs(8000)
-                    .setUserAgent("Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0")
+                    .setUserAgent(
+                        "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0"
+                    )
             )
         }
     }
@@ -139,24 +180,6 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
             }.toMutableList()
         return Futures.immediateFuture(updatedMediaItems)
     }
-
-    private val scope = CoroutineScope(Dispatchers.Main)
-    /*
-     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-         mediaItem?.let {
-             if (player.mediaItemCount - player.currentMediaItemIndex <= 3) {
-                 val radioRepository =
-                     (application as MellowMusicApplication).container.radioRepository
-                 scope.launch(Dispatchers.Main) {
-                     kotlin.runCatching {
-                         val recommendedSongs = radioRepository.getRecommendedSongs(it.mediaId)
-                         player.addMediaItems(recommendedSongs)
-                     }
-                 }
-             }
-         }
-     }
-     */
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createRendersFactory(): RenderersFactory {
