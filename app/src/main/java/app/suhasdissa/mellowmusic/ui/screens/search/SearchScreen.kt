@@ -86,8 +86,6 @@ fun SearchScreen(
                     .onFocusEvent {
                         if (it.isFocused) {
                             if (!isPopupOpen) isPopupOpen = true
-                        } else {
-                            if (isPopupOpen) isPopupOpen = false
                         }
                     },
 
@@ -103,7 +101,10 @@ fun SearchScreen(
                     }
                 }),
                 trailingIcon = {
-                    IconButton(onClick = { search = "" }) {
+                    IconButton(onClick = {
+                        search = ""
+                        isPopupOpen = false
+                    }) {
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = stringResource(R.string.clear_search)
