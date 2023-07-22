@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -108,10 +111,10 @@ fun SearchScreen(
                         color = MaterialTheme.colorScheme.primaryContainer,
                         shadowElevation = 2.dp
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp)
                         ) {
-                            pipedSearchViewModel.suggestions.forEach { suggestion ->
+                            items(items = pipedSearchViewModel.suggestions.reversed()) { suggestion ->
                                 DropdownMenuItem(text = {
                                     Text(
                                         text = suggestion,
