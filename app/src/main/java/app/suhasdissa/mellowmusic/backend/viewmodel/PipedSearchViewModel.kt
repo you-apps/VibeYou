@@ -39,7 +39,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
     fun setSearchHistory() {
         viewModelScope.launch {
-            suggestions = searchRepository.getSearchHistory().map { it.query }
+            suggestions = searchRepository.getSearchHistory().reversed().map { it.query }
         }
     }
 

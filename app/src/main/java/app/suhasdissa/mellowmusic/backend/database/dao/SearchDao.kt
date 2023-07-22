@@ -8,7 +8,7 @@ import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 
 @Dao
 interface SearchDao {
-    @Insert(entity = SearchQuery::class, onConflict = OnConflictStrategy.IGNORE)
+    @Insert(entity = SearchQuery::class, onConflict = OnConflictStrategy.REPLACE)
     fun addSearchQuery(query: SearchQuery)
 
     @Query("SELECT * from SearchQuery")

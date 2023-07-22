@@ -32,6 +32,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -58,6 +59,7 @@ fun SearchScreen(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var search by remember { mutableStateOf(pipedSearchViewModel.searchText) }
+    var isPopupOpen by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
     LaunchedEffect(focusRequester) {
@@ -68,13 +70,11 @@ fun SearchScreen(
     }
     MiniPlayerScaffold {
         Column(modifier.fillMaxSize()) {
-            var expanded by remember { mutableStateOf(false) }
-
             TextField(
                 value = search,
                 onValueChange = {
                     search = it
-                    expanded = true
+                    if (!isPopupOpen) isPopupOpen = true
                     if (search.length >= 3) {
                         pipedSearchViewModel.getSuggestions(search)
                     }
@@ -82,7 +82,14 @@ fun SearchScreen(
                 modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
-                    .focusRequester(focusRequester),
+                    .focusRequester(focusRequester)
+                    .onFocusEvent {
+                        if (it.isFocused) {
+                            if (!isPopupOpen) isPopupOpen = true
+                        } else {
+                            if (isPopupOpen) isPopupOpen = false
+                        }
+                    },
 
                 singleLine = true,
                 placeholder = { Text(stringResource(R.string.search_songs)) },
@@ -90,7 +97,7 @@ fun SearchScreen(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
                     keyboard?.hide()
-                    expanded = false
+                    if (isPopupOpen) isPopupOpen = false
                     if (search.isNotEmpty()) {
                         pipedSearchViewModel.searchPiped(search)
                     }
@@ -105,16 +112,16 @@ fun SearchScreen(
                 }
             )
             Box {
-                if (expanded) {
+                if (isPopupOpen) {
                     Surface(
-                        modifier = Modifier.zIndex(1f),
+                        modifier = Modifier.zIndex(2f),
                         color = MaterialTheme.colorScheme.primaryContainer,
                         shadowElevation = 2.dp
                     ) {
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp)
                         ) {
-                            items(items = pipedSearchViewModel.suggestions.reversed()) { suggestion ->
+                            items(items = pipedSearchViewModel.suggestions) { suggestion ->
                                 DropdownMenuItem(text = {
                                     Text(
                                         text = suggestion,
@@ -123,7 +130,7 @@ fun SearchScreen(
                                 }, onClick = {
                                     search = suggestion
                                     keyboard?.hide()
-                                    expanded = false
+                                    isPopupOpen = false
                                     if (search.isNotEmpty()) {
                                         pipedSearchViewModel.searchPiped(search)
                                     }
