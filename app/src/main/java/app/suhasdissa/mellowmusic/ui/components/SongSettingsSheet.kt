@@ -99,7 +99,6 @@ fun SongSettingsSheet(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-
             }
             Column(
                 Modifier
@@ -125,28 +124,32 @@ fun SongSettingsSheet(
                 onClick = {
                     playerViewModel.playSong(song)
                     onDismissRequest()
-                })
+                }
+            )
             SheetSettingItem(
                 icon = Icons.Default.QueuePlayNext,
                 description = R.string.play_next,
                 onClick = {
                     playerViewModel.playNext(song)
                     onDismissRequest()
-                })
+                }
+            )
             SheetSettingItem(
                 icon = Icons.Default.QueueMusic,
                 description = R.string.enqueue_song,
                 onClick = {
                     playerViewModel.enqueueSong(song)
                     onDismissRequest()
-                })
+                }
+            )
             SheetSettingItem(
                 icon = Icons.Default.Delete,
                 description = R.string.delete_song,
                 onClick = {
                     songViewModel.removeSong(song)
                     onDismissRequest()
-                })
+                }
+            )
         }
     }
 }
@@ -202,7 +205,6 @@ fun SongSettingsSheetSearchPage(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-
             }
         }
         Column(Modifier.padding(vertical = 16.dp)) {
@@ -213,7 +215,8 @@ fun SongSettingsSheetSearchPage(
                     playerViewModel.playSong(song)
                     playerViewModel.saveSong(song)
                     onDismissRequest()
-                })
+                }
+            )
             SheetSettingItem(
                 icon = Icons.Default.QueuePlayNext,
                 description = R.string.play_next,
@@ -221,7 +224,8 @@ fun SongSettingsSheetSearchPage(
                     playerViewModel.playNext(song)
                     playerViewModel.saveSong(song)
                     onDismissRequest()
-                })
+                }
+            )
             SheetSettingItem(
                 icon = Icons.Default.QueueMusic,
                 description = R.string.enqueue_song,
@@ -229,11 +233,11 @@ fun SongSettingsSheetSearchPage(
                     playerViewModel.enqueueSong(song)
                     playerViewModel.saveSong(song)
                     onDismissRequest()
-                })
+                }
+            )
         }
     }
 }
-
 
 @Composable
 fun SheetSettingItem(icon: ImageVector, @StringRes description: Int, onClick: () -> Unit) {
@@ -241,7 +245,8 @@ fun SheetSettingItem(icon: ImageVector, @StringRes description: Int, onClick: ()
         Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick() }) {
+            .clickable { onClick() }
+    ) {
         Icon(imageVector = icon, contentDescription = null)
         Spacer(Modifier.width(16.dp))
         Text(text = stringResource(id = description))

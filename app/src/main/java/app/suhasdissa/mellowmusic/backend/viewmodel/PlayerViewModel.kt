@@ -113,9 +113,10 @@ class PlayerViewModel(
             }
         }
     }
-    suspend fun isFavourite(id:String):Boolean{
+
+    suspend fun isFavourite(id: String): Boolean {
         val song = songRepository.getSongById(id)
-        song?: return false
+        song ?: return false
         return song.isFavourite
     }
 

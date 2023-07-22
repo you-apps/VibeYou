@@ -3,7 +3,6 @@ package app.suhasdissa.mellowmusic.backend.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class PipedSongResponse(
     @SerialName("title") var title: String? = null,
@@ -20,7 +19,7 @@ data class PipedSongResponse(
 @Serializable
 data class AudioStreams(
 
-    @SerialName("url") var url: String? = null,
+    @SerialName("url") var url: String? = null
     /* @SerialName("format") var format: String? = null,
      @SerialName("quality") var quality: String? = null,
      @SerialName("mimeType") var mimeType: String? = null,

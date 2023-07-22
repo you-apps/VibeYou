@@ -63,7 +63,7 @@ fun SearchScreen(
         keyboard?.show()
         pipedSearchViewModel.setSearchHistory()
     }
-    MiniPlayerScaffold() {
+    MiniPlayerScaffold {
         Column(modifier.fillMaxSize()) {
             var expanded by remember { mutableStateOf(false) }
 
@@ -139,7 +139,6 @@ fun SearchScreen(
                             image = R.drawable.sad_mellow,
                             message = R.string.something_went_wrong
                         )
-
                     }
 
                     is PipedSearchViewModel.PipedSearchState.Success -> {
@@ -158,10 +157,12 @@ fun SearchScreen(
                                 onClickCard = { song ->
                                     playerViewModel.playSong(song)
                                     playerViewModel.saveSong(song)
-                                }, onLongPress = { song ->
+                                },
+                                onLongPress = { song ->
                                     selectedSong = song
                                     showSongSettings = true
-                                })
+                                }
+                            )
                         }
 
                         if (showSongSettings) {

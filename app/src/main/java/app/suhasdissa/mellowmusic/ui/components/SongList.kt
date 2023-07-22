@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 
-
 @Composable
 fun SongList(
     items: List<Song>,
@@ -39,7 +38,8 @@ fun SongList(
                 },
                 onLongPress = {
                     onLongPress(item)
-                })
+                }
+            )
         }
     }
 }

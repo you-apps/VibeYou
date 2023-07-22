@@ -41,7 +41,6 @@ inline fun <reified T : Enum<T>> SpinnerSelector(
                 DropdownMenuItem(
                     text = {
                         Text(option.name)
-
                     },
                     onClick = {
                         selectedOption = option

@@ -41,7 +41,7 @@ class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
     }
 
     override suspend fun searchSongId(id: String): Song? {
-        songsDao.getSongById(id)?.let{
+        songsDao.getSongById(id)?.let {
             return it
         }
         try {
@@ -57,5 +57,4 @@ class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
             return null
         }
     }
-
 }

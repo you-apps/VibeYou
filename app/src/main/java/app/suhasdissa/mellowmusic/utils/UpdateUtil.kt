@@ -24,7 +24,6 @@ object UpdateUtil {
         }
     }
 
-
     suspend fun getLatestVersion(): Float? {
         return getLatestRelease()?.let {
             it.tagName.toVersion()
@@ -34,11 +33,13 @@ object UpdateUtil {
     fun getCurrentVersion(context: Context) {
         currentVersion = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.packageManager.getPackageInfo(
-                context.packageName, PackageManager.PackageInfoFlags.of(0)
+                context.packageName,
+                PackageManager.PackageInfoFlags.of(0)
             ).versionName.toFloat()
         } else {
             context.packageManager.getPackageInfo(
-                context.packageName, 0
+                context.packageName,
+                0
             ).versionName.toFloat()
         }
     }
@@ -49,9 +50,10 @@ object UpdateUtil {
         val matcher = pattern.matcher(this)
         if (matcher.find()) {
             matcher.group(1)?.toFloat() ?: 0f
-        } else 0f
+        } else {
+            0f
+        }
     } ?: 0f
-
 }
 
 @Serializable
@@ -67,7 +69,9 @@ private val retrofitVideo = Retrofit.Builder()
     .build()
 
 interface UpdateApiService {
-    @Headers("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+    @Headers(
+        "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+    )
     @GET("repos/SuhasDissa/MellowMusic/releases/latest")
     suspend fun getLatestRelease(): LatestRelease
 }

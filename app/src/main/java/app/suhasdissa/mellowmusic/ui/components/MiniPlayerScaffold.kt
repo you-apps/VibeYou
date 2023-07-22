@@ -45,15 +45,16 @@ fun MiniPlayerScaffold(
         ) {
             playerViewModel.controller?.let { controller ->
                 FullScreenPlayer(
-                    controller, onCollapse = {
+                    controller,
+                    onCollapse = {
                         scope.launch { playerSheetState.hide() }.invokeOnCompletion {
                             if (!playerSheetState.isVisible) {
                                 isPlayerSheetVisible = false
                             }
                         }
-                    })
+                    }
+                )
             }
-
         }
     }
     Scaffold(

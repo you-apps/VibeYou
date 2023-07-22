@@ -28,7 +28,8 @@ fun SettingsScreen(
 ) {
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         TopAppBar(
-            title = { Text(stringResource(R.string.settings_title)) })
+            title = { Text(stringResource(R.string.settings_title)) }
+        )
     }) { innerPadding ->
         LazyColumn(
             modifier

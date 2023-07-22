@@ -50,7 +50,8 @@ fun AboutScreen(
                     description = "${updateViewModel.latestVersion}",
                     onClick = {
                         openBrowser(
-                            context, "$githubRepo/releases/latest"
+                            context,
+                            "$githubRepo/releases/latest"
                         )
                     },
                     icon = Icons.Default.NewReleases
@@ -62,7 +63,8 @@ fun AboutScreen(
                     description = stringResource(R.string.github_issue_description),
                     onClick = {
                         openBrowser(
-                            context, "$githubRepo/issues"
+                            context,
+                            "$githubRepo/issues"
                         )
                     },
                     icon = Icons.Default.ContactSupport
@@ -76,7 +78,6 @@ fun AboutScreen(
                     icon = Icons.Default.Info
                 )
             }
-
         }
     }
 }

@@ -86,8 +86,5 @@ class MainActivity : ComponentActivity() {
         }
         Toast.makeText(this, vidId, Toast.LENGTH_SHORT).show()
         playerViewModel.tryToPlayId(vidId)
-
     }
-
-
 }

@@ -28,13 +28,17 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatabaseSettingsScreen(databaseViewModel: DatabaseViewModel = viewModel(factory = DatabaseViewModel.Factory)) {
+fun DatabaseSettingsScreen(
+    databaseViewModel: DatabaseViewModel = viewModel(factory = DatabaseViewModel.Factory)
+) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(stringResource(R.string.backup_restore)) })
     }) { innerPadding ->
         val context = LocalContext.current
         val backupLauncher =
-            rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.sqlite3")) { uri ->
+            rememberLauncherForActivityResult(
+                ActivityResultContracts.CreateDocument("application/vnd.sqlite3")
+            ) { uri ->
                 if (uri == null) return@rememberLauncherForActivityResult
 
                 databaseViewModel.backupDatabase(uri, context)
@@ -52,7 +56,6 @@ fun DatabaseSettingsScreen(databaseViewModel: DatabaseViewModel = viewModel(fact
                 .padding(innerPadding)
         ) {
             item {
-
                 SettingItem(
                     title = stringResource(R.string.backup),
                     description = stringResource(R.string.backup_description),
@@ -69,7 +72,6 @@ fun DatabaseSettingsScreen(databaseViewModel: DatabaseViewModel = viewModel(fact
                 }
             }
             item {
-
                 SettingItem(
                     title = stringResource(R.string.restore),
                     description = stringResource(R.string.restore_description),
@@ -88,7 +90,6 @@ fun DatabaseSettingsScreen(databaseViewModel: DatabaseViewModel = viewModel(fact
                     }
                 }
             }
-
         }
     }
 }

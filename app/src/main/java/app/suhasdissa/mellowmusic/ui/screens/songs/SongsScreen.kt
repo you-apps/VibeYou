@@ -21,7 +21,9 @@ fun SongsScreen(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     Scaffold(floatingActionButton = {
-        FloatingActionButton(onClick = { if (showFavourites) playerViewModel.shuffleFavourites() else playerViewModel.shuffleAll() }) {
+        FloatingActionButton(onClick = {
+            if (showFavourites) playerViewModel.shuffleFavourites() else playerViewModel.shuffleAll()
+        }) {
             Icon(
                 imageVector = Icons.Default.Shuffle,
                 contentDescription = stringResource(R.string.shuffle)

@@ -19,7 +19,6 @@ import kotlin.system.exitProcess
 
 class DatabaseViewModel(private val database: SongDatabase) : ViewModel() {
 
-
     init {
     }
 
@@ -49,7 +48,6 @@ class DatabaseViewModel(private val database: SongDatabase) : ViewModel() {
                 }
             context.stopService(Intent(context, PlayerService::class.java))
             exitProcess(0)
-
         }
     }
 

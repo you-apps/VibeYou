@@ -53,7 +53,8 @@ fun HomeScreenView() {
         }
     }
     HorizontalPager(
-        state = pagerState, modifier = Modifier.fillMaxSize()
+        state = pagerState,
+        modifier = Modifier.fillMaxSize()
     ) { index ->
         when (index) {
             0 -> SongsScreen(showFavourites = false)

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongCard(
@@ -42,8 +41,10 @@ fun SongCard(
     Row(
         Modifier
             .fillMaxWidth()
-            .combinedClickable(onClick = { onClickCard() },
-                onLongClick = { onLongPress() }),
+            .combinedClickable(
+                onClick = { onClickCard() },
+                onLongClick = { onLongPress() }
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -152,7 +153,8 @@ private fun SongCardPreview() {
         artist = "Artist Name",
         duration = "8.37",
         onClickCard = {},
-        onLongPress = {})
+        onLongPress = {}
+    )
 }
 
 @Preview(showBackground = true)
@@ -167,5 +169,6 @@ private fun SongCardCompactPreview() {
                 Icons.Default.PlayArrow
             }
         },
-        onClickVideoCard = {})
+        onClickVideoCard = {}
+    )
 }

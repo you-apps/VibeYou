@@ -34,7 +34,8 @@ fun SongListView(
         onLongPress = { song ->
             selectedSong = song
             showSongSettings = true
-        })
+        }
+    )
     if (showSongSettings) {
         selectedSong?.let {
             SongSettingsSheet(

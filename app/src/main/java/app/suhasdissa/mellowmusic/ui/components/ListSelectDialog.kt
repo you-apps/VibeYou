@@ -25,7 +25,6 @@ import androidx.compose.ui.window.Dialog
 import app.suhasdissa.mellowmusic.utils.Pref
 import app.suhasdissa.mellowmusic.utils.rememberPreference
 
-
 @Composable
 fun InstanceSelectDialog(
     onDismissRequest: () -> Unit,
@@ -36,7 +35,8 @@ fun InstanceSelectDialog(
 
     Dialog(onDismissRequest = { onDismissRequest.invoke() }) {
         Surface(
-            modifier = Modifier.width(300.dp), shape = RoundedCornerShape(10.dp)
+            modifier = Modifier.width(300.dp),
+            shape = RoundedCornerShape(10.dp)
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text("Select Server")
@@ -53,13 +53,16 @@ fun InstanceSelectDialog(
                                 .padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            RadioButton(selected = (index == selectedOption),
+                            RadioButton(
+                                selected = (index == selectedOption),
                                 onClick = {
                                     selectedOption = index
                                     onSelectionChange(item.name)
-                                })
+                                }
+                            )
                             Text(
-                                text = item.name, modifier = Modifier.padding(start = 16.dp)
+                                text = item.name,
+                                modifier = Modifier.padding(start = 16.dp)
                             )
                         }
                     }
@@ -67,7 +70,6 @@ fun InstanceSelectDialog(
                 Spacer(modifier = Modifier.height(10.dp))
                 Text("Reopen app to apply changes", style = MaterialTheme.typography.bodySmall)
             }
-
         }
     }
 }

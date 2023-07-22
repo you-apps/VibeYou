@@ -48,11 +48,9 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(Songs.route) {
             SongsScreen(showFavourites = false)
-
         }
         composable(FavouriteSongs.route) {
             SongsScreen(showFavourites = true)
-
         }
     }
 }

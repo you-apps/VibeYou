@@ -32,7 +32,6 @@ fun NetworkSettingsScreen() {
         mutableStateOf(
             Pref.pipedInstances.getOrNull(currentServerId)?.name ?: Pref.pipedInstances.first().name
         )
-
     }
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(stringResource(R.string.network_settings)) })
@@ -43,7 +42,6 @@ fun NetworkSettingsScreen() {
                 .padding(innerPadding)
         ) {
             item {
-
                 SettingItem(
                     title = stringResource(R.string.change_server),
                     description = currentServer,
@@ -52,7 +50,6 @@ fun NetworkSettingsScreen() {
                     showDialog = true
                 }
             }
-
         }
     }
     if (showDialog) {
@@ -62,5 +59,4 @@ fun NetworkSettingsScreen() {
             currentServer = name
         })
     }
-
 }

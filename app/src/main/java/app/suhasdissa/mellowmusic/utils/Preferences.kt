@@ -83,4 +83,5 @@ inline fun <T> mutableStatePreferenceOf(
                 if (!areEquals) onStructuralInequality(b)
                 return areEquals
             }
-        })
+        }
+    )

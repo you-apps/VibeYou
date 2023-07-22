@@ -71,7 +71,7 @@ fun MiniPlayer(
         val title = mediaItem.mediaMetadata.title.toString()
         val artist = mediaItem.mediaMetadata.artist.toString()
         Column(
-            Modifier.weight(1f),
+            Modifier.weight(1f)
         ) {
             Text(
                 title,
@@ -119,7 +119,6 @@ fun MiniPlayer(
                     contentDescription = stringResource(R.string.skip_next)
                 )
             }
-
         }
     }
     val positionAndDuration by controller.positionAndDurationState()

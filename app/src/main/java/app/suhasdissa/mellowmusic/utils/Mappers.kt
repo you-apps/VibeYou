@@ -50,5 +50,5 @@ val MediaItem.maxResThumbnail: String
     get() {
         val pipedUrl = Pref.pipedUrl?.let { Pref.pipedInstances.getOrNull(it)?.proxyUrl }
             ?: "https://piped-proxy.lunar.icu/"
-        return "${pipedUrl}vi_webp/${mediaId}/maxresdefault.webp?host=i.ytimg.com"
+        return "${pipedUrl}vi_webp/$mediaId/maxresdefault.webp?host=i.ytimg.com"
     }
