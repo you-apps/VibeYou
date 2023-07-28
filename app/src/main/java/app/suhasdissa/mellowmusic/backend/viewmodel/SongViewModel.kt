@@ -22,16 +22,20 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
 
     var recentSongs by mutableStateOf<List<Song>>(listOf())
         private set
+    init {
+        getAllSongs()
+        getFavouriteSongs()
+    }
 
     fun getAllSongs() {
         viewModelScope.launch {
-            songs = songRepository.getAllSongs()
+            songs = songRepository.getAllSongs().sortedBy { it.title }
         }
     }
 
     fun getFavouriteSongs() {
         viewModelScope.launch {
-            favSongs = songRepository.getFavSongs()
+            favSongs = songRepository.getFavSongs().sortedByDescending { it.likedAt }
         }
     }
 
@@ -57,11 +61,11 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
         viewModelScope.launch {
             val song = songRepository.getSongById(id)
             song ?: return@launch
-            val alreadyFav = song.isFavourite
             song.let {
                 songRepository.addSong(it.toggleLike())
             }
-            if (alreadyFav) getFavouriteSongs() else getAllSongs()
+            getFavouriteSongs()
+            getAllSongs()
         }
     }
 
