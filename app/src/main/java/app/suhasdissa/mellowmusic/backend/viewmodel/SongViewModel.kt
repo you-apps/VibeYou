@@ -11,33 +11,28 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+
 class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
-    var songs by mutableStateOf<List<Song>>(listOf())
+    var songs = songRepository.getAllSongsStream().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = listOf()
+    )
         private set
 
-    var favSongs by mutableStateOf<List<Song>>(listOf())
+    var favSongs = songRepository.getFavSongsStream().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = listOf()
+    )
         private set
 
     var recentSongs by mutableStateOf<List<Song>>(listOf())
         private set
-    init {
-        getAllSongs()
-        getFavouriteSongs()
-    }
-
-    fun getAllSongs() {
-        viewModelScope.launch {
-            songs = songRepository.getAllSongs().sortedBy { it.title }
-        }
-    }
-
-    fun getFavouriteSongs() {
-        viewModelScope.launch {
-            favSongs = songRepository.getFavSongs().sortedByDescending { it.likedAt }
-        }
-    }
 
     fun getRecentSongs() {
         viewModelScope.launch {
@@ -48,12 +43,6 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
     fun removeSong(song: Song) {
         viewModelScope.launch {
             songRepository.removeSong(song)
-            if (song.isFavourite) {
-                getAllSongs()
-                getFavouriteSongs()
-            } else {
-                getAllSongs()
-            }
         }
     }
 
@@ -64,8 +53,6 @@ class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
             song.let {
                 songRepository.addSong(it.toggleLike())
             }
-            getFavouriteSongs()
-            getAllSongs()
         }
     }
 

@@ -1,6 +1,7 @@
 package app.suhasdissa.mellowmusic.ui.screens.songs
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,8 +21,9 @@ fun SongListView(
 ) {
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
+    val songs by if (showFavourites) songViewModel.favSongs.collectAsState() else songViewModel.songs.collectAsState()
     SongList(
-        items = (if (showFavourites) songViewModel.favSongs else songViewModel.songs),
+        items = songs,
         onClickCard = { song -> playerViewModel.playSong(song) },
         onLongPress = { song ->
             selectedSong = song

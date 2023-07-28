@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SongsDao {
@@ -26,6 +27,12 @@ interface SongsDao {
 
     @Query("SELECT * from Song WHERE likedAt IS NOT NULL")
     fun getFavSongs(): List<Song>
+
+    @Query("SELECT * from Song ORDER BY title ASC")
+    fun getAllSongsStream(): Flow<List<Song>>
+
+    @Query("SELECT * from Song WHERE likedAt IS NOT NULL ORDER BY likedAt DESC")
+    fun getFavSongsStream(): Flow<List<Song>>
 
     @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
     fun getRecentSongs(limit: Int): List<Song>
