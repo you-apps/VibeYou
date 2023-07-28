@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.components
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 
 @Composable
 inline fun <reified T : Enum<T>> SpinnerSelector(
@@ -24,6 +26,7 @@ inline fun <reified T : Enum<T>> SpinnerSelector(
     val options = enumValues<T>()
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(defaultValue) }
+    val view = LocalView.current
     Box(
         modifier = Modifier.wrapContentSize()
     ) {
@@ -43,6 +46,7 @@ inline fun <reified T : Enum<T>> SpinnerSelector(
                         Text(option.name)
                     },
                     onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
                         selectedOption = option
                         expanded = false
                         onItemSelected(option)

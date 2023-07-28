@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.components
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,12 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingItem(title: String, description: String, icon: ImageVector?, onClick: () -> Unit) {
+    val view = LocalView.current
     Surface(
-        modifier = Modifier.clickable { onClick() }
+        modifier = Modifier.clickable {
+            view.playSoundEffect(SoundEffectConstants.CLICK)
+            onClick()
+        }
     ) {
         Row(
             modifier = Modifier

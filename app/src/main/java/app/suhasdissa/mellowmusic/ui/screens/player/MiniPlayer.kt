@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.player
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,11 +51,15 @@ fun MiniPlayer(
     mediaItem: MediaItem,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
+    val view = LocalView.current
     Row(
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .clickable { onClick() },
+            .clickable {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -92,7 +98,10 @@ fun MiniPlayer(
             horizontalArrangement = Arrangement.Center
         ) {
             val playState by controller.isPlayingState()
-            IconButton(onClick = { playerViewModel.playPause() }) {
+            IconButton(onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                playerViewModel.playPause()
+            }) {
                 when (playState) {
                     PlayerState.Buffer -> {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
@@ -113,7 +122,10 @@ fun MiniPlayer(
                     }
                 }
             }
-            IconButton(onClick = { playerViewModel.seekNext() }) {
+            IconButton(onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                playerViewModel.seekNext()
+            }) {
                 Icon(
                     Icons.Default.SkipNext,
                     contentDescription = stringResource(R.string.skip_next)

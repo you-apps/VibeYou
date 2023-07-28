@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.player
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,6 +37,7 @@ fun QueueSheet(
         skipPartiallyExpanded = true
     )
     val scope = rememberCoroutineScope()
+    val view = LocalView.current
     playerViewModel.controller?.let {
         it.DisposableListener {
             object : Player.Listener {
@@ -57,6 +60,7 @@ fun QueueSheet(
     ) {
         CenterAlignedTopAppBar(navigationIcon = {
             IconButton({
+                view.playSoundEffect(SoundEffectConstants.CLICK)
                 scope.launch {
                     playerSheetState.hide()
                 }.invokeOnCompletion {

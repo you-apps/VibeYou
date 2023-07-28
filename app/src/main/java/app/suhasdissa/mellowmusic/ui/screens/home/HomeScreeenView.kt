@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.home
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
@@ -25,7 +27,9 @@ fun HomeScreenView() {
     val pagerState = rememberPagerState { 2 }
     val scope = rememberCoroutineScope()
     TabRow(selectedTabIndex = pagerState.currentPage, Modifier.fillMaxWidth()) {
+        val view = LocalView.current
         Tab(selected = (pagerState.currentPage == 0), onClick = {
+            view.playSoundEffect(SoundEffectConstants.CLICK)
             scope.launch {
                 pagerState.animateScrollToPage(
                     0
@@ -39,6 +43,7 @@ fun HomeScreenView() {
             )
         }
         Tab(selected = (pagerState.currentPage == 1), onClick = {
+            view.playSoundEffect(SoundEffectConstants.CLICK)
             scope.launch {
                 pagerState.animateScrollToPage(
                     1

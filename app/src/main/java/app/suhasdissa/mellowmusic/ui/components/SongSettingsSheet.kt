@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.components
 
+import android.view.SoundEffectConstants
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -58,6 +60,7 @@ fun SongSettingsSheet(
     val songSettingsSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val view = LocalView.current
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = songSettingsSheetState,
@@ -106,6 +109,7 @@ fun SongSettingsSheet(
             ) {
                 var favouriteState by remember { mutableStateOf(song.isFavourite) }
                 IconButton(onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
                     songViewModel.toggleFavourite(song.id)
                     favouriteState = !favouriteState
                 }) {
@@ -241,11 +245,15 @@ fun SongSettingsSheetSearchPage(
 
 @Composable
 fun SheetSettingItem(icon: ImageVector, @StringRes description: Int, onClick: () -> Unit) {
+    val view = LocalView.current
     Row(
         Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick() }
+            .clickable {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onClick()
+            }
     ) {
         Icon(imageVector = icon, contentDescription = null)
         Spacer(Modifier.width(16.dp))

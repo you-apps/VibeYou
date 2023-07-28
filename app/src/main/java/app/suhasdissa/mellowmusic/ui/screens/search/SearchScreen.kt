@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.search
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -62,6 +64,7 @@ fun SearchScreen(
     var isPopupOpen by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
+    val view = LocalView.current
     LaunchedEffect(focusRequester) {
         focusRequester.requestFocus()
         delay(100)
@@ -102,6 +105,7 @@ fun SearchScreen(
                 }),
                 trailingIcon = {
                     IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
                         search = ""
                         isPopupOpen = false
                     }) {
@@ -129,6 +133,7 @@ fun SearchScreen(
                                         style = MaterialTheme.typography.bodyLarge
                                     )
                                 }, onClick = {
+                                    view.playSoundEffect(SoundEffectConstants.CLICK)
                                     search = suggestion
                                     keyboard?.hide()
                                     isPopupOpen = false

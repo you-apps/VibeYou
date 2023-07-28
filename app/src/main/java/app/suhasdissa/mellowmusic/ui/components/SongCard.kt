@@ -1,6 +1,7 @@
 package app.suhasdissa.mellowmusic.ui.components
 
 import android.net.Uri
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -20,8 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,12 +42,20 @@ fun SongCard(
     onClickCard: () -> Unit,
     onLongPress: () -> Unit
 ) {
+    val view = LocalView.current
+    val haptic = LocalHapticFeedback.current
     Row(
         Modifier
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { onClickCard() },
-                onLongClick = { onLongPress() }
+                onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    onClickCard()
+                },
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onLongPress()
+                }
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {

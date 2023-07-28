@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.components
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import app.suhasdissa.mellowmusic.utils.Pref
@@ -32,6 +34,7 @@ fun InstanceSelectDialog(
 ) {
     var selectedOption by rememberPreference(key = Pref.pipedInstanceKey, defaultValue = 0)
     val optionsList = Pref.pipedInstances
+    val view = LocalView.current
 
     Dialog(onDismissRequest = { onDismissRequest.invoke() }) {
         Surface(
@@ -47,6 +50,7 @@ fun InstanceSelectDialog(
                             Modifier
                                 .fillMaxWidth()
                                 .clickable(onClick = {
+                                    view.playSoundEffect(SoundEffectConstants.CLICK)
                                     selectedOption = index
                                     onSelectionChange(item.name)
                                 })

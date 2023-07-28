@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.home
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -41,12 +43,16 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         songViewModel.getRecentSongs()
     }
+    val view = LocalView.current
     MiniPlayerScaffold(fab = {}, topBar = {
         CenterAlignedTopAppBar(title = {
             Card(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .clickable { onNavigate(Search) },
+                    .clickable {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        onNavigate(Search)
+                    },
                 shape = RoundedCornerShape(50)
             ) {
                 Row(
@@ -72,7 +78,10 @@ fun HomeScreen(
                 }
             }
         }, actions = {
-            IconButton(onClick = { onNavigate(Settings) }) {
+            IconButton(onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onNavigate(Settings)
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Settings,
                     contentDescription = stringResource(R.string.settings)

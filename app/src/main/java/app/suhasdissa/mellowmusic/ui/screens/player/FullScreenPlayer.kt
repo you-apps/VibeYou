@@ -2,6 +2,7 @@ package app.suhasdissa.mellowmusic.ui.screens.player
 
 import android.graphics.drawable.Drawable
 import android.text.format.DateUtils
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -77,8 +79,12 @@ fun FullScreenPlayer(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var showQueueSheet by remember { mutableStateOf(false) }
+    val view = LocalView.current
     CenterAlignedTopAppBar(navigationIcon = {
-        IconButton(onCollapse) {
+        IconButton({
+            view.playSoundEffect(SoundEffectConstants.CLICK)
+            onCollapse.invoke()
+        }) {
             Icon(
                 Icons.Rounded.ExpandMore,
                 contentDescription = stringResource(R.string.close_player)
@@ -153,7 +159,10 @@ fun FullScreenPlayer(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { showQueueSheet = true }) {
+            IconButton(onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                showQueueSheet = true
+            }) {
                 Icon(Icons.Default.QueueMusic, "Show Queue")
             }
         }
@@ -167,6 +176,7 @@ fun PlayerController(
     isfavourite: Boolean,
     onToggleFavourite: () -> Unit
 ) {
+    val view = LocalView.current
     playerViewModel.controller?.let { controller ->
         Column(Modifier.padding(32.dp)) {
             val positionAndDuration by controller.positionAndDurationState()
@@ -199,6 +209,7 @@ fun PlayerController(
             ) {
                 var favouriteState by remember(isfavourite) { mutableStateOf(isfavourite) }
                 IconButton(onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
                     onToggleFavourite()
                     favouriteState = !favouriteState
                 }) {
@@ -214,7 +225,10 @@ fun PlayerController(
                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 ) {
-                    IconButton(onClick = { playerViewModel.seekPrevious() }) {
+                    IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        playerViewModel.seekPrevious()
+                    }) {
                         Icon(Icons.Default.SkipPrevious, contentDescription = null)
                     }
                 }
@@ -227,7 +241,10 @@ fun PlayerController(
                 ) {
                     val playState by controller.isPlayingState()
                     IconButton(
-                        onClick = { playerViewModel.playPause() },
+                        onClick = {
+                            view.playSoundEffect(SoundEffectConstants.CLICK)
+                            playerViewModel.playPause()
+                        },
                         modifier = Modifier.padding(16.dp)
                     ) {
                         when (playState) {
@@ -259,7 +276,10 @@ fun PlayerController(
                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 ) {
-                    IconButton(onClick = { playerViewModel.seekNext() }) {
+                    IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        playerViewModel.seekNext()
+                    }) {
                         Icon(Icons.Default.SkipNext, contentDescription = null)
                     }
                 }
@@ -270,6 +290,7 @@ fun PlayerController(
                 when (repeatState) {
                     PlayerRepeatMode.OFF -> {
                         IconButton(onClick = {
+                            view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.ALL
                             controller.repeatMode = repeatState.mode
                         }) {
@@ -282,6 +303,7 @@ fun PlayerController(
 
                     PlayerRepeatMode.ALL -> {
                         IconButton(onClick = {
+                            view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.ONE
                             controller.repeatMode = repeatState.mode
                         }) {
@@ -294,6 +316,7 @@ fun PlayerController(
 
                     PlayerRepeatMode.ONE -> {
                         IconButton(onClick = {
+                            view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.OFF
                             controller.repeatMode = repeatState.mode
                         }) {
