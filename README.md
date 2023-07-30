@@ -4,12 +4,14 @@
   <b>MellowMusic</b> is a convenient music player to play online music.
 </div>
 <br>
-<div align="center">
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/SuhasDissa/MellowMusic?include_prereleases)
-![GitHub](https://img.shields.io/github/license/Suhasdissa/MellowMusic)
-![GitHub Repo stars](https://img.shields.io/github/stars/Suhasdissa/MellowMusic)
-
+ <div align="center">
+    <img alt="License" src="https://img.shields.io/github/license/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/SuhasDissa/MellowMusic/total.svg?color=c3e7ff&style=flat-square">
+    <img alt="Last commit" src="https://img.shields.io/github/last-commit/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Repo size" src="https://img.shields.io/github/repo-size/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Stars" src="https://img.shields.io/github/stars/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
+    <br>
 </div>
 
 ---
