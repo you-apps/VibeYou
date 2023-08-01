@@ -15,21 +15,18 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
 class SongViewModel(private val songRepository: SongRepository) : ViewModel() {
-    var songs = songRepository.getAllSongsStream().stateIn(
+    val songs = songRepository.getAllSongsStream().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
         initialValue = listOf()
     )
-        private set
 
-    var favSongs = songRepository.getFavSongsStream().stateIn(
+    val favSongs = songRepository.getFavSongsStream().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
         initialValue = listOf()
     )
-        private set
 
     var recentSongs by mutableStateOf<List<Song>>(listOf())
         private set
