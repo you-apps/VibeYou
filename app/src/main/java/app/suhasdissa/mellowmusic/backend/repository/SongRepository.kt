@@ -18,7 +18,8 @@ interface SongRepository {
     suspend fun searchSongId(id: String): Song?
 }
 
-class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
+class SongRepositoryImpl(private val songsDao: SongsDao, private val pipedApi: PipedApi) :
+    SongRepository {
     override suspend fun addSong(song: Song) = songsDao.addSong(song)
     override suspend fun getSongById(id: String): Song? = songsDao.getSongById(id)
     override suspend fun getAllSongs(): List<Song> = songsDao.getAllSongs()
@@ -32,7 +33,7 @@ class SongRepositoryImpl(private val songsDao: SongsDao) : SongRepository {
             return it
         }
         try {
-            val songResponse = PipedApi.retrofitService.getStreams(id)
+            val songResponse = pipedApi.getStreams(id)
             songResponse.title?.let {
                 with(songResponse) {
                     val song = asSong(id)

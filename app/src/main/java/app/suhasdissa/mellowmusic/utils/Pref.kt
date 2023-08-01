@@ -7,6 +7,10 @@ object Pref {
 
     val pipedInstances = listOf(
         PipedInstance(
+            "kavin.rocks",
+            "https://pipedapi.kavin.rocks/"
+        ),
+        PipedInstance(
             "lunar.icu",
             "https://piped-api.lunar.icu/",
             "https://piped-proxy.lunar.icu/"
@@ -31,12 +35,9 @@ object Pref {
         PipedInstance(
             "piped.yt",
             "https://api.piped.yt/"
-        ),
-        PipedInstance(
-            "kavin.rocks",
-            "https://pipedapi.kavin.rocks/"
         )
     )
-
-    var pipedUrl: Int? = null
+    val currentInstanceUrl: String
+        get() = (pipedInstances.getOrNull(pipedUrl) ?: pipedInstances.first()).url
+    var pipedUrl = 0
 }

@@ -32,7 +32,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import app.suhasdissa.mellowmusic.backend.api.PipedApi
+import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.utils.mediaIdList
 import coil.ImageLoader
 import coil.request.ErrorResult
@@ -151,7 +151,8 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 dataSpec
             } else {
                 val url = runBlocking {
-                    PipedApi.retrofitService.getStreams(videoId).audioStreams[1].url
+                    (application as MellowMusicApplication).container.pipedApi
+                        .getStreams(videoId).audioStreams[1].url
                 }
                 url?.let {
                     dataSpec.withUri(url.toUri()).subrange(dataSpec.uriPositionOffset, chunkLength)

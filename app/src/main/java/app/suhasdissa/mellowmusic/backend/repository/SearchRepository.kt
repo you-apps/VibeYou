@@ -14,15 +14,16 @@ interface SearchRepository {
     suspend fun getSearchHistory(): List<SearchQuery>
 }
 
-class SearchRepositoryImpl(private val searchDao: SearchDao) : SearchRepository {
+class SearchRepositoryImpl(private val searchDao: SearchDao, private val pipedApi: PipedApi) :
+    SearchRepository {
     override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
-        return PipedApi.retrofitService.searchPiped(query, filter.value).items.map {
+        return pipedApi.searchPiped(query, filter.value).items.map {
             it.asSong
         }
     }
 
     override suspend fun getSuggestions(query: String): List<String> {
-        return PipedApi.retrofitService.getSuggestions(query)
+        return pipedApi.getSuggestions(query)
     }
 
     override suspend fun saveSearchQuery(query: String) {

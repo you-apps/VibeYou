@@ -10,10 +10,11 @@ interface RadioRepository {
     suspend fun getRecommendedSongs(id: String): List<MediaItem>
 }
 
-class RadioRepositoryImpl(private val songsDao: SongsDao) : RadioRepository {
+class RadioRepositoryImpl(private val songsDao: SongsDao, private val pipedApi: PipedApi) :
+    RadioRepository {
     override suspend fun getRecommendedSongs(id: String): List<MediaItem> {
         val relatedSongs =
-            PipedApi.retrofitService.getStreams(id).relatedStreams.slice(0..1).map {
+            pipedApi.getStreams(id).relatedStreams.slice(0..1).map {
                 it.asSong
             }
         songsDao.addSongs(relatedSongs)
