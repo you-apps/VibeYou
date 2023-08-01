@@ -1,5 +1,8 @@
 package app.suhasdissa.mellowmusic.backend.viewmodel
 
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -26,15 +29,26 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
     var searchFilter = SearchFilter.Songs
-    var searchText = ""
-        private set
+    var search by mutableStateOf("")
 
-    fun getSuggestions(query: String) {
-        viewModelScope.launch {
-            runCatching {
-                suggestions = searchRepository.getSuggestions(query)
-            }
-        }
+    fun getSuggestions() {
+        if (search.length < 3) return
+        val insertedTextTemp = search
+        Handler(
+            Looper.getMainLooper()
+        ).postDelayed(
+            {
+                if (insertedTextTemp == search) {
+                    viewModelScope.launch {
+                        runCatching {
+                            suggestions = searchRepository.getSuggestions(search)
+                        }
+                        Log.e("Search ViewModel", "getting query for \"$search\"")
+                    }
+                }
+            },
+            500L
+        )
     }
 
     fun setSearchHistory() {
@@ -43,14 +57,14 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
         }
     }
 
-    fun searchPiped(query: String) {
-        searchText = query
+    fun searchPiped() {
+        if (search.isEmpty()) return
         viewModelScope.launch {
             state = PipedSearchState.Loading
-            searchRepository.saveSearchQuery(query)
+            searchRepository.saveSearchQuery(search)
             state = try {
                 PipedSearchState.Success(
-                    searchRepository.getSearchResult(query, searchFilter)
+                    searchRepository.getSearchResult(search, searchFilter)
                 )
             } catch (e: Exception) {
                 PipedSearchState.Error(e.toString())

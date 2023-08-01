@@ -60,11 +60,11 @@ fun SearchScreen(
     pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
-    var search by remember { mutableStateOf(pipedSearchViewModel.searchText) }
     var isPopupOpen by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
     val view = LocalView.current
+
     LaunchedEffect(focusRequester) {
         focusRequester.requestFocus()
         delay(100)
@@ -74,13 +74,11 @@ fun SearchScreen(
     MiniPlayerScaffold {
         Column(modifier.fillMaxSize()) {
             TextField(
-                value = search,
+                value = pipedSearchViewModel.search,
                 onValueChange = {
-                    search = it
+                    pipedSearchViewModel.search = it
                     if (!isPopupOpen) isPopupOpen = true
-                    if (search.length >= 3) {
-                        pipedSearchViewModel.getSuggestions(search)
-                    }
+                    pipedSearchViewModel.getSuggestions()
                 },
                 modifier
                     .fillMaxWidth()
@@ -99,14 +97,12 @@ fun SearchScreen(
                 keyboardActions = KeyboardActions(onSearch = {
                     keyboard?.hide()
                     if (isPopupOpen) isPopupOpen = false
-                    if (search.isNotEmpty()) {
-                        pipedSearchViewModel.searchPiped(search)
-                    }
+                    pipedSearchViewModel.searchPiped()
                 }),
                 trailingIcon = {
                     IconButton(onClick = {
                         view.playSoundEffect(SoundEffectConstants.CLICK)
-                        search = ""
+                        pipedSearchViewModel.search = ""
                         isPopupOpen = false
                     }) {
                         Icon(
@@ -134,12 +130,10 @@ fun SearchScreen(
                                     )
                                 }, onClick = {
                                     view.playSoundEffect(SoundEffectConstants.CLICK)
-                                    search = suggestion
+                                    pipedSearchViewModel.search = suggestion
                                     keyboard?.hide()
                                     isPopupOpen = false
-                                    if (search.isNotEmpty()) {
-                                        pipedSearchViewModel.searchPiped(search)
-                                    }
+                                    pipedSearchViewModel.searchPiped()
                                 })
                             }
                         }
@@ -165,7 +159,7 @@ fun SearchScreen(
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                                 SpinnerSelector(onItemSelected = {
                                     pipedSearchViewModel.searchFilter = it
-                                    pipedSearchViewModel.searchPiped(search)
+                                    pipedSearchViewModel.searchPiped()
                                 }, defaultValue = pipedSearchViewModel.searchFilter)
                             }
                             SongList(
