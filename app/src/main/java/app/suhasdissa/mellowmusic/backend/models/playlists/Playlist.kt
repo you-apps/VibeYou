@@ -1,15 +1,10 @@
-package app.suhasdissa.mellowmusic.backend.models
+package app.suhasdissa.mellowmusic.backend.models.playlists
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PipedSongAlbumResponse(
-    @SerialName("items") var items: ArrayList<AlbumItems> = arrayListOf()
-)
-
-@Serializable
-data class AlbumItems(
+data class Playlist(
     @SerialName("url") var url: String = "",
     @SerialName("type") var type: String = "",
     @SerialName("name") var name: String = "",

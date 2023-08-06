@@ -13,18 +13,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import kotlinx.coroutines.launch
 
 class PipedSearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
-    sealed interface PipedSearchState {
-        data class Success(val items: List<Song>) : PipedSearchState
-        data class Error(val error: String) : PipedSearchState
-        object Loading : PipedSearchState
-        object Empty : PipedSearchState
-    }
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
@@ -63,9 +57,33 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
             state = PipedSearchState.Loading
             searchRepository.saveSearchQuery(search)
             state = try {
-                PipedSearchState.Success(
-                    searchRepository.getSearchResult(search, searchFilter)
-                )
+                when (searchFilter) {
+                    SearchFilter.Songs, SearchFilter.Videos -> {
+                        PipedSearchState.Success.Songs(
+                            searchRepository.getSearchResult(
+                                search,
+                                searchFilter
+                            )
+                        )
+                    }
+
+                    SearchFilter.Albums, SearchFilter.Playlists -> {
+                        PipedSearchState.Success.Playlists(
+                            searchRepository.getPlaylistResult(
+                                search,
+                                searchFilter
+                            )
+                        )
+                    }
+
+                    SearchFilter.Artists -> {
+                        PipedSearchState.Success.Artists(
+                            searchRepository.getArtistResult(
+                                search
+                            )
+                        )
+                    }
+                }
             } catch (e: Exception) {
                 Log.e("Search Piped", e.toString())
                 PipedSearchState.Error(e.toString())

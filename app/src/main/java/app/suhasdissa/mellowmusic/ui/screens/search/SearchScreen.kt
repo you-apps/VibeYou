@@ -45,12 +45,15 @@ import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
+import app.suhasdissa.mellowmusic.ui.components.AlbumList
+import app.suhasdissa.mellowmusic.ui.components.ArtistList
+import app.suhasdissa.mellowmusic.ui.components.ChipSelector
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.SongList
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
-import app.suhasdissa.mellowmusic.ui.components.SpinnerSelector
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -120,7 +123,9 @@ fun SearchScreen(
                         shadowElevation = 2.dp
                     ) {
                         LazyColumn(
-                            modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 400.dp)
                         ) {
                             items(items = pipedSearchViewModel.suggestions) { suggestion ->
                                 DropdownMenuItem(text = {
@@ -140,39 +145,63 @@ fun SearchScreen(
                     }
                 }
                 when (val searchState = pipedSearchViewModel.state) {
-                    is PipedSearchViewModel.PipedSearchState.Loading -> {
+                    is PipedSearchState.Loading -> {
                         LoadingScreen()
                     }
 
-                    is PipedSearchViewModel.PipedSearchState.Error -> {
+                    is PipedSearchState.Error -> {
                         IllustratedMessageScreen(
                             image = R.drawable.sad_mellow,
                             message = R.string.something_went_wrong
                         )
                     }
 
-                    is PipedSearchViewModel.PipedSearchState.Success -> {
+                    is PipedSearchState.Success -> {
                         var showSongSettings by remember { mutableStateOf(false) }
                         var selectedSong by remember { mutableStateOf<Song?>(null) }
 
                         Column {
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                                SpinnerSelector(onItemSelected = {
+                                ChipSelector(onItemSelected = {
                                     pipedSearchViewModel.searchFilter = it
                                     pipedSearchViewModel.searchPiped()
                                 }, defaultValue = pipedSearchViewModel.searchFilter)
                             }
-                            SongList(
-                                items = searchState.items,
-                                onClickCard = { song ->
-                                    playerViewModel.playSong(song)
-                                    playerViewModel.saveSong(song)
-                                },
-                                onLongPress = { song ->
-                                    selectedSong = song
-                                    showSongSettings = true
+                            when (searchState) {
+                                is PipedSearchState.Success.Playlists -> {
+                                    AlbumList(
+                                        items = searchState.items,
+                                        onClickCard = {
+                                        },
+                                        onLongPress = {
+                                        }
+                                    )
                                 }
-                            )
+
+                                is PipedSearchState.Success.Songs -> {
+                                    SongList(
+                                        items = searchState.items,
+                                        onClickCard = { song ->
+                                            playerViewModel.playSong(song)
+                                            playerViewModel.saveSong(song)
+                                        },
+                                        onLongPress = { song ->
+                                            selectedSong = song
+                                            showSongSettings = true
+                                        }
+                                    )
+                                }
+
+                                is PipedSearchState.Success.Artists -> {
+                                    ArtistList(
+                                        items = searchState.items,
+                                        onClickCard = {
+                                        },
+                                        onLongPress = {
+                                        }
+                                    )
+                                }
+                            }
                         }
 
                         if (showSongSettings) {
@@ -185,7 +214,7 @@ fun SearchScreen(
                         }
                     }
 
-                    is PipedSearchViewModel.PipedSearchState.Empty -> {
+                    is PipedSearchState.Empty -> {
                         IllustratedMessageScreen(
                             image = R.drawable.ic_launcher_monochrome,
                             message = R.string.search_for_a_song,
