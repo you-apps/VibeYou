@@ -67,6 +67,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
                     searchRepository.getSearchResult(search, searchFilter)
                 )
             } catch (e: Exception) {
+                Log.e("Search Piped", e.toString())
                 PipedSearchState.Error(e.toString())
             }
         }

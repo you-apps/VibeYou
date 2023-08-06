@@ -3,10 +3,7 @@ package app.suhasdissa.mellowmusic.backend.api
 import app.suhasdissa.mellowmusic.backend.models.PipedSearchResult
 import app.suhasdissa.mellowmusic.backend.models.PipedSongAlbumResponse
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
+import app.suhasdissa.mellowmusic.utils.Pref
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -17,35 +14,31 @@ private const val defaultHeader =
 
 interface PipedApi {
     @Headers(defaultHeader)
-    @GET("search")
+    @GET("https://{instance}/search")
     suspend fun searchPiped(
+        @Path("instance") instance: String = Pref.currentInstance,
         @Query("q") query: String,
         @Query("filter") filter: String
     ): PipedSearchResult
 
     @Headers(defaultHeader)
-    @GET("search?filter=music_albums")
+    @GET("https://{instance}/search?filter=music_albums")
     suspend fun searchPipedAlbums(
+        @Path("instance") instance: String = Pref.currentInstance,
         @Query("q") query: String
     ): PipedSongAlbumResponse
 
     @Headers(defaultHeader)
-    @GET("streams/{videoid}")
+    @GET("https://{instance}/streams/{videoid}")
     suspend fun getStreams(
+        @Path("instance") instance: String = Pref.currentInstance,
         @Path("videoid") vidId: String
     ): PipedSongResponse
 
     @Headers(defaultHeader)
-    @GET("suggestions")
+    @GET("https://{instance}/suggestions")
     suspend fun getSuggestions(
+        @Path("instance") instance: String = Pref.currentInstance,
         @Query("query") query: String
     ): List<String>
-}
-
-fun getRetrofit(baseUrl: String): Retrofit {
-    val json = Json { ignoreUnknownKeys = true }
-    return Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
 }

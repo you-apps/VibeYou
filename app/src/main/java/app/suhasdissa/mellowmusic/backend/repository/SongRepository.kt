@@ -33,7 +33,7 @@ class SongRepositoryImpl(private val songsDao: SongsDao, private val pipedApi: P
             return it
         }
         try {
-            val songResponse = pipedApi.getStreams(id)
+            val songResponse = pipedApi.getStreams(vidId = id)
             songResponse.title?.let {
                 with(songResponse) {
                     val song = asSong(id)

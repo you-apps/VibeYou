@@ -5,8 +5,6 @@ import android.content.ComponentName
 import android.content.SharedPreferences
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import app.suhasdissa.mellowmusic.backend.api.PipedApi
-import app.suhasdissa.mellowmusic.backend.api.getRetrofit
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.services.PlayerService
 import app.suhasdissa.mellowmusic.utils.Pref
@@ -22,14 +20,22 @@ class MellowMusicApplication : Application() {
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == Pref.pipedInstanceKey) {
                 Pref.pipedUrl = sharedPreferences.getInt(Pref.pipedInstanceKey, 0)
-                container.pipedApi =
-                    getRetrofit(Pref.currentInstanceUrl).create(PipedApi::class.java)
+                Pref.currentInstance =
+                    (
+                        Pref.pipedInstances.getOrNull(Pref.pipedUrl)
+                            ?: Pref.pipedInstances.first()
+                        ).instance
             }
         }
 
     override fun onCreate() {
         with(preferences) {
             Pref.pipedUrl = getInt(Pref.pipedInstanceKey, 0)
+            Pref.currentInstance =
+                (
+                    Pref.pipedInstances.getOrNull(Pref.pipedUrl)
+                        ?: Pref.pipedInstances.first()
+                    ).instance
         }
         super.onCreate()
         val sessionToken =

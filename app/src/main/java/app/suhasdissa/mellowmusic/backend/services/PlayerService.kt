@@ -152,7 +152,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
             } else {
                 val url = runBlocking {
                     (application as MellowMusicApplication).container.pipedApi
-                        .getStreams(videoId).audioStreams[1].url
+                        .getStreams(vidId = videoId).audioStreams[1].url
                 }
                 url?.let {
                     dataSpec.withUri(url.toUri()).subrange(dataSpec.uriPositionOffset, chunkLength)

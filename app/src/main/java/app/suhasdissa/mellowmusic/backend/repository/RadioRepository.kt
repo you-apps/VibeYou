@@ -14,7 +14,7 @@ class RadioRepositoryImpl(private val songsDao: SongsDao, private val pipedApi: 
     RadioRepository {
     override suspend fun getRecommendedSongs(id: String): List<MediaItem> {
         val relatedSongs =
-            pipedApi.getStreams(id).relatedStreams.slice(0..1).map {
+            pipedApi.getStreams(vidId = id).relatedStreams.slice(0..1).map {
                 it.asSong
             }
         songsDao.addSongs(relatedSongs)

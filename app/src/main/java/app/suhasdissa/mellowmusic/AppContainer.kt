@@ -2,7 +2,6 @@ package app.suhasdissa.mellowmusic
 
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
-import app.suhasdissa.mellowmusic.backend.api.getRetrofit
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.repository.RadioRepository
 import app.suhasdissa.mellowmusic.backend.repository.RadioRepositoryImpl
@@ -10,8 +9,11 @@ import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongRepositoryImpl
-import app.suhasdissa.mellowmusic.utils.Pref
 import com.google.common.util.concurrent.ListenableFuture
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
 
 interface AppContainer {
     val database: SongDatabase
@@ -19,7 +21,7 @@ interface AppContainer {
     val songRepository: SongRepository
     val radioRepository: RadioRepository
     val controllerFuture: ListenableFuture<MediaController>
-    var pipedApi: PipedApi
+    val pipedApi: PipedApi
 }
 
 class DefaultAppContainer(
@@ -27,7 +29,14 @@ class DefaultAppContainer(
     override val controllerFuture: ListenableFuture<MediaController>
 ) : AppContainer {
 
-    override var pipedApi: PipedApi = getRetrofit(Pref.currentInstanceUrl)
+    private val json = Json { ignoreUnknownKeys = true }
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("https://pipedapi.kavin.rocks/")
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+
+    override val pipedApi: PipedApi = retrofit
         .create(PipedApi::class.java)
 
     override val searchRepository: SearchRepository by lazy {
