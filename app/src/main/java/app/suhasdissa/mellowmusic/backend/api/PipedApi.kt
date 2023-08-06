@@ -1,9 +1,10 @@
 package app.suhasdissa.mellowmusic.backend.api
 
-import app.suhasdissa.mellowmusic.backend.models.PipedSearchResult
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
 import app.suhasdissa.mellowmusic.backend.models.artists.Artists
+import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 import app.suhasdissa.mellowmusic.backend.models.playlists.Playlists
+import app.suhasdissa.mellowmusic.backend.models.songs.Songs
 import app.suhasdissa.mellowmusic.utils.Pref
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -25,7 +26,7 @@ interface PipedApi {
         @Path("instance") instance: String = Pref.currentInstance,
         @Query("q") query: String,
         @Query("filter") filter: String
-    ): PipedSearchResult
+    ): Songs
 
     /**
      * @param instance Piped instance ex: pipedapi.kavin.rocks
@@ -72,4 +73,15 @@ interface PipedApi {
         @Path("instance") instance: String = Pref.currentInstance,
         @Query("query") query: String
     ): List<String>
+
+    /** Get Search suggestions
+     * @param instance Piped instance ex: pipedapi.kavin.rocks
+     * @param playlistId Playlist or Album Id
+     */
+    @Headers(defaultHeader)
+    @GET("https://{instance}/playlists/{playlist_id}")
+    suspend fun getPlaylistInfo(
+        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("playlist_id") playlistId: String
+    ): PlaylistInfo
 }

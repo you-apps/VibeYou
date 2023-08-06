@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.backend.models
 
+import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,7 +13,7 @@ data class PipedSongResponse(
     @SerialName("hls") var hls: String? = null,
     @SerialName("duration") var duration: Int? = null,
     @SerialName("audioStreams") var audioStreams: ArrayList<AudioStreams> = arrayListOf(),
-    @SerialName("relatedStreams") var relatedStreams: ArrayList<Items> = arrayListOf()
+    @SerialName("relatedStreams") var relatedStreams: ArrayList<SongItem> = arrayListOf()
 
 )
 

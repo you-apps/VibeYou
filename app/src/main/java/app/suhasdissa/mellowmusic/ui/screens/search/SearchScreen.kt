@@ -41,10 +41,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.mellowmusic.Destinations
+import app.suhasdissa.mellowmusic.Playlists
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
 import app.suhasdissa.mellowmusic.ui.components.ArtistList
@@ -59,7 +62,8 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
-    modifier: Modifier = Modifier,
+    onNavigate: (Destinations) -> Unit,
+    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
     pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
@@ -75,7 +79,7 @@ fun SearchScreen(
         pipedSearchViewModel.setSearchHistory()
     }
     MiniPlayerScaffold {
-        Column(modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
             TextField(
                 value = pipedSearchViewModel.search,
                 onValueChange = {
@@ -83,7 +87,7 @@ fun SearchScreen(
                     if (!isPopupOpen) isPopupOpen = true
                     pipedSearchViewModel.getSuggestions()
                 },
-                modifier
+                Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
                     .focusRequester(focusRequester)
@@ -172,6 +176,8 @@ fun SearchScreen(
                                     AlbumList(
                                         items = searchState.items,
                                         onClickCard = {
+                                            playlistViewModel.getPlaylistInfo(it.playlistId)
+                                            onNavigate(Playlists)
                                         },
                                         onLongPress = {
                                         }

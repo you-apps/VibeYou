@@ -28,10 +28,6 @@ object DatabaseSettings : Destinations {
     override val route = "database_settings"
 }
 
-object Songs : Destinations {
-    override val route = "songs"
-}
-
-object FavouriteSongs : Destinations {
-    override val route = "favsongs"
+object Playlists : Destinations {
+    override val route = "playlist_screen"
 }

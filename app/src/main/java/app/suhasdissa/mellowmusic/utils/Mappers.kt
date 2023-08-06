@@ -7,10 +7,10 @@ import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.models.Items
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
+import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 
-val Items.asSong: Song
+val SongItem.asSong: Song
     get() = Song(
         id = videoId,
         title = title,

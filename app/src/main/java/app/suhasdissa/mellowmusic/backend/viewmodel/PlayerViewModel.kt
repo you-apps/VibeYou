@@ -2,6 +2,7 @@ package app.suhasdissa.mellowmusic.backend.viewmodel
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -38,6 +39,7 @@ class PlayerViewModel(
     private var toBePlayed: MediaItem? = null
 
     init {
+        Log.e("PlayerViewModel", "Initializing")
         controllerFuture.addListener(
             {
                 Handler(Looper.getMainLooper()).post {

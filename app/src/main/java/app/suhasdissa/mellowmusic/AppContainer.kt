@@ -3,6 +3,8 @@ package app.suhasdissa.mellowmusic
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
+import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepository
+import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.RadioRepository
 import app.suhasdissa.mellowmusic.backend.repository.RadioRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
@@ -20,6 +22,7 @@ interface AppContainer {
     val searchRepository: SearchRepository
     val songRepository: SongRepository
     val radioRepository: RadioRepository
+    val playlistRepository: PlaylistRepository
     val controllerFuture: ListenableFuture<MediaController>
     val pipedApi: PipedApi
 }
@@ -47,5 +50,8 @@ class DefaultAppContainer(
     }
     override val radioRepository: RadioRepository by lazy {
         RadioRepositoryImpl(database.songsDao(), pipedApi)
+    }
+    override val playlistRepository: PlaylistRepository by lazy {
+        PlaylistRepositoryImpl(pipedApi)
     }
 }
