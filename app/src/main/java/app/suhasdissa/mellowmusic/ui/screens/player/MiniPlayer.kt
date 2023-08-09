@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,7 +41,6 @@ import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 
 @Composable
 fun MiniPlayer(
@@ -69,8 +67,7 @@ fun MiniPlayer(
                 .padding(8.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(8.dp)),
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(mediaItem.mediaMetadata.artworkUri).crossfade(true).build(),
+            model = mediaItem.mediaMetadata.artworkUri,
             contentDescription = stringResource(R.string.song_album_art),
             contentScale = ContentScale.Crop
         )

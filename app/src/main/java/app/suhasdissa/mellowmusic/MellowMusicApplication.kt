@@ -10,8 +10,11 @@ import app.suhasdissa.mellowmusic.backend.services.PlayerService
 import app.suhasdissa.mellowmusic.utils.Pref
 import app.suhasdissa.mellowmusic.utils.UpdateUtil
 import app.suhasdissa.mellowmusic.utils.preferences
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.disk.DiskCache
 
-class MellowMusicApplication : Application() {
+class MellowMusicApplication : Application(), ImageLoaderFactory {
 
     private val database by lazy { SongDatabase.getDatabase(this) }
     lateinit var container: AppContainer
@@ -47,6 +50,17 @@ class MellowMusicApplication : Application() {
         container = DefaultAppContainer(database, controllerFuture)
         preferences.registerOnSharedPreferenceChangeListener(listener)
         UpdateUtil.getCurrentVersion(this.applicationContext)
+    }
+
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this)
+            .crossfade(true)
+            .respectCacheHeaders(false)
+            .diskCache(
+                DiskCache.Builder()
+                    .directory(cacheDir.resolve("image_cache"))
+                    .build()
+            ).build()
     }
 
     override fun onTerminate() {

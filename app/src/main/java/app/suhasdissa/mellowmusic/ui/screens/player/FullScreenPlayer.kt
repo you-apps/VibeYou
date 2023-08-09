@@ -1,8 +1,8 @@
 package app.suhasdissa.mellowmusic.ui.screens.player
 
-import android.graphics.drawable.Drawable
 import android.text.format.DateUtils
 import android.view.SoundEffectConstants
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,9 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,10 +64,10 @@ import app.suhasdissa.mellowmusic.utils.isPlayingState
 import app.suhasdissa.mellowmusic.utils.maxResThumbnail
 import app.suhasdissa.mellowmusic.utils.mediaItemState
 import app.suhasdissa.mellowmusic.utils.positionAndDurationState
-import coil.ImageLoader
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
+import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,33 +105,30 @@ fun FullScreenPlayer(
             mutableStateOf(false)
         }
         mediaItem?.let {
-            var placeholder: Drawable? by remember { mutableStateOf(null) }
-            val context = LocalContext.current
-            LaunchedEffect(mediaItem) {
-                val imageLoader = ImageLoader.Builder(context).build()
-                val request =
-                    ImageRequest.Builder(context).data(mediaItem!!.mediaMetadata.artworkUri).build()
-                val result = imageLoader.execute(request)
-                if (result is SuccessResult) {
-                    placeholder = result.drawable
-                }
-            }
             LaunchedEffect(mediaItem) {
                 isFavourite = playerViewModel.isFavourite(mediaItem!!.mediaId)
             }
-            AsyncImage(
+            SubcomposeAsyncImage(
                 modifier = Modifier
                     .size(300.dp)
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = ImageRequest.Builder(context).placeholder(placeholder)
-                    .data(it.maxResThumbnail).crossfade(true).build(),
-                error = painterResource(R.drawable.ic_launcher_monochrome),
-                fallback = painterResource(R.drawable.ic_launcher_monochrome),
+                model = it.maxResThumbnail,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
-            )
+            ) {
+                val state = painter.state
+                if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = it.mediaMetadata.artworkUri),
+                        contentDescription,
+                        contentScale = contentScale
+                    )
+                } else {
+                    SubcomposeAsyncImageContent(contentScale = contentScale)
+                }
+            }
             val title = it.mediaMetadata.title.toString()
             val artist = it.mediaMetadata.artist.toString()
 
