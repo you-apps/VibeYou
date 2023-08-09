@@ -33,7 +33,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -67,7 +66,9 @@ fun SearchScreen(
     pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
-    var isPopupOpen by remember { mutableStateOf(false) }
+    var isPopupOpen by remember {
+        mutableStateOf(pipedSearchViewModel.state !is PipedSearchState.Success)
+    }
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
     val view = LocalView.current
@@ -90,12 +91,7 @@ fun SearchScreen(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
-                    .focusRequester(focusRequester)
-                    .onFocusEvent {
-                        if (it.isFocused) {
-                            if (!isPopupOpen) isPopupOpen = true
-                        }
-                    },
+                    .focusRequester(focusRequester),
 
                 singleLine = true,
                 placeholder = { Text(stringResource(R.string.search_songs)) },
