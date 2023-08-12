@@ -3,7 +3,7 @@
     <string name="app_name">MellowMusic</string>
     <string name="settings_title">Einstellungen</string>
     <string name="songs">Lieder</string>
-    <string name="about_title">Über Titel</string>
+    <string name="about_title">Über</string>
     <string name="readme">LIESMICH</string>
     <string name="check_repo_and_readme">Check_repo_und_lese</string>
     <string name="latest_release">Neueste Veröffentlichung</string>
