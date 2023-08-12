@@ -40,10 +40,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.mellowmusic.Artist
 import app.suhasdissa.mellowmusic.Destinations
 import app.suhasdissa.mellowmusic.Playlists
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
@@ -64,7 +66,8 @@ fun SearchScreen(
     onNavigate: (Destinations) -> Unit,
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
     pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory)
 ) {
     var isPopupOpen by remember {
         mutableStateOf(pipedSearchViewModel.state !is PipedSearchState.Success)
@@ -198,6 +201,8 @@ fun SearchScreen(
                                     ArtistList(
                                         items = searchState.items,
                                         onClickCard = {
+                                            artistViewModel.getChannelInfo(it.artistId)
+                                            onNavigate(Artist)
                                         },
                                         onLongPress = {
                                         }

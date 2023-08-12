@@ -3,6 +3,8 @@ package app.suhasdissa.mellowmusic
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
+import app.suhasdissa.mellowmusic.backend.repository.ChannelRepository
+import app.suhasdissa.mellowmusic.backend.repository.ChannelRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepository
 import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.RadioRepository
@@ -23,6 +25,7 @@ interface AppContainer {
     val songRepository: SongRepository
     val radioRepository: RadioRepository
     val playlistRepository: PlaylistRepository
+    val channelRepository: ChannelRepository
     val controllerFuture: ListenableFuture<MediaController>
     val pipedApi: PipedApi
 }
@@ -53,5 +56,8 @@ class DefaultAppContainer(
     }
     override val playlistRepository: PlaylistRepository by lazy {
         PlaylistRepositoryImpl(pipedApi)
+    }
+    override val channelRepository: ChannelRepository by lazy {
+        ChannelRepositoryImpl(pipedApi)
     }
 }

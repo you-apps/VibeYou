@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
+import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.PlaylistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.SearchScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.AboutScreen
@@ -58,6 +59,14 @@ fun AppNavHost(navHostController: NavHostController) {
         composable(Playlists.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 PlaylistScreen()
+            }
+        }
+
+        composable(route = Artist.route) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                ArtistScreen(onNavigate = {
+                    navHostController.navigateTo(it.route)
+                })
             }
         }
     }

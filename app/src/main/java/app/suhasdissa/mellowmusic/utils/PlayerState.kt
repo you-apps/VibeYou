@@ -51,7 +51,9 @@ fun Player.positionAndDurationState(): State<Pair<Long, Long?>> {
                 }
             }
         }
-        if (!isActive) {
+        try {
+            suspendCancellableCoroutine<Nothing> { }
+        } finally {
             pollJob.cancel()
             removeListener(listener)
         }
@@ -106,7 +108,12 @@ fun Player.isPlayingState(): State<PlayerState> {
             }
         }
         addListener(listener)
-        if (!isActive) {
+        while (isActive) {
+            delay(1000)
+        }
+        try {
+            suspendCancellableCoroutine<Nothing> { }
+        } finally {
             removeListener(listener)
         }
     }

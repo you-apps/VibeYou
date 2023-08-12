@@ -31,3 +31,7 @@ object DatabaseSettings : Destinations {
 object Playlists : Destinations {
     override val route = "playlist_screen"
 }
+
+object Artist : Destinations {
+    override val route = "artist"
+}
