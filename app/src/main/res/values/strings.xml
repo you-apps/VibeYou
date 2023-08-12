@@ -46,4 +46,6 @@
     <string name="backup_description">Create a backup file</string>
     <string name="restore_description">Restore a previous backup file</string>
     <string name="restore">Restore Database</string>
+    <string name="login_to_piped">Piped Login</string>
+    <string name="login_to_piped_description">Login to piped account</string>
 </resources>

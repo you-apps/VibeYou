@@ -4,6 +4,7 @@ import app.suhasdissa.mellowmusic.backend.models.PipedInstance
 
 object Pref {
     const val pipedInstanceKey = "PipedInstanceKey"
+    const val authTokenKey = "AuthTokenKey"
 
     val pipedInstances = listOf(
         PipedInstance(
