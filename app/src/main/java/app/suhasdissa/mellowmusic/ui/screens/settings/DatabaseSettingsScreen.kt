@@ -67,7 +67,11 @@ fun DatabaseSettingsScreen(
                     try {
                         backupLauncher.launch("mellowmusic_${dateFormat.format(Date())}.db")
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            context.getText(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
@@ -86,7 +90,11 @@ fun DatabaseSettingsScreen(
                             )
                         )
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            context.getText(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }

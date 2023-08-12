@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MellowMusic</string>
     <string name="settings_title">Settings</string>
-    <string name="search">Search</string>
     <string name="songs">Songs</string>
     <string name="about_title">About</string>
     <string name="readme">README</string>
@@ -11,9 +10,7 @@
     <string name="github_issue">Github Issue</string>
     <string name="github_issue_description">Submit bug reports and feature requests</string>
     <string name="about_setting_description">Version, Contact</string>
-    <string name="playing">Playing</string>
     <string name="favourite_songs">Favourites</string>
-    <string name="recent_songs">Recent Songs</string>
     <string name="enqueue_song">Add to Queue</string>
     <string name="play_song">Play Song</string>
     <string name="delete_song">Remove Song</string>
@@ -46,6 +43,12 @@
     <string name="backup_description">Create a backup file</string>
     <string name="restore_description">Restore a previous backup file</string>
     <string name="restore">Restore Database</string>
-    <string name="login_to_piped">Piped Login</string>
-    <string name="login_to_piped_description">Login to piped account</string>
+    <string name="album_art">Album Art</string>
+    <string name="artist_avatar">Artist Avatar</string>
+    <string name="select_server">Select Server</string>
+    <string name="show_queue">Show Queue</string>
+    <string name="artist">Artist</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

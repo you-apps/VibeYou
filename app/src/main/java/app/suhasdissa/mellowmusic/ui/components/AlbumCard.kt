@@ -20,9 +20,11 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import app.suhasdissa.mellowmusic.R
 import coil.compose.AsyncImage
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -57,7 +59,7 @@ fun AlbumCard(
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(16.dp)),
             model = thumbnail,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.album_art),
             contentScale = ContentScale.Crop
         )
         Spacer(Modifier.height(8.dp))

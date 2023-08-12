@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.Destinations
 import app.suhasdissa.mellowmusic.Playlists
@@ -28,7 +29,7 @@ fun ArtistScreen(
         TopAppBar(title = {
             when (val state = artistViewModel.artistInfoState) {
                 is ArtistInfoState.Success -> Text(text = state.name)
-                else -> Text("Artist")
+                else -> Text(stringResource(R.string.artist))
             }
         }, scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior())
     }) {

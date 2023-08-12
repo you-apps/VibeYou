@@ -115,7 +115,7 @@ fun FullScreenPlayer(
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
                 model = it.maxResThumbnail,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.album_art),
                 contentScale = ContentScale.Crop
             ) {
                 val state = painter.state
@@ -158,7 +158,7 @@ fun FullScreenPlayer(
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 showQueueSheet = true
             }) {
-                Icon(Icons.Default.QueueMusic, "Show Queue")
+                Icon(Icons.Default.QueueMusic, stringResource(R.string.show_queue))
             }
         }
     }

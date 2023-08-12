@@ -92,7 +92,7 @@ fun SettingsScreen(
             onDismissRequest = { showLoginDialog = false },
             confirmButton = {
                 Button(onClick = { authViewModel.login(context, Login(username, pass)) }) {
-                    Text("Login")
+                    Text(stringResource(R.string.login))
                 }
             },
             text = {
@@ -101,13 +101,13 @@ fun SettingsScreen(
                         modifier = Modifier.padding(horizontal = 5.dp),
                         value = username,
                         onValueChange = { username = it },
-                        label = { Text("Username") }
+                        label = { Text(stringResource(R.string.username)) }
                     )
                     OutlinedTextField(
                         modifier = Modifier.padding(horizontal = 5.dp),
                         value = pass,
                         onValueChange = { pass = it },
-                        label = { Text("Password") }
+                        label = { Text(stringResource(R.string.password)) }
                     )
                 }
             }

@@ -21,8 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.utils.Pref
 import app.suhasdissa.mellowmusic.utils.rememberPreference
 
@@ -41,7 +43,7 @@ fun InstanceSelectDialog(
             shape = RoundedCornerShape(10.dp)
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
-                Text("Select Server")
+                Text(stringResource(R.string.select_server))
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn(modifier = Modifier.height(500.dp)) {
                     itemsIndexed(items = optionsList) { index, item ->
