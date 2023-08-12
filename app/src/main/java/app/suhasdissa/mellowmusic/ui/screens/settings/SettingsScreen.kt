@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material.icons.filled.Web
 import androidx.compose.material.icons.outlined.Info
@@ -65,6 +64,7 @@ fun SettingsScreen(
                     icon = Icons.Default.Web
                 )
             }
+            /*
             item {
                 SettingItem(
                     title = stringResource(R.string.login_to_piped),
@@ -73,6 +73,7 @@ fun SettingsScreen(
                     icon = Icons.Default.AccountCircle
                 )
             }
+             */
             item {
                 SettingItem(
                     title = stringResource(R.string.about_title),
