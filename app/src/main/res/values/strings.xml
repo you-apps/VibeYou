@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MellowMusic</string>
+    <string name="app_name" translatable="false">MellowMusic</string>
     <string name="settings_title">Settings</string>
     <string name="songs">Songs</string>
     <string name="about_title">About</string>
@@ -51,4 +51,6 @@
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="recent_songs">Recent Songs</string>
+    <string name="close_search">Close Search</string>
 </resources>

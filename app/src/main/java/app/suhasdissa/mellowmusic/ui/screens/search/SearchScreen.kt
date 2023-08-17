@@ -99,7 +99,7 @@ fun SearchScreen(
                             IconButton(onClick = { isPopupOpen = false }) {
                                 Icon(
                                     imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Close Search"
+                                    contentDescription = stringResource(R.string.close_search)
                                 )
                             }
                         } else {
@@ -171,7 +171,10 @@ fun SearchScreen(
                             }
                         }
                         if (pipedSearchViewModel.songSearchSuggestion.isNotEmpty()) {
-                            Text(text = "Recent Songs", style = MaterialTheme.typography.titleSmall)
+                            Text(
+                                text = stringResource(R.string.recent_songs),
+                                style = MaterialTheme.typography.titleSmall
+                            )
                             pipedSearchViewModel.songSearchSuggestion.forEach { item ->
                                 SongCard(
                                     thumbnail = item.thumbnailUrl,
