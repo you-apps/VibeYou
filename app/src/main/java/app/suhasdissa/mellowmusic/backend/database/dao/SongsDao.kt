@@ -36,4 +36,7 @@ interface SongsDao {
 
     @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
     fun getRecentSongs(limit: Int): List<Song>
+
+    @Query("SELECT * FROM Song WHERE title LIKE :search OR artistsText LIKE :search")
+    fun search(search: String): List<Song>
 }

@@ -2,6 +2,7 @@ package app.suhasdissa.mellowmusic.backend.repository
 
 import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
+import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
@@ -16,9 +17,14 @@ interface SearchRepository {
     suspend fun getSuggestions(query: String): List<String>
     suspend fun saveSearchQuery(query: String)
     suspend fun getSearchHistory(): List<SearchQuery>
+    suspend fun searchLocalSong(query: String): List<Song>
 }
 
-class SearchRepositoryImpl(private val searchDao: SearchDao, private val pipedApi: PipedApi) :
+class SearchRepositoryImpl(
+    private val searchDao: SearchDao,
+    private val songsDao: SongsDao,
+    private val pipedApi: PipedApi
+) :
     SearchRepository {
     override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
         if (filter != SearchFilter.Songs && filter != SearchFilter.Videos) {
@@ -55,4 +61,6 @@ class SearchRepositoryImpl(private val searchDao: SearchDao, private val pipedAp
     override suspend fun getSearchHistory(): List<SearchQuery> {
         return searchDao.getSearchHistory()
     }
+
+    override suspend fun searchLocalSong(query: String): List<Song> = songsDao.search(query)
 }
