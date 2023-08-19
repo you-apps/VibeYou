@@ -51,6 +51,6 @@
     <string name="login">Anmelden</string>
     <string name="username">Benutzername</string>
     <string name="password">Passwort</string>
-    <string name="recent_songs">Recent Songs</string>
-    <string name="close_search">Close Search</string>
+    <string name="recent_songs">Aktuelle Lieder</string>
+    <string name="close_search">Suche schließen</string>
 </resources>
