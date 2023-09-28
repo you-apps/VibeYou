@@ -3,7 +3,6 @@ package app.suhasdissa.mellowmusic.ui.screens.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -17,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,15 +37,19 @@ fun SettingsScreen(
 ) {
     var showLoginDialog by remember { mutableStateOf(false) }
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
+    val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
-        TopAppBar(
-            title = { Text(stringResource(R.string.settings_title)) }
+        LargeTopAppBar(
+            title = { Text(stringResource(R.string.settings_title)) },
+            scrollBehavior = topBarBehavior
         )
     }) { innerPadding ->
         LazyColumn(
             modifier
-                .fillMaxWidth()
-                .padding(innerPadding),
+                .fillMaxSize()
+                .padding(innerPadding)
+                .nestedScroll(topBarBehavior.nestedScrollConnection),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
