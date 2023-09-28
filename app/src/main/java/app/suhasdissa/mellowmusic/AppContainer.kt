@@ -49,7 +49,7 @@ class DefaultAppContainer(
         .create(PipedApi::class.java)
 
     override val searchRepository: SearchRepository by lazy {
-        SearchRepositoryImpl(database.searchDao(), pipedApi)
+        SearchRepositoryImpl(database.searchDao(), database.songsDao(), pipedApi)
     }
     override val songRepository: SongRepository by lazy {
         SongRepositoryImpl(database.songsDao(), pipedApi)

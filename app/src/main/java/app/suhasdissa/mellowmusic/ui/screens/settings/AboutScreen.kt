@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,14 +28,19 @@ fun AboutScreen(
 ) {
     val context = LocalContext.current
     val githubRepo = "https://github.com/SuhasDissa/MellowMusic"
+    val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
-        TopAppBar(title = { Text(stringResource(R.string.about_title)) })
+        LargeTopAppBar(
+            title = { Text(stringResource(R.string.about_title)) },
+            scrollBehavior = topBarBehavior
+        )
     }) { innerPadding ->
         LazyColumn(
             modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(innerPadding)
+                .nestedScroll(topBarBehavior.nestedScrollConnection)
         ) {
             item {
                 SettingItem(

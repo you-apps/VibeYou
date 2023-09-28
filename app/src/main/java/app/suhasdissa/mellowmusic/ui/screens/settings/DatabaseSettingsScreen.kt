@@ -5,18 +5,19 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,8 +32,13 @@ import java.util.Date
 fun DatabaseSettingsScreen(
     databaseViewModel: DatabaseViewModel = viewModel(factory = DatabaseViewModel.Factory)
 ) {
+    val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        TopAppBar(title = { Text(stringResource(R.string.backup_restore)) })
+        LargeTopAppBar(
+            title = { Text(stringResource(R.string.backup_restore)) },
+            scrollBehavior = topBarBehavior
+        )
     }) { innerPadding ->
         val context = LocalContext.current
         val backupLauncher =
@@ -52,8 +58,9 @@ fun DatabaseSettingsScreen(
 
         LazyColumn(
             Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(innerPadding)
+                .nestedScroll(topBarBehavior.nestedScrollConnection)
         ) {
             item {
                 SettingItem(

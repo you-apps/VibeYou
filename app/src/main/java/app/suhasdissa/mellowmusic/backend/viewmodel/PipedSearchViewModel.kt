@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
+import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
@@ -22,11 +23,14 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
+    var history: List<String> by mutableStateOf(listOf())
     var searchFilter = SearchFilter.Songs
     var search by mutableStateOf("")
+    var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
 
     fun getSuggestions() {
         if (search.length < 3) return
+        searchSongs(search)
         val insertedTextTemp = search
         Handler(
             Looper.getMainLooper()
@@ -35,7 +39,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
                 if (insertedTextTemp == search) {
                     viewModelScope.launch {
                         runCatching {
-                            suggestions = searchRepository.getSuggestions(search)
+                            suggestions = searchRepository.getSuggestions(search).take(6)
                         }
                         Log.e("Search ViewModel", "getting query for \"$search\"")
                     }
@@ -47,7 +51,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
     fun setSearchHistory() {
         viewModelScope.launch {
-            suggestions = searchRepository.getSearchHistory().reversed().map { it.query }
+            history = searchRepository.getSearchHistory().takeLast(6).reversed().map { it.query }
         }
     }
 
@@ -88,6 +92,13 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
                 Log.e("Search Piped", e.toString())
                 PipedSearchState.Error(e.toString())
             }
+        }
+    }
+
+    private fun searchSongs(search: String) {
+        val searchQuery = search.split(" ").joinToString("%")
+        viewModelScope.launch {
+            songSearchSuggestion = searchRepository.searchLocalSong("%$searchQuery%")
         }
     }
 

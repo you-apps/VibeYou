@@ -31,9 +31,12 @@ interface SongsDao {
     @Query("SELECT * from Song ORDER BY title ASC")
     fun getAllSongsStream(): Flow<List<Song>>
 
-    @Query("SELECT * from Song WHERE likedAt IS NOT NULL ORDER BY likedAt DESC")
+    @Query("SELECT * from Song WHERE likedAt IS NOT NULL ORDER BY title ASC")
     fun getFavSongsStream(): Flow<List<Song>>
 
     @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
     fun getRecentSongs(limit: Int): List<Song>
+
+    @Query("SELECT * FROM Song WHERE title LIKE :search OR artistsText LIKE :search")
+    fun search(search: String): List<Song>
 }
