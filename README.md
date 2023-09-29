@@ -6,11 +6,11 @@
 <br>
 
  <div align="center">
-    <img alt="License" src="https://img.shields.io/github/license/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
-    <img alt="Downloads" src="https://img.shields.io/github/downloads/SuhasDissa/MellowMusic/total.svg?color=c3e7ff&style=flat-square">
-    <img alt="Last commit" src="https://img.shields.io/github/last-commit/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
-    <img alt="Repo size" src="https://img.shields.io/github/repo-size/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
-    <img alt="Stars" src="https://img.shields.io/github/stars/SuhasDissa/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="License" src="https://img.shields.io/github/license/you-apps/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/you-apps/MellowMusic/total.svg?color=c3e7ff&style=flat-square">
+    <img alt="Last commit" src="https://img.shields.io/github/last-commit/you-apps/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Repo size" src="https://img.shields.io/github/repo-size/you-apps/MellowMusic?color=c3e7ff&style=flat-square">
+    <img alt="Stars" src="https://img.shields.io/github/stars/you-apps/MellowMusic?color=c3e7ff&style=flat-square">
     <br>
 </div>
 
@@ -44,7 +44,7 @@
 
 [<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png"
     alt="Get it on GitHub"
-    height="80">](https://github.com/SuhasDissa/MellowMusic/releases/latest)
+    height="80">](https://github.com/you-apps/MellowMusic/releases/latest)
 
 ## 🧾 Translation
 [Crowdin Translate](crowdin.com/project/mellowmusic/)
