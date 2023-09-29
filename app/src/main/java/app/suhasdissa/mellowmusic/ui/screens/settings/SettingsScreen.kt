@@ -21,9 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.mellowmusic.About
-import app.suhasdissa.mellowmusic.DatabaseSettings
-import app.suhasdissa.mellowmusic.NetworkSettings
+import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.models.Login
 import app.suhasdissa.mellowmusic.backend.viewmodel.AuthViewModel
@@ -56,7 +54,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.backup_restore),
                     description = stringResource(R.string.backup_restore_setting_description),
-                    onClick = { onNavigate(DatabaseSettings.route) },
+                    onClick = { onNavigate(Destination.DatabaseSettings.route) },
                     icon = Icons.Default.SettingsBackupRestore
                 )
             }
@@ -64,7 +62,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.network_settings),
                     description = stringResource(R.string.network_settings_description),
-                    onClick = { onNavigate(NetworkSettings.route) },
+                    onClick = { onNavigate(Destination.NetworkSettings.route) },
                     icon = Icons.Default.Web
                 )
             }
@@ -82,7 +80,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.about_title),
                     description = stringResource(R.string.about_setting_description),
-                    onClick = { onNavigate(About.route) },
+                    onClick = { onNavigate(Destination.About.route) },
                     icon = Icons.Outlined.Info
                 )
             }
