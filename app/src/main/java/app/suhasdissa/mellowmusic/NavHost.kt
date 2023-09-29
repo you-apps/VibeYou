@@ -20,9 +20,9 @@ fun AppNavHost(navHostController: NavHostController) {
     val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
     NavHost(
         navController = navHostController,
-        startDestination = Home.route
+        startDestination = Destination.PipedMusic.route
     ) {
-        composable(route = Home.route) {
+        composable(route = Destination.PipedMusic.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
                     navHostController.navigateTo(destination.route)
@@ -30,7 +30,7 @@ fun AppNavHost(navHostController: NavHostController) {
             }
         }
 
-        composable(route = Search.route) {
+        composable(route = Destination.Search.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 SearchScreen(onNavigate = {
                     navHostController.navigateTo(it.route)
@@ -38,31 +38,31 @@ fun AppNavHost(navHostController: NavHostController) {
             }
         }
 
-        composable(route = Settings.route) {
+        composable(route = Destination.Settings.route) {
             SettingsScreen(onNavigate = { route ->
                 navHostController.navigateTo(route)
             })
         }
 
-        composable(route = About.route) {
+        composable(route = Destination.About.route) {
             AboutScreen()
         }
 
-        composable(route = NetworkSettings.route) {
+        composable(route = Destination.NetworkSettings.route) {
             NetworkSettingsScreen()
         }
 
-        composable(route = DatabaseSettings.route) {
+        composable(route = Destination.DatabaseSettings.route) {
             DatabaseSettingsScreen()
         }
 
-        composable(Playlists.route) {
+        composable(Destination.Playlists.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 PlaylistScreen()
             }
         }
 
-        composable(route = Artist.route) {
+        composable(route = Destination.Artist.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 ArtistScreen(onNavigate = {
                     navHostController.navigateTo(it.route)

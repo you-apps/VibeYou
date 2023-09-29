@@ -7,8 +7,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.mellowmusic.Destinations
-import app.suhasdissa.mellowmusic.Playlists
+import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
@@ -21,7 +20,7 @@ import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtistScreen(
-    onNavigate: (Destinations) -> Unit,
+    onNavigate: (Destination) -> Unit,
     artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory),
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory)
 ) {
@@ -43,7 +42,7 @@ fun ArtistScreen(
             is ArtistInfoState.Success -> {
                 AlbumList(items = state.playlists, onClickCard = {
                     playlistViewModel.getPlaylistInfo(it.playlistId)
-                    onNavigate(Playlists)
+                    onNavigate(Destination.Playlists)
                 }, onLongPress = {
                 })
             }

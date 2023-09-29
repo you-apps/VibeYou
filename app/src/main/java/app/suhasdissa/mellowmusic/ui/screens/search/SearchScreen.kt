@@ -35,9 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.suhasdissa.mellowmusic.Artist
-import app.suhasdissa.mellowmusic.Destinations
-import app.suhasdissa.mellowmusic.Playlists
+import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
@@ -58,7 +56,7 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onNavigate: (Destinations) -> Unit,
+    onNavigate: (Destination) -> Unit,
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
     pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
@@ -220,7 +218,7 @@ fun SearchScreen(
                                     items = searchState.items,
                                     onClickCard = {
                                         playlistViewModel.getPlaylistInfo(it.playlistId)
-                                        onNavigate(Playlists)
+                                        onNavigate(Destination.Playlists)
                                     },
                                     onLongPress = {
                                     }
@@ -246,7 +244,7 @@ fun SearchScreen(
                                     items = searchState.items,
                                     onClickCard = {
                                         artistViewModel.getChannelInfo(it.artistId)
-                                        onNavigate(Artist)
+                                        onNavigate(Destination.Artist)
                                     },
                                     onLongPress = {
                                     }

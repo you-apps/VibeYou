@@ -53,4 +53,6 @@
     <string name="password">Password</string>
     <string name="recent_songs">Recent Songs</string>
     <string name="close_search">Close Search</string>
+    <string name="piped_music">Piped Music</string>
+    <string name="local_music">Local Music</string>
 </resources>
