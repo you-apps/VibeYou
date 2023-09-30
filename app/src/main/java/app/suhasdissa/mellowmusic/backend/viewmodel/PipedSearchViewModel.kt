@@ -15,11 +15,11 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
-import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
+import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import kotlinx.coroutines.launch
 
-class PipedSearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
+class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewModel() {
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
@@ -39,7 +39,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
                 if (insertedTextTemp == search) {
                     viewModelScope.launch {
                         runCatching {
-                            suggestions = searchRepository.getSuggestions(search).take(6)
+                            suggestions = musicRepository.getSuggestions(search).take(6)
                         }
                         Log.e("Search ViewModel", "getting query for \"$search\"")
                     }
@@ -51,7 +51,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
     fun setSearchHistory() {
         viewModelScope.launch {
-            history = searchRepository.getSearchHistory().takeLast(6).reversed().map { it.query }
+            history = musicRepository.getSearchHistory().takeLast(6).reversed().map { it.query }
         }
     }
 
@@ -59,12 +59,12 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
         if (search.isEmpty()) return
         viewModelScope.launch {
             state = PipedSearchState.Loading
-            searchRepository.saveSearchQuery(search)
+            musicRepository.saveSearchQuery(search)
             state = try {
                 when (searchFilter) {
                     SearchFilter.Songs, SearchFilter.Videos -> {
                         PipedSearchState.Success.Songs(
-                            searchRepository.getSearchResult(
+                            musicRepository.getSearchResult(
                                 search,
                                 searchFilter
                             )
@@ -73,7 +73,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
                     SearchFilter.Albums, SearchFilter.Playlists -> {
                         PipedSearchState.Success.Playlists(
-                            searchRepository.getPlaylistResult(
+                            musicRepository.getPlaylistResult(
                                 search,
                                 searchFilter
                             )
@@ -82,7 +82,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
 
                     SearchFilter.Artists -> {
                         PipedSearchState.Success.Artists(
-                            searchRepository.getArtistResult(
+                            musicRepository.getArtistResult(
                                 search
                             )
                         )
@@ -98,7 +98,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
     private fun searchSongs(search: String) {
         val searchQuery = search.split(" ").joinToString("%")
         viewModelScope.launch {
-            songSearchSuggestion = searchRepository.searchLocalSong("%$searchQuery%")
+            songSearchSuggestion = musicRepository.searchLocalSong("%$searchQuery%")
         }
     }
 
@@ -107,7 +107,7 @@ class PipedSearchViewModel(private val searchRepository: SearchRepository) : Vie
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PipedSearchViewModel(
-                    application.container.searchRepository
+                    application.container.musicRepository
                 )
             }
         }

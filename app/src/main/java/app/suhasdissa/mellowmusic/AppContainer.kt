@@ -5,14 +5,8 @@ import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepository
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepositoryImpl
-import app.suhasdissa.mellowmusic.backend.repository.ChannelRepository
-import app.suhasdissa.mellowmusic.backend.repository.ChannelRepositoryImpl
-import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepository
-import app.suhasdissa.mellowmusic.backend.repository.PlaylistRepositoryImpl
-import app.suhasdissa.mellowmusic.backend.repository.RadioRepository
-import app.suhasdissa.mellowmusic.backend.repository.RadioRepositoryImpl
-import app.suhasdissa.mellowmusic.backend.repository.SearchRepository
-import app.suhasdissa.mellowmusic.backend.repository.SearchRepositoryImpl
+import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
+import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongRepositoryImpl
 import com.google.common.util.concurrent.ListenableFuture
@@ -23,11 +17,8 @@ import retrofit2.Retrofit
 
 interface AppContainer {
     val database: SongDatabase
-    val searchRepository: SearchRepository
     val songRepository: SongRepository
-    val radioRepository: RadioRepository
-    val playlistRepository: PlaylistRepository
-    val channelRepository: ChannelRepository
+    val musicRepository: MusicRepository
     val authRepository: AuthRepository
     val controllerFuture: ListenableFuture<MediaController>
     val pipedApi: PipedApi
@@ -48,20 +39,11 @@ class DefaultAppContainer(
     override val pipedApi: PipedApi = retrofit
         .create(PipedApi::class.java)
 
-    override val searchRepository: SearchRepository by lazy {
-        SearchRepositoryImpl(database.searchDao(), database.songsDao(), pipedApi)
-    }
     override val songRepository: SongRepository by lazy {
-        SongRepositoryImpl(database.songsDao(), pipedApi)
+        SongRepositoryImpl(database.songsDao())
     }
-    override val radioRepository: RadioRepository by lazy {
-        RadioRepositoryImpl(database.songsDao(), pipedApi)
-    }
-    override val playlistRepository: PlaylistRepository by lazy {
-        PlaylistRepositoryImpl(pipedApi)
-    }
-    override val channelRepository: ChannelRepository by lazy {
-        ChannelRepositoryImpl(pipedApi)
+    override val musicRepository: MusicRepository by lazy {
+        PipedMusicRepository(pipedApi, database.songsDao(), database.searchDao())
     }
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl(pipedApi)

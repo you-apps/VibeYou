@@ -151,11 +151,10 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 dataSpec
             } else {
                 val url = runBlocking {
-                    (application as MellowMusicApplication).container.pipedApi
-                        .getStreams(vidId = videoId).audioStreams[1].url
+                    (application as MellowMusicApplication).container.musicRepository.getAudioSource(videoId)
                 }
                 url?.let {
-                    dataSpec.withUri(url.toUri()).subrange(dataSpec.uriPositionOffset, chunkLength)
+                    dataSpec.withUri(it).subrange(dataSpec.uriPositionOffset, chunkLength)
                 } ?: error("Stream not found")
             }
         }
