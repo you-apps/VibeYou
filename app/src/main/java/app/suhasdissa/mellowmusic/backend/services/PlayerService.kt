@@ -77,7 +77,8 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         player.addListener(this)
 
         mediaSession = MediaSession.Builder(this, player).setCallback(this)
-            .setBitmapLoader(CustomBitmapLoader(this)).build()
+            // .setBitmapLoader(CustomBitmapLoader(this))
+            .build()
     }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
