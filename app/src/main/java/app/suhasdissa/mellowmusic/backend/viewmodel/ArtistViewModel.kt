@@ -10,11 +10,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.repository.ChannelRepository
+import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
 import kotlinx.coroutines.launch
 
-class ArtistViewModel(private val channelRepository: ChannelRepository) : ViewModel() {
+class ArtistViewModel(private val musicRepository: MusicRepository) : ViewModel() {
 
     var artistInfoState: ArtistInfoState by mutableStateOf(ArtistInfoState.Loading)
         private set
@@ -23,8 +23,8 @@ class ArtistViewModel(private val channelRepository: ChannelRepository) : ViewMo
         viewModelScope.launch {
             artistInfoState = ArtistInfoState.Loading
             artistInfoState = try {
-                val info = channelRepository.getChannelInfo(channelId)
-                val playlists = channelRepository.getChannelPlaylists(info.tabs)
+                val info = musicRepository.getChannelInfo(channelId)
+                val playlists = musicRepository.getChannelPlaylists(channelId, info.tabs)
                 ArtistInfoState.Success(
                     info.name ?: "",
                     info.avatarUrl,
@@ -43,9 +43,7 @@ class ArtistViewModel(private val channelRepository: ChannelRepository) : ViewMo
             initializer {
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MellowMusicApplication)
-                ArtistViewModel(
-                    application.container.channelRepository
-                )
+                ArtistViewModel(application.container.musicRepository)
             }
         }
     }

@@ -1,13 +1,14 @@
 package app.suhasdissa.mellowmusic.backend.repository
 
-import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.models.Login
 import app.suhasdissa.mellowmusic.backend.models.Token
+import app.suhasdissa.mellowmusic.utils.RetrofitHelper
 
 interface AuthRepository {
     suspend fun getAuthToken(login: Login): Token
 }
 
-class AuthRepositoryImpl(private val pipedApi: PipedApi) : AuthRepository {
+class AuthRepositoryImpl : AuthRepository {
+    private val pipedApi = RetrofitHelper.createPipedApi()
     override suspend fun getAuthToken(login: Login): Token = pipedApi.login(login)
 }

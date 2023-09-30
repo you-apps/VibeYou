@@ -12,10 +12,14 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DataSpec
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.ResolvingDataSource
+import androidx.media3.datasource.TransferListener
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
@@ -33,6 +37,8 @@ import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.mellowmusic.MellowMusicApplication
+import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
+import app.suhasdissa.mellowmusic.utils.DynamicDataSource
 import app.suhasdissa.mellowmusic.utils.mediaIdList
 import coil.ImageLoader
 import coil.request.ErrorResult
@@ -53,6 +59,8 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
     private var loudnessEnhancer: LoudnessEnhancer? = null
 
+    val container get() = (application as MellowMusicApplication).container
+
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
@@ -62,7 +70,20 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         }
         cache = SimpleCache(directory, cacheEvictor, StandaloneDatabaseProvider(this))
 
-        player = ExoPlayer.Builder(this, createRendersFactory(), createMediaSourceFactory())
+        player = createPlayer()
+
+        player.repeatMode = Player.REPEAT_MODE_OFF
+        player.playWhenReady = true
+        player.addListener(this)
+
+        mediaSession = MediaSession.Builder(this, player).setCallback(this)
+            // .setBitmapLoader(CustomBitmapLoader(this))
+            .build()
+    }
+
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    private fun createPlayer(): ExoPlayer {
+        return ExoPlayer.Builder(this, createRendersFactory(), createMediaSourceFactory())
             .setHandleAudioBecomingNoisy(true)
             .setWakeMode(C.WAKE_MODE_NETWORK)
             .setAudioAttributes(
@@ -73,13 +94,6 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 true
             )
             .build()
-
-        player.repeatMode = Player.REPEAT_MODE_OFF
-        player.playWhenReady = true
-        player.addListener(this)
-
-        mediaSession = MediaSession.Builder(this, player).setCallback(this)
-            .setBitmapLoader(CustomBitmapLoader(this)).build()
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
@@ -137,6 +151,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                         "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0"
                     )
             )
+            setUpstreamDataSourceFactory(DefaultDataSource.Factory(this@PlayerService))
         }
     }
 
@@ -144,21 +159,22 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
     private fun createDataSourceFactory(): DataSource.Factory {
         val chunkLength = 512 * 1024L
 
-        return ResolvingDataSource.Factory(createCacheDataSource()) { dataSpec ->
+        val defaultDataSource = DefaultDataSource.Factory(this@PlayerService)
+        val resolvingDataSource = ResolvingDataSource.Factory(createCacheDataSource()) { dataSpec ->
             val videoId = dataSpec.key ?: error("A key must be set")
 
             if (cache.isCached(videoId, dataSpec.position, chunkLength)) {
                 dataSpec
             } else {
                 val url = runBlocking {
-                    (application as MellowMusicApplication).container.pipedApi
-                        .getStreams(vidId = videoId).audioStreams[1].url
+                    container.pipedMusicRepository.getAudioSource(videoId)
                 }
                 url?.let {
-                    dataSpec.withUri(url.toUri()).subrange(dataSpec.uriPositionOffset, chunkLength)
+                    dataSpec.withUri(it).subrange(dataSpec.uriPositionOffset, chunkLength)
                 } ?: error("Stream not found")
             }
         }
+        return DynamicDataSource.Companion.Factory(resolvingDataSource, defaultDataSource)
     }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
