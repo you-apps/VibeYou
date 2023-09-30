@@ -1,5 +1,6 @@
 package app.suhasdissa.mellowmusic.ui.screens.home
 
+import android.Manifest
 import android.view.SoundEffectConstants
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -25,6 +26,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,12 +43,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.mellowmusic.Destination
+import app.suhasdissa.mellowmusic.MainActivity
+import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.navigateTo
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
-import app.suhasdissa.mellowmusic.ui.screens.local.LocalMusicScreen
-import app.suhasdissa.mellowmusic.ui.screens.piped.PipedMusicScreen
+import app.suhasdissa.mellowmusic.ui.screens.music.MusicScreen
+import app.suhasdissa.mellowmusic.utils.PermissionHelper
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +64,7 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val view = LocalView.current
+    val mainActivity = (LocalContext.current as MainActivity)
     var currentDestination by remember {
         mutableStateOf<Destination>(Destination.PipedMusic)
     }
@@ -133,11 +140,19 @@ fun HomeScreen(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
+                val container = (mainActivity.application as MellowMusicApplication).container
                 composable(Destination.PipedMusic.route) {
-                    PipedMusicScreen()
+                    LaunchedEffect(Unit) {
+                        container.musicRepository = container.pipedMusicRepository
+                    }
+                    MusicScreen()
                 }
                 composable(Destination.LocalMusic.route) {
-                    LocalMusicScreen()
+                    LaunchedEffect(Unit) {
+                        container.musicRepository = container.localMusicRepository
+                        PermissionHelper.checkPermissions(mainActivity, LocalMusicRepository.permissions)
+                    }
+                    MusicScreen()
                 }
             }
         }

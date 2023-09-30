@@ -15,7 +15,7 @@ import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 
 abstract class MusicRepository(
     private val searchDao: SearchDao,
-    private val songsDao: SongsDao,
+    val songsDao: SongsDao,
 ) {
     abstract suspend fun getAudioSource(id: String): Uri?
     abstract suspend fun getRecommendedSongs(id: String): List<MediaItem>
@@ -25,7 +25,7 @@ abstract class MusicRepository(
     abstract suspend fun getArtistResult(query: String): List<Artist>
     abstract suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo
     abstract suspend fun getChannelInfo(channelId: String): Channel
-    abstract suspend fun getChannelPlaylists(tabs: List<ChannelTab>): List<Playlist>?
+    abstract suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>?
     abstract suspend fun searchSongId(id: String): Song?
 
     fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))

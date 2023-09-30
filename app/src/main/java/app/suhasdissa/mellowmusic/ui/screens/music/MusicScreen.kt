@@ -1,4 +1,4 @@
-package app.suhasdissa.mellowmusic.ui.screens.piped
+package app.suhasdissa.mellowmusic.ui.screens.music
 
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,10 +24,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PipedMusicScreen() {
+fun MusicScreen() {
     val pagerState = rememberPagerState { 2 }
     val scope = rememberCoroutineScope()
-    Column() {
+    Column {
         TabRow(selectedTabIndex = pagerState.currentPage, Modifier.fillMaxWidth()) {
             val view = LocalView.current
             Tab(selected = (pagerState.currentPage == 0), onClick = {

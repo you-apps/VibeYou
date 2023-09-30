@@ -24,7 +24,7 @@ class ArtistViewModel(private val musicRepository: MusicRepository) : ViewModel(
             artistInfoState = ArtistInfoState.Loading
             artistInfoState = try {
                 val info = musicRepository.getChannelInfo(channelId)
-                val playlists = musicRepository.getChannelPlaylists(info.tabs)
+                val playlists = musicRepository.getChannelPlaylists(channelId, info.tabs)
                 ArtistInfoState.Success(
                     info.name ?: "",
                     info.avatarUrl,

@@ -4,7 +4,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
-import app.suhasdissa.mellowmusic.backend.api.PipedApi
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
@@ -14,16 +13,23 @@ import app.suhasdissa.mellowmusic.backend.models.artists.Channel
 import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
 import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
+import app.suhasdissa.mellowmusic.utils.RetrofitHelper
 import app.suhasdissa.mellowmusic.utils.asMediaItem
 import app.suhasdissa.mellowmusic.utils.asSong
 
 class PipedMusicRepository(
-    private val pipedApi: PipedApi,
-    private val songsDao: SongsDao,
+    songsDao: SongsDao,
     searchDao: SearchDao
 ): MusicRepository(searchDao, songsDao) {
-    override suspend fun getAudioSource(id: String): Uri {
-        return pipedApi.getStreams(vidId = id).audioStreams[1].url!!.toUri()
+    private val pipedApi = RetrofitHelper.createPipedApi()
+
+    override suspend fun getAudioSource(id: String): Uri? {
+        return runCatching { pipedApi.getStreams(vidId = id) }
+            .getOrNull()
+            ?.audioStreams
+            ?.get(1)
+            ?.url
+            ?.toUri()
     }
 
     override suspend fun getRecommendedSongs(id: String): List<MediaItem> {
@@ -41,7 +47,7 @@ class PipedMusicRepository(
     override suspend fun getChannelInfo(channelId: String): Channel =
         pipedApi.getChannel(channelId = channelId)
 
-    override suspend fun getChannelPlaylists(tabs: List<ChannelTab>): List<Playlist>? {
+    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
         val data = tabs.firstOrNull { it.name == "playlists" }?.data ?: return null
         return try {
             pipedApi.getChannelTab(data = data).content
