@@ -1,6 +1,5 @@
 package app.suhasdissa.mellowmusic.ui.screens.home
 
-import android.Manifest
 import android.view.SoundEffectConstants
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
