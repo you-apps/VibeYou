@@ -27,10 +27,11 @@ fun SongsScreen(
     songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory)
 ) {
     val view = LocalView.current
+    val songs by if (showFavourites) songViewModel.favSongs.collectAsState() else songViewModel.songs.collectAsState()
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
             view.playSoundEffect(SoundEffectConstants.CLICK)
-            if (showFavourites) playerViewModel.shuffleFavourites() else playerViewModel.shuffleAll()
+            playerViewModel.shuffleSongs(songs)
         }) {
             Icon(
                 imageVector = Icons.Default.Shuffle,
@@ -43,7 +44,6 @@ fun SongsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            val songs by if (showFavourites) songViewModel.favSongs.collectAsState() else songViewModel.songs.collectAsState()
             SongListView(songs)
         }
     }

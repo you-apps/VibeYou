@@ -71,23 +71,16 @@ class PlayerViewModel(
         controller!!.seekToPrevious()
     }
 
-    fun shuffleFavourites() {
+    fun shuffleSongs(songs: List<Song>) {
         viewModelScope.launch {
-            val shuffleQueue = songRepository.getFavSongs().shuffled().map { it.asMediaItem }
-            shuffleSongs(shuffleQueue)
+            val shuffleQueue = songs.shuffled().map { it.asMediaItem }
+            playAll(shuffleQueue)
         }
     }
 
-    fun shuffleAll() {
+    private fun playAll(newQueue: List<MediaItem>) {
         viewModelScope.launch {
-            val shuffleQueue = songRepository.getAllSongs().shuffled().map { it.asMediaItem }
-            shuffleSongs(shuffleQueue)
-        }
-    }
-
-    private fun shuffleSongs(shuffleQueue: List<MediaItem>) {
-        viewModelScope.launch {
-            controller!!.forcePlayFromBeginning(shuffleQueue)
+            controller!!.forcePlayFromBeginning(newQueue)
         }
     }
 
