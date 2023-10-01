@@ -49,6 +49,7 @@ import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.navigateTo
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
+import app.suhasdissa.mellowmusic.ui.screens.music.LocalMusicScreen
 import app.suhasdissa.mellowmusic.ui.screens.music.MusicScreen
 import app.suhasdissa.mellowmusic.utils.PermissionHelper
 import kotlinx.coroutines.launch
@@ -154,7 +155,7 @@ fun HomeScreen(
                             LocalMusicRepository.permissions
                         )
                     }
-                    MusicScreen()
+                    LocalMusicScreen()
                 }
             }
         }

@@ -27,7 +27,7 @@ class LocalMusicRepository(
 ) : MusicRepository(searchDao, songsDao) {
     private var songsCache = listOf<Song>()
 
-    private fun getAllSongs(): List<Song> {
+    fun getAllSongs(): List<Song> {
         if (songsCache.isNotEmpty()) return songsCache
 
         val songs = mutableListOf<Song>()
