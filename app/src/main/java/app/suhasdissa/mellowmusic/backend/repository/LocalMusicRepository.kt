@@ -61,9 +61,9 @@ class LocalMusicRepository(
         )
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-            val nameColumn =
-                cursor.getColumnIndex(MediaStore.Audio.Media.TITLE).takeIf { it != -1 }
-                    ?: cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+            val titleColumn =
+                cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
@@ -71,7 +71,14 @@ class LocalMusicRepository(
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
-                val name = cursor.getString(nameColumn)
+                val name =
+                    if (cursor.isNull(titleColumn)) {
+                        cursor.getString(nameColumn)
+                    } else {
+                        cursor.getString(
+                            titleColumn
+                        )
+                    }
                 val duration = cursor.getLong(durationColumn)
                 val artist = cursor.getString(artistColumn)
                 val album = cursor.getString(albumColumn)
@@ -150,7 +157,14 @@ class LocalMusicRepository(
     override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
         return getAllSongs()
             .filter { it.artistsText == channelId }
-            .map { Playlist(url = it.id, uploaderName = it.artistsText.orEmpty(), thumbnail = it.thumbnailUrl.orEmpty(), name = it.title) }
+            .map {
+                Playlist(
+                    url = it.id,
+                    uploaderName = it.artistsText.orEmpty(),
+                    thumbnail = it.thumbnailUrl.orEmpty(),
+                    name = it.title
+                )
+            }
     }
 
     override suspend fun searchSongId(id: String): Song? {
