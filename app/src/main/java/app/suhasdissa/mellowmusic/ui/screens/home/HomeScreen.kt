@@ -56,8 +56,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigate: (Destination) -> Unit
-
+    onNavigate: (Destination) -> Unit,
+    onSearch: (isOnline: Boolean) -> Unit
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -103,7 +103,7 @@ fun HomeScreen(
                         .fillMaxWidth(0.9f)
                         .clickable {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
-                            onNavigate(Destination.Search)
+                            onSearch(currentDestination == Destination.PipedMusic)
                         },
                     shape = RoundedCornerShape(50)
                 ) {
@@ -149,7 +149,10 @@ fun HomeScreen(
                 composable(Destination.LocalMusic.route) {
                     LaunchedEffect(Unit) {
                         container.musicRepository = container.localMusicRepository
-                        PermissionHelper.checkPermissions(mainActivity, LocalMusicRepository.permissions)
+                        PermissionHelper.checkPermissions(
+                            mainActivity,
+                            LocalMusicRepository.permissions
+                        )
                     }
                     MusicScreen()
                 }

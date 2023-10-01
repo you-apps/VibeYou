@@ -3,9 +3,13 @@ package app.suhasdissa.mellowmusic
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.PlaylistScreen
@@ -26,15 +30,32 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
                     navHostController.navigateTo(destination.route)
+                }, onSearch = {
+                    navHostController.navigateTo("${Destination.Search.route}/$it")
                 })
             }
         }
 
-        composable(route = Destination.Search.route) {
+        composable(
+            route = "${Destination.Search.route}/{is_online}",
+            arguments = listOf(
+                navArgument(
+                    "is_online"
+                ) {
+                    type = NavType.BoolType
+                }
+            )
+        ) { nav ->
+            val isOnline = nav.arguments?.getBoolean("is_online")
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                val pipedSearchViewModel: PipedSearchViewModel = if (isOnline == true) {
+                    viewModel(factory = PipedSearchViewModel.OnlineFactory, key = "online_search")
+                } else {
+                    viewModel(factory = PipedSearchViewModel.LocalFactory, key = "local_search")
+                }
                 SearchScreen(onNavigate = {
                     navHostController.navigateTo(it.route)
-                })
+                }, pipedSearchViewModel)
             }
         }
 
