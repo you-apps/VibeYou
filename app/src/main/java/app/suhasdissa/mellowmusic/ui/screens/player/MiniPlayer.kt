@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,7 +70,8 @@ fun MiniPlayer(
                 .clip(RoundedCornerShape(8.dp)),
             model = mediaItem.mediaMetadata.artworkUri,
             contentDescription = stringResource(R.string.song_album_art),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.music_placeholder)
         )
         val title = mediaItem.mediaMetadata.title.toString()
         val artist = mediaItem.mediaMetadata.artist.toString()
