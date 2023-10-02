@@ -5,10 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
@@ -37,16 +35,10 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable(
-            route = "${Destination.Search.route}/{is_online}",
-            arguments = listOf(
-                navArgument(
-                    "is_online"
-                ) {
-                    type = NavType.BoolType
-                }
-            )
+            route = Destination.Search.routeWithArgs,
+            arguments = Destination.Search.args
         ) { nav ->
-            val isOnline = nav.arguments?.getBoolean("is_online")
+            val isOnline = nav.arguments?.getBoolean(Destination.Search.arg)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 val pipedSearchViewModel: PipedSearchViewModel = if (isOnline == true) {
                     viewModel(factory = PipedSearchViewModel.OnlineFactory, key = "online_search")
