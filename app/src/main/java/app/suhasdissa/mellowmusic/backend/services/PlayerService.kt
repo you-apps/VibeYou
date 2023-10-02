@@ -3,23 +3,20 @@ package app.suhasdissa.mellowmusic.backend.services
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
 import android.os.Handler
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DataSpec
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.ResolvingDataSource
-import androidx.media3.datasource.TransferListener
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
@@ -37,7 +34,6 @@ import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.utils.DynamicDataSource
 import app.suhasdissa.mellowmusic.utils.mediaIdList
 import coil.ImageLoader
@@ -77,7 +73,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         player.addListener(this)
 
         mediaSession = MediaSession.Builder(this, player).setCallback(this)
-            // .setBitmapLoader(CustomBitmapLoader(this))
+            .setBitmapLoader(CustomBitmapLoader(this))
             .build()
     }
 
@@ -103,22 +99,38 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
     class CustomBitmapLoader(private val context: Context) : BitmapLoader {
         private val scope = CoroutineScope(Dispatchers.IO)
         override fun decodeBitmap(data: ByteArray): ListenableFuture<Bitmap> {
-            TODO("Not yet implemented")
+            val future = SettableFuture.create<Bitmap>()
+            try {
+                val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+                assert(bitmap != null)
+                future.set(bitmap)
+            } catch (e: Exception) {
+                future.setException(e)
+            }
+            return future
         }
 
         override fun loadBitmap(uri: Uri): ListenableFuture<Bitmap> {
             val future = SettableFuture.create<Bitmap>()
-
             scope.launch {
-                val imageLoader = ImageLoader.Builder(context).build()
-                val request = ImageRequest.Builder(context)
-                    .data(uri)
-                    .build()
-                val result = imageLoader.execute(request)
-                if (result is SuccessResult) {
-                    future.set(result.drawable.toBitmap())
-                } else if (result is ErrorResult) {
-                    future.setException(result.throwable)
+                if ("file" == uri.scheme) {
+                    try {
+                        val bitmap = BitmapFactory.decodeFile(uri.path)
+                        future.set(bitmap)
+                    } catch (e: Exception) {
+                        future.setException(e)
+                    }
+                } else {
+                    val imageLoader = ImageLoader.Builder(context).build()
+                    val request = ImageRequest.Builder(context)
+                        .data(uri)
+                        .build()
+                    val result = imageLoader.execute(request)
+                    if (result is SuccessResult) {
+                        future.set(result.drawable.toBitmap())
+                    } else if (result is ErrorResult) {
+                        future.setException(result.throwable)
+                    }
                 }
             }
             return future
