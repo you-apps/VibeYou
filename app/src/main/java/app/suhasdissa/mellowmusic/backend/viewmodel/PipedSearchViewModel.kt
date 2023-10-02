@@ -103,11 +103,19 @@ class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewM
     }
 
     companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
+        val OnlineFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PipedSearchViewModel(
-                    application.container.musicRepository
+                    application.container.pipedMusicRepository
+                )
+            }
+        }
+        val LocalFactory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as MellowMusicApplication)
+                PipedSearchViewModel(
+                    application.container.localMusicRepository
                 )
             }
         }

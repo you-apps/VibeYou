@@ -49,6 +49,7 @@ import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.navigateTo
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
+import app.suhasdissa.mellowmusic.ui.screens.music.LocalMusicScreen
 import app.suhasdissa.mellowmusic.ui.screens.music.MusicScreen
 import app.suhasdissa.mellowmusic.utils.PermissionHelper
 import kotlinx.coroutines.launch
@@ -56,8 +57,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigate: (Destination) -> Unit
-
+    onNavigate: (Destination) -> Unit,
+    onSearch: (isOnline: Boolean) -> Unit
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -103,7 +104,7 @@ fun HomeScreen(
                         .fillMaxWidth(0.9f)
                         .clickable {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
-                            onNavigate(Destination.Search)
+                            onSearch(currentDestination == Destination.PipedMusic)
                         },
                     shape = RoundedCornerShape(50)
                 ) {
@@ -149,9 +150,12 @@ fun HomeScreen(
                 composable(Destination.LocalMusic.route) {
                     LaunchedEffect(Unit) {
                         container.musicRepository = container.localMusicRepository
-                        PermissionHelper.checkPermissions(mainActivity, LocalMusicRepository.permissions)
+                        PermissionHelper.checkPermissions(
+                            mainActivity,
+                            LocalMusicRepository.permissions
+                        )
                     }
-                    MusicScreen()
+                    LocalMusicScreen()
                 }
             }
         }

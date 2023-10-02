@@ -57,8 +57,8 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 @Composable
 fun SearchScreen(
     onNavigate: (Destination) -> Unit,
+    pipedSearchViewModel: PipedSearchViewModel,
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
-    pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory)
 ) {
