@@ -10,12 +10,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
+import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
 import app.suhasdissa.mellowmusic.utils.asSong
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(private val musicRepository: MusicRepository) : ViewModel() {
+class PlaylistViewModel(private val musicRepository: PipedMusicRepository) : ViewModel() {
 
     var playlistInfoState: PlaylistInfoState by mutableStateOf(PlaylistInfoState.Loading)
         private set
@@ -43,7 +43,7 @@ class PlaylistViewModel(private val musicRepository: MusicRepository) : ViewMode
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MellowMusicApplication)
                 PlaylistViewModel(
-                    application.container.musicRepository
+                    application.container.pipedMusicRepository
                 )
             }
         }

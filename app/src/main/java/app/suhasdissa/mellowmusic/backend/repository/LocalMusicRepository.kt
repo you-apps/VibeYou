@@ -7,24 +7,18 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
-import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
-import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.models.artists.Artist
-import app.suhasdissa.mellowmusic.backend.models.artists.Channel
-import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
 import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
-import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
-import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class LocalMusicRepository(
-    songsDao: SongsDao,
-    searchDao: SearchDao,
-    private val contentResolver: ContentResolver
-) : MusicRepository(searchDao, songsDao) {
+    private val contentResolver: ContentResolver,
+    searchDao: SearchDao
+) : MusicRepository(searchDao) {
     private var songsCache = listOf<Song>()
 
     fun getAllSongs(): List<Song> {
@@ -107,20 +101,16 @@ class LocalMusicRepository(
         return songs
     }
 
-    override suspend fun getAudioSource(id: String): Uri {
-        return id.toUri()
+    private suspend fun getSearchResult(query: String): List<Song> {
+        return withContext(Dispatchers.IO) {
+            val lowerQuery = query.lowercase()
+            getAllSongs().filter {
+                it.title.lowercase().contains(lowerQuery)
+            }
+        }
     }
 
-    override suspend fun getRecommendedSongs(id: String): List<MediaItem> = listOf()
-
-    override suspend fun getSuggestions(query: String): List<String> = listOf()
-
-    override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
-        val lowerQuery = query.lowercase()
-        return getAllSongs().filter { it.title.lowercase().contains(lowerQuery) }
-    }
-
-    override suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> {
+    private fun getPlaylistResult(query: String): List<Playlist> {
         val lowerQuery = query.lowercase()
         return getAllSongs()
             .groupBy { it.album }
@@ -129,6 +119,14 @@ class LocalMusicRepository(
             .filter { it.name.lowercase().contains(lowerQuery) }
     }
 
+    override suspend fun getSuggestions(query: String): List<String> = listOf()
+
+    override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> =
+        getSearchResult(query)
+
+    override suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> =
+        getPlaylistResult(query)
+
     override suspend fun getArtistResult(query: String): List<Artist> {
         val lowerQuery = query.lowercase()
         return getAllSongs()
@@ -136,40 +134,39 @@ class LocalMusicRepository(
             .map { Artist(url = it.artistsText!!, name = it.artistsText) }
     }
 
-    override suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo {
-        val songs = getAllSongs()
-            .filter { it.album == playlistId }
-            .map {
-                SongItem(
-                    url = it.id,
-                    title = it.title,
-                    thumbnail = it.thumbnailUrl.orEmpty(),
-                    duration = it.totalPlayTimeMs.toInt() / 1000
-                )
-            }
-        return PlaylistInfo(name = playlistId, relatedStreams = ArrayList(songs))
-    }
+//    override suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo {
+//        val songs = getAllSongs()
+//            .filter { it.album == playlistId }
+//            .map {
+//                SongItem(
+//                    url = it.id,
+//                    title = it.title,
+//                    thumbnail = it.thumbnailUrl.orEmpty(),
+//                    duration = it.totalPlayTimeMs.toInt() / 1000
+//                )
+//            }
+//        return PlaylistInfo(name = playlistId, relatedStreams = ArrayList(songs))
+//    }
+//
+//    override suspend fun getChannelInfo(channelId: String): Channel {
+//        return Channel(id = channelId, name = channelId)
+//    }
+//
+//    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
+//        return getAllSongs()
+//            .filter { it.artistsText == channelId }
+//            .map {
+//                Playlist(
+//                    url = it.id,
+//                    uploaderName = it.artistsText.orEmpty(),
+//                    thumbnail = it.thumbnailUrl.orEmpty(),
+//                    name = it.title
+//                )
+//            }
+//    }
 
-    override suspend fun getChannelInfo(channelId: String): Channel {
-        return Channel(id = channelId, name = channelId)
-    }
-
-    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
-        return getAllSongs()
-            .filter { it.artistsText == channelId }
-            .map {
-                Playlist(
-                    url = it.id,
-                    uploaderName = it.artistsText.orEmpty(),
-                    thumbnail = it.thumbnailUrl.orEmpty(),
-                    name = it.title
-                )
-            }
-    }
-
-    override suspend fun searchSongId(id: String): Song? {
-        return getAllSongs().firstOrNull { it.id == id }?.also { songsDao.addSong(it) }
-    }
+    override suspend fun searchLocalSong(query: String, rawQuery: String): List<Song> =
+        getSearchResult(rawQuery)
 
     companion object {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

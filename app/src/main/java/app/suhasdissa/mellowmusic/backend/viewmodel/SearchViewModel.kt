@@ -19,7 +19,7 @@ import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import kotlinx.coroutines.launch
 
-class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewModel() {
+class SearchViewModel(private val musicRepository: MusicRepository) : ViewModel() {
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
@@ -106,7 +106,7 @@ class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewM
         val OnlineFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
-                PipedSearchViewModel(
+                SearchViewModel(
                     application.container.pipedMusicRepository
                 )
             }
@@ -114,7 +114,7 @@ class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewM
         val LocalFactory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
-                PipedSearchViewModel(
+                SearchViewModel(
                     application.container.localMusicRepository
                 )
             }

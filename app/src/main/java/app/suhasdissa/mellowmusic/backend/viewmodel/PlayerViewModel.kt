@@ -16,7 +16,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
+import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepository
 import app.suhasdissa.mellowmusic.utils.addNext
 import app.suhasdissa.mellowmusic.utils.asMediaItem
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val songDatabaseRepository: SongDatabaseRepository,
-    private val musicRepository: MusicRepository,
+    private val musicRepository: PipedMusicRepository,
     private val controllerFuture: ListenableFuture<MediaController>
 ) :
     ViewModel() {
@@ -136,7 +136,7 @@ class PlayerViewModel(
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PlayerViewModel(
                     application.container.songDatabaseRepository,
-                    application.container.musicRepository,
+                    application.container.pipedMusicRepository,
                     application.container.controllerFuture
                 )
             }

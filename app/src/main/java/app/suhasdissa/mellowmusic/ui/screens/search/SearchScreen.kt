@@ -39,9 +39,9 @@ import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.SearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
 import app.suhasdissa.mellowmusic.ui.components.ArtistList
@@ -57,13 +57,13 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 @Composable
 fun SearchScreen(
     onNavigate: (Destination) -> Unit,
-    pipedSearchViewModel: PipedSearchViewModel,
+    searchViewModel: SearchViewModel,
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory)
 ) {
     var isPopupOpen by remember {
-        mutableStateOf(pipedSearchViewModel.state !is PipedSearchState.Success)
+        mutableStateOf(searchViewModel.state !is PipedSearchState.Success)
     }
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
@@ -74,13 +74,13 @@ fun SearchScreen(
                 SearchBar(
                     modifier = Modifier
                         .weight(1f),
-                    query = pipedSearchViewModel.search,
+                    query = searchViewModel.search,
                     onQueryChange = {
-                        pipedSearchViewModel.search = it
-                        if (it.length > 3) pipedSearchViewModel.getSuggestions()
+                        searchViewModel.search = it
+                        if (it.length > 3) searchViewModel.getSuggestions()
                     },
                     onSearch = {
-                        pipedSearchViewModel.searchPiped()
+                        searchViewModel.searchPiped()
                         isPopupOpen = false
                     },
                     placeholder = {
@@ -112,7 +112,7 @@ fun SearchScreen(
                         if (isPopupOpen) {
                             IconButton(onClick = {
                                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                                pipedSearchViewModel.search = ""
+                                searchViewModel.search = ""
                             }) {
                                 Icon(
                                     Icons.Default.Clear,
@@ -129,16 +129,16 @@ fun SearchScreen(
                     }
                 ) {
                     LaunchedEffect(Unit) {
-                        pipedSearchViewModel.setSearchHistory()
+                        searchViewModel.setSearchHistory()
                     }
                     val scroll = rememberScrollState()
                     Column(Modifier.verticalScroll(scroll).padding(horizontal = 8.dp)) {
-                        if (pipedSearchViewModel.suggestions.isNotEmpty()) {
-                            pipedSearchViewModel.suggestions.forEach {
+                        if (searchViewModel.suggestions.isNotEmpty()) {
+                            searchViewModel.suggestions.forEach {
                                 ListItem(
                                     modifier = Modifier.clickable {
-                                        pipedSearchViewModel.search = it
-                                        pipedSearchViewModel.searchPiped()
+                                        searchViewModel.search = it
+                                        searchViewModel.searchPiped()
                                         isPopupOpen = false
                                     },
                                     headlineContent = { Text(it) },
@@ -151,11 +151,11 @@ fun SearchScreen(
                                 )
                             }
                         } else {
-                            pipedSearchViewModel.history.forEach {
+                            searchViewModel.history.forEach {
                                 ListItem(
                                     modifier = Modifier.clickable {
-                                        pipedSearchViewModel.search = it
-                                        pipedSearchViewModel.searchPiped()
+                                        searchViewModel.search = it
+                                        searchViewModel.searchPiped()
                                         isPopupOpen = false
                                     },
                                     headlineContent = { Text(it) },
@@ -168,12 +168,12 @@ fun SearchScreen(
                                 )
                             }
                         }
-                        if (pipedSearchViewModel.songSearchSuggestion.isNotEmpty()) {
+                        if (searchViewModel.songSearchSuggestion.isNotEmpty()) {
                             Text(
                                 text = stringResource(R.string.recent_songs),
                                 style = MaterialTheme.typography.titleSmall
                             )
-                            pipedSearchViewModel.songSearchSuggestion.forEach { item ->
+                            searchViewModel.songSearchSuggestion.forEach { item ->
                                 SongCard(
                                     thumbnail = item.thumbnailUrl,
                                     title = item.title,
@@ -192,7 +192,7 @@ fun SearchScreen(
                     }
                 }
             }
-            when (val searchState = pipedSearchViewModel.state) {
+            when (val searchState = searchViewModel.state) {
                 is PipedSearchState.Loading -> {
                     LoadingScreen()
                 }
@@ -208,9 +208,9 @@ fun SearchScreen(
                     Column {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                             ChipSelector(onItemSelected = {
-                                pipedSearchViewModel.searchFilter = it
-                                pipedSearchViewModel.searchPiped()
-                            }, defaultValue = pipedSearchViewModel.searchFilter)
+                                searchViewModel.searchFilter = it
+                                searchViewModel.searchPiped()
+                            }, defaultValue = searchViewModel.searchFilter)
                         }
                         when (searchState) {
                             is PipedSearchState.Success.Playlists -> {

@@ -3,7 +3,6 @@ package app.suhasdissa.mellowmusic.backend.repository
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.Song
@@ -14,16 +13,15 @@ import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
 import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 import app.suhasdissa.mellowmusic.utils.RetrofitHelper
-import app.suhasdissa.mellowmusic.utils.asMediaItem
 import app.suhasdissa.mellowmusic.utils.asSong
 
 class PipedMusicRepository(
-    songsDao: SongsDao,
+    private val songsDao: SongsDao,
     searchDao: SearchDao
-): MusicRepository(searchDao, songsDao) {
+) : MusicRepository(searchDao) {
     private val pipedApi = RetrofitHelper.createPipedApi()
 
-    override suspend fun getAudioSource(id: String): Uri? {
+    suspend fun getAudioSource(id: String): Uri? {
         return runCatching { pipedApi.getStreams(vidId = id) }
             .getOrNull()
             ?.audioStreams
@@ -31,23 +29,23 @@ class PipedMusicRepository(
             ?.url
             ?.toUri()
     }
+//
+//    suspend fun getRecommendedSongs(id: String): List<MediaItem> {
+//        val relatedSongs =
+//            pipedApi.getStreams(vidId = id).relatedStreams.slice(0..1).map {
+//                it.asSong
+//            }
+//        songsDao.addSongs(relatedSongs)
+//        return relatedSongs.map { it.asMediaItem }
+//    }
 
-    override suspend fun getRecommendedSongs(id: String): List<MediaItem> {
-        val relatedSongs =
-        pipedApi.getStreams(vidId = id).relatedStreams.slice(0..1).map {
-            it.asSong
-        }
-        songsDao.addSongs(relatedSongs)
-        return relatedSongs.map { it.asMediaItem }
-    }
-
-    override suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo =
+    suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo =
         pipedApi.getPlaylistInfo(playlistId = playlistId)
 
-    override suspend fun getChannelInfo(channelId: String): Channel =
+    suspend fun getChannelInfo(channelId: String): Channel =
         pipedApi.getChannel(channelId = channelId)
 
-    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
+    suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
         val data = tabs.firstOrNull { it.name == "playlists" }?.data ?: return null
         return try {
             pipedApi.getChannelTab(data = data).content
@@ -85,7 +83,7 @@ class PipedMusicRepository(
         return pipedApi.getSuggestions(query = query)
     }
 
-    override suspend fun searchSongId(id: String): Song? {
+    suspend fun searchSongId(id: String): Song? {
         songsDao.getSongById(id)?.let {
             return it
         }
@@ -102,4 +100,7 @@ class PipedMusicRepository(
             return null
         }
     }
+
+    override suspend fun searchLocalSong(query: String, rawQuery: String): List<Song> =
+        songsDao.search(query)
 }

@@ -6,7 +6,6 @@ import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepository
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepositoryImpl
@@ -15,7 +14,6 @@ import com.google.common.util.concurrent.ListenableFuture
 interface AppContainer {
     val database: SongDatabase
     val songDatabaseRepository: SongDatabaseRepository
-    var musicRepository: MusicRepository
     val pipedMusicRepository: PipedMusicRepository
     val localMusicRepository: LocalMusicRepository
     val authRepository: AuthRepository
@@ -35,9 +33,8 @@ class DefaultAppContainer(
         PipedMusicRepository(database.songsDao(), database.searchDao())
     }
     override val localMusicRepository: LocalMusicRepository by lazy {
-        LocalMusicRepository(database.songsDao(), database.searchDao(), contentResolver)
+        LocalMusicRepository(contentResolver, database.searchDao())
     }
-    override var musicRepository: MusicRepository = pipedMusicRepository
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl()
     }

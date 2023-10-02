@@ -43,7 +43,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.MainActivity
-import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.navigateTo
@@ -140,16 +139,11 @@ fun HomeScreen(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                val container = (mainActivity.application as MellowMusicApplication).container
                 composable(Destination.PipedMusic.route) {
-                    LaunchedEffect(Unit) {
-                        container.musicRepository = container.pipedMusicRepository
-                    }
                     MusicScreen()
                 }
                 composable(Destination.LocalMusic.route) {
                     LaunchedEffect(Unit) {
-                        container.musicRepository = container.localMusicRepository
                         PermissionHelper.checkPermissions(
                             mainActivity,
                             LocalMusicRepository.permissions
