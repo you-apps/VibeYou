@@ -13,24 +13,22 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.models.SearchFilter
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
+import app.suhasdissa.mellowmusic.backend.data.Song
+import app.suhasdissa.mellowmusic.backend.models.LocalSearchFilter
+import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val musicRepository: MusicRepository) : ViewModel() {
+class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : ViewModel() {
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
-    var suggestions: List<String> by mutableStateOf(listOf())
     var history: List<String> by mutableStateOf(listOf())
-    var searchFilter = SearchFilter.Songs
+    var searchFilter = LocalSearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
 
     fun getSuggestions() {
         if (search.length < 3) return
-        searchSongs(search)
         val insertedTextTemp = search
         Handler(
             Looper.getMainLooper()
@@ -38,10 +36,7 @@ class SearchViewModel(private val musicRepository: MusicRepository) : ViewModel(
             {
                 if (insertedTextTemp == search) {
                     viewModelScope.launch {
-                        runCatching {
-                            suggestions = musicRepository.getSuggestions(search).take(6)
-                        }
-                        Log.e("Search ViewModel", "getting query for \"$search\"")
+                        songSearchSuggestion = musicRepository.getSearchResult(search)
                     }
                 }
             },
@@ -62,25 +57,23 @@ class SearchViewModel(private val musicRepository: MusicRepository) : ViewModel(
             musicRepository.saveSearchQuery(search)
             state = try {
                 when (searchFilter) {
-                    SearchFilter.Songs, SearchFilter.Videos -> {
+                    LocalSearchFilter.Songs -> {
                         PipedSearchState.Success.Songs(
                             musicRepository.getSearchResult(
-                                search,
-                                searchFilter
+                                search
                             )
                         )
                     }
 
-                    SearchFilter.Albums, SearchFilter.Playlists -> {
+                    LocalSearchFilter.Albums -> {
                         PipedSearchState.Success.Playlists(
                             musicRepository.getPlaylistResult(
-                                search,
-                                searchFilter
+                                search
                             )
                         )
                     }
 
-                    SearchFilter.Artists -> {
+                    LocalSearchFilter.Artists -> {
                         PipedSearchState.Success.Artists(
                             musicRepository.getArtistResult(
                                 search
@@ -95,26 +88,11 @@ class SearchViewModel(private val musicRepository: MusicRepository) : ViewModel(
         }
     }
 
-    private fun searchSongs(search: String) {
-        val searchQuery = search.split(" ").joinToString("%")
-        viewModelScope.launch {
-            songSearchSuggestion = musicRepository.searchLocalSong("%$searchQuery%", search)
-        }
-    }
-
     companion object {
-        val OnlineFactory: ViewModelProvider.Factory = viewModelFactory {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
-                SearchViewModel(
-                    application.container.pipedMusicRepository
-                )
-            }
-        }
-        val LocalFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as MellowMusicApplication)
-                SearchViewModel(
+                LocalSearchViewModel(
                     application.container.localMusicRepository
                 )
             }

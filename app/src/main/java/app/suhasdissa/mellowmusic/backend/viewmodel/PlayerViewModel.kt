@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepository
 import app.suhasdissa.mellowmusic.utils.addNext

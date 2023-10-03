@@ -1,6 +1,6 @@
 package app.suhasdissa.mellowmusic.backend.viewmodel.state
 
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
 
 sealed interface PlaylistInfoState {
     object Loading : PlaylistInfoState

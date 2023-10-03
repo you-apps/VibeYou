@@ -7,9 +7,9 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.models.SearchFilter
+import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 import app.suhasdissa.mellowmusic.backend.models.artists.Artist
 import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +17,8 @@ import kotlinx.coroutines.withContext
 
 class LocalMusicRepository(
     private val contentResolver: ContentResolver,
-    searchDao: SearchDao
-) : MusicRepository(searchDao) {
+    private val searchDao: SearchDao
+) {
     private var songsCache = listOf<Song>()
 
     fun getAllSongs(): List<Song> {
@@ -87,8 +87,7 @@ class LocalMusicRepository(
                         id = contentUri.toString(),
                         title = name,
                         durationText = DateUtils.formatElapsedTime(duration / 1000),
-                        thumbnailUrl = contentUri.toString(),
-                        totalPlayTimeMs = duration,
+                        thumbnail = null,
                         artistsText = artist,
                         album = album
                     )
@@ -101,7 +100,7 @@ class LocalMusicRepository(
         return songs
     }
 
-    private suspend fun getSearchResult(query: String): List<Song> {
+    suspend fun getSearchResult(query: String): List<Song> {
         return withContext(Dispatchers.IO) {
             val lowerQuery = query.lowercase()
             getAllSongs().filter {
@@ -110,7 +109,7 @@ class LocalMusicRepository(
         }
     }
 
-    private fun getPlaylistResult(query: String): List<Playlist> {
+    fun getPlaylistResult(query: String): List<Playlist> {
         val lowerQuery = query.lowercase()
         return getAllSongs()
             .groupBy { it.album }
@@ -119,15 +118,7 @@ class LocalMusicRepository(
             .filter { it.name.lowercase().contains(lowerQuery) }
     }
 
-    override suspend fun getSuggestions(query: String): List<String> = listOf()
-
-    override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> =
-        getSearchResult(query)
-
-    override suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> =
-        getPlaylistResult(query)
-
-    override suspend fun getArtistResult(query: String): List<Artist> {
+    suspend fun getArtistResult(query: String): List<Artist> {
         val lowerQuery = query.lowercase()
         return getAllSongs()
             .filter { it.artistsText?.lowercase()?.contains(lowerQuery) == true }
@@ -148,9 +139,6 @@ class LocalMusicRepository(
 //        return PlaylistInfo(name = playlistId, relatedStreams = ArrayList(songs))
 //    }
 //
-//    override suspend fun getChannelInfo(channelId: String): Channel {
-//        return Channel(id = channelId, name = channelId)
-//    }
 //
 //    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
 //        return getAllSongs()
@@ -165,8 +153,8 @@ class LocalMusicRepository(
 //            }
 //    }
 
-    override suspend fun searchLocalSong(query: String, rawQuery: String): List<Song> =
-        getSearchResult(rawQuery)
+    fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    fun getSearchHistory() = searchDao.getSearchHistory()
 
     companion object {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

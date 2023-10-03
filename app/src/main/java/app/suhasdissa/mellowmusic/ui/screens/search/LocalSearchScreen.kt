@@ -39,7 +39,7 @@ import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
@@ -55,15 +55,15 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(
+fun LocalSearchScreen(
     onNavigate: (Destination) -> Unit,
-    pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
+    localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory),
     playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory)
 ) {
     var isPopupOpen by remember {
-        mutableStateOf(pipedSearchViewModel.state !is PipedSearchState.Success)
+        mutableStateOf(localSearchViewModel.state !is PipedSearchState.Success)
     }
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
@@ -74,13 +74,13 @@ fun SearchScreen(
                 SearchBar(
                     modifier = Modifier
                         .weight(1f),
-                    query = pipedSearchViewModel.search,
+                    query = localSearchViewModel.search,
                     onQueryChange = {
-                        pipedSearchViewModel.search = it
-                        if (it.length > 3) pipedSearchViewModel.getSuggestions()
+                        localSearchViewModel.search = it
+                        if (it.length > 3) localSearchViewModel.getSuggestions()
                     },
                     onSearch = {
-                        pipedSearchViewModel.searchPiped()
+                        localSearchViewModel.searchPiped()
                         isPopupOpen = false
                     },
                     placeholder = {
@@ -112,7 +112,7 @@ fun SearchScreen(
                         if (isPopupOpen) {
                             IconButton(onClick = {
                                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                                pipedSearchViewModel.search = ""
+                                localSearchViewModel.search = ""
                             }) {
                                 Icon(
                                     Icons.Default.Clear,
@@ -129,51 +129,16 @@ fun SearchScreen(
                     }
                 ) {
                     LaunchedEffect(Unit) {
-                        pipedSearchViewModel.setSearchHistory()
+                        localSearchViewModel.setSearchHistory()
                     }
                     val scroll = rememberScrollState()
                     Column(Modifier.verticalScroll(scroll).padding(horizontal = 8.dp)) {
-                        if (pipedSearchViewModel.suggestions.isNotEmpty()) {
-                            pipedSearchViewModel.suggestions.forEach {
-                                ListItem(
-                                    modifier = Modifier.clickable {
-                                        pipedSearchViewModel.search = it
-                                        pipedSearchViewModel.searchPiped()
-                                        isPopupOpen = false
-                                    },
-                                    headlineContent = { Text(it) },
-                                    leadingContent = {
-                                        Icon(
-                                            imageVector = Icons.Default.Search,
-                                            contentDescription = null
-                                        )
-                                    }
-                                )
-                            }
-                        } else {
-                            pipedSearchViewModel.history.forEach {
-                                ListItem(
-                                    modifier = Modifier.clickable {
-                                        pipedSearchViewModel.search = it
-                                        pipedSearchViewModel.searchPiped()
-                                        isPopupOpen = false
-                                    },
-                                    headlineContent = { Text(it) },
-                                    leadingContent = {
-                                        Icon(
-                                            imageVector = Icons.Default.History,
-                                            contentDescription = null
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                        if (pipedSearchViewModel.songSearchSuggestion.isNotEmpty()) {
+                        if (localSearchViewModel.songSearchSuggestion.isNotEmpty()) {
                             Text(
-                                text = stringResource(R.string.recent_songs),
+                                text = stringResource(R.string.songs),
                                 style = MaterialTheme.typography.titleSmall
                             )
-                            pipedSearchViewModel.songSearchSuggestion.forEach { item ->
+                            localSearchViewModel.songSearchSuggestion.forEach { item ->
                                 SongCard(
                                     thumbnail = item.thumbnailUrl,
                                     title = item.title,
@@ -189,17 +154,33 @@ fun SearchScreen(
                                 )
                             }
                         }
+                        localSearchViewModel.history.forEach {
+                            ListItem(
+                                modifier = Modifier.clickable {
+                                    localSearchViewModel.search = it
+                                    localSearchViewModel.searchPiped()
+                                    isPopupOpen = false
+                                },
+                                headlineContent = { Text(it) },
+                                leadingContent = {
+                                    Icon(
+                                        imageVector = Icons.Default.History,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
             Column {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     ChipSelector(onItemSelected = {
-                        pipedSearchViewModel.searchFilter = it
-                        pipedSearchViewModel.searchPiped()
-                    }, defaultValue = pipedSearchViewModel.searchFilter)
+                        localSearchViewModel.searchFilter = it
+                        localSearchViewModel.searchPiped()
+                    }, defaultValue = localSearchViewModel.searchFilter)
                 }
-                when (val searchState = pipedSearchViewModel.state) {
+                when (val searchState = localSearchViewModel.state) {
                     is PipedSearchState.Loading -> {
                         LoadingScreen()
                     }

@@ -3,9 +3,10 @@ package app.suhasdissa.mellowmusic.backend.repository
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.models.artists.Artist
 import app.suhasdissa.mellowmusic.backend.models.artists.Channel
@@ -14,11 +15,12 @@ import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 import app.suhasdissa.mellowmusic.utils.RetrofitHelper
 import app.suhasdissa.mellowmusic.utils.asSong
+import app.suhasdissa.mellowmusic.utils.asSongEntity
 
 class PipedMusicRepository(
     private val songsDao: SongsDao,
-    searchDao: SearchDao
-) : MusicRepository(searchDao) {
+    private val searchDao: SearchDao
+) {
     private val pipedApi = RetrofitHelper.createPipedApi()
 
     suspend fun getAudioSource(id: String): Uri? {
@@ -55,7 +57,7 @@ class PipedMusicRepository(
         }
     }
 
-    override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
+    suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
         if (filter != SearchFilter.Songs && filter != SearchFilter.Videos) {
             throw Exception(
                 "Invalid filter for search"
@@ -66,7 +68,7 @@ class PipedMusicRepository(
         }
     }
 
-    override suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> {
+    suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> {
         if (filter != SearchFilter.Playlists && filter != SearchFilter.Albums) {
             throw Exception(
                 "Invalid filter for search"
@@ -75,24 +77,24 @@ class PipedMusicRepository(
         return pipedApi.searchPipedPlaylists(query = query, filter = filter.value).items
     }
 
-    override suspend fun getArtistResult(query: String): List<Artist> {
+    suspend fun getArtistResult(query: String): List<Artist> {
         return pipedApi.searchPipedArtists(query = query).items
     }
 
-    override suspend fun getSuggestions(query: String): List<String> {
+    suspend fun getSuggestions(query: String): List<String> {
         return pipedApi.getSuggestions(query = query)
     }
 
     suspend fun searchSongId(id: String): Song? {
         songsDao.getSongById(id)?.let {
-            return it
+            return it.asSong
         }
         try {
             val songResponse = pipedApi.getStreams(vidId = id)
             songResponse.title?.let {
                 with(songResponse) {
                     val song = asSong(id)
-                    songsDao.addSong(song)
+                    songsDao.addSong(song.asSongEntity)
                     return song
                 }
             } ?: return null
@@ -101,6 +103,9 @@ class PipedMusicRepository(
         }
     }
 
-    override suspend fun searchLocalSong(query: String, rawQuery: String): List<Song> =
-        songsDao.search(query)
+    fun searchLocalSong(query: String): List<Song> =
+        songsDao.search(query).map { it.asSong }
+
+    fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    fun getSearchHistory() = searchDao.getSearchHistory()
 }

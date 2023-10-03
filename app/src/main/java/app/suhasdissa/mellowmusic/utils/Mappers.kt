@@ -6,7 +6,8 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
+import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
 import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 
@@ -17,6 +18,26 @@ val SongItem.asSong: Song
         artistsText = uploaderName,
         durationText = DateUtils.formatElapsedTime(duration.toLong()),
         thumbnailUrl = thumbnail
+    )
+
+val Song.asSongEntity: SongEntity
+    get() = SongEntity(
+        id = id,
+        title = title,
+        artistsText = artistsText,
+        durationText = durationText,
+        thumbnailUrl = thumbnailUrl,
+        likedAt = likedAt
+    )
+
+val SongEntity.asSong: Song
+    get() = Song(
+        id = id,
+        title = title,
+        artistsText = artistsText,
+        durationText = durationText,
+        thumbnailUrl = thumbnailUrl,
+        likedAt = likedAt
     )
 
 fun PipedSongResponse.asSong(id: String): Song {

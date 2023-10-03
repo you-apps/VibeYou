@@ -13,13 +13,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
+import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import kotlinx.coroutines.launch
 
-class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewModel() {
+class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : ViewModel() {
 
     var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
@@ -98,24 +98,16 @@ class PipedSearchViewModel(private val musicRepository: MusicRepository) : ViewM
     private fun searchSongs(search: String) {
         val searchQuery = search.split(" ").joinToString("%")
         viewModelScope.launch {
-            songSearchSuggestion = musicRepository.searchLocalSong("%$searchQuery%", search)
+            songSearchSuggestion = musicRepository.searchLocalSong("%$searchQuery%")
         }
     }
 
     companion object {
-        val OnlineFactory: ViewModelProvider.Factory = viewModelFactory {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PipedSearchViewModel(
                     application.container.pipedMusicRepository
-                )
-            }
-        }
-        val LocalFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as MellowMusicApplication)
-                PipedSearchViewModel(
-                    application.container.localMusicRepository
                 )
             }
         }

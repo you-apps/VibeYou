@@ -1,24 +1,11 @@
 package app.suhasdissa.mellowmusic
 
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-
 sealed class Destination(val route: String) {
     object PipedMusic : Destination("piped_music")
     object LocalMusic : Destination("local_music")
     object YoutubeMusic : Destination("yt_music")
-    object Search : Destination("search") {
-        const val arg = "is_online"
-        val routeWithArgs = "$route/{$arg}"
-        val args = listOf(
-            navArgument(
-                arg
-            ) {
-                type = NavType.BoolType
-            }
-        )
-    }
-
+    object OnlineSearch : Destination("online_search")
+    object LocalSearch : Destination("local_search")
     object Settings : Destination("settings")
     object About : Destination("about")
     object NetworkSettings : Destination("net_settings")
