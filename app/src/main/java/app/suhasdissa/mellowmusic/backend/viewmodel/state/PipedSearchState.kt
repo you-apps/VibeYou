@@ -1,8 +1,8 @@
 package app.suhasdissa.mellowmusic.backend.viewmodel.state
 
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
-import app.suhasdissa.mellowmusic.backend.models.artists.Artist
 
 sealed interface PipedSearchState {
     sealed interface Success : PipedSearchState {

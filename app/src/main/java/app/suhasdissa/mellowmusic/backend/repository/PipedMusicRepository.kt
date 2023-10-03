@@ -4,17 +4,18 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
-import app.suhasdissa.mellowmusic.backend.models.artists.Artist
 import app.suhasdissa.mellowmusic.backend.models.artists.Channel
 import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 import app.suhasdissa.mellowmusic.utils.RetrofitHelper
 import app.suhasdissa.mellowmusic.utils.asAlbum
+import app.suhasdissa.mellowmusic.utils.asArtist
 import app.suhasdissa.mellowmusic.utils.asSong
 import app.suhasdissa.mellowmusic.utils.asSongEntity
 
@@ -82,7 +83,7 @@ class PipedMusicRepository(
     }
 
     suspend fun getArtistResult(query: String): List<Artist> {
-        return pipedApi.searchPipedArtists(query = query).items
+        return pipedApi.searchPipedArtists(query = query).items.map { it.asArtist }
     }
 
     suspend fun getSuggestions(query: String): List<String> {

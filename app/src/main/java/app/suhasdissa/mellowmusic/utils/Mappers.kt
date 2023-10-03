@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
@@ -59,6 +60,14 @@ val Playlist.asAlbum: Album
         artistsText = uploaderName,
         thumbnailUrl = thumbnail
 
+    )
+
+val app.suhasdissa.mellowmusic.backend.models.artists.Artist.asArtist: Artist
+    get() = Artist(
+        id = artistId,
+        thumbnailUrl = thumbnail,
+        description = description,
+        artistsText = name
     )
 
 val Song.asMediaItem: MediaItem

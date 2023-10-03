@@ -56,4 +56,5 @@
     <string name="piped_music">Piped Music</string>
     <string name="local_music">Local Music</string>
     <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
 </resources>

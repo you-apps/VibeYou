@@ -28,6 +28,7 @@ import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
+import app.suhasdissa.mellowmusic.ui.components.ArtistList
 import app.suhasdissa.mellowmusic.ui.screens.songs.SongListView
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,7 @@ fun LocalMusicScreen(
     localSongViewModel: LocalSongViewModel = viewModel(factory = LocalSongViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
-    val pagerState = rememberPagerState { 2 }
+    val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
     Column {
         TabRow(selectedTabIndex = pagerState.currentPage, Modifier.fillMaxWidth()) {
@@ -66,6 +67,20 @@ fun LocalMusicScreen(
             }) {
                 Text(
                     stringResource(R.string.albums),
+                    Modifier.padding(10.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            Tab(selected = (pagerState.currentPage == 2), onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                scope.launch {
+                    pagerState.animateScrollToPage(
+                        2
+                    )
+                }
+            }) {
+                Text(
+                    stringResource(R.string.artists),
                     Modifier.padding(10.dp),
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -101,6 +116,12 @@ fun LocalMusicScreen(
 
                 1 -> AlbumList(
                     items = localSongViewModel.albums,
+                    onClickCard = {},
+                    onLongPress = {}
+                )
+
+                2 -> ArtistList(
+                    items = localSongViewModel.artists,
                     onClickCard = {},
                     onLongPress = {}
                 )
