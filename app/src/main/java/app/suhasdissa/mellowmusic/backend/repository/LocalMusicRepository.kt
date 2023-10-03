@@ -24,19 +24,18 @@ class LocalMusicRepository(
     private var albumCache = listOf<Album>()
     private var artistCache = listOf<Artist>()
 
-    fun getAllSongs(): List<Song> {
-        if (songsCache.isNotEmpty()) return songsCache
+    suspend fun getAllSongs(): List<Song> = withContext(Dispatchers.IO) {
+        if (songsCache.isNotEmpty()) return@withContext songsCache
 
         val songs = mutableListOf<Song>()
 
-        val collection =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Audio.Media.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL
-                )
-            } else {
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
@@ -102,24 +101,23 @@ class LocalMusicRepository(
             }
         }
 
-        this.songsCache = songs
+        this@LocalMusicRepository.songsCache = songs
 
-        return songs
+        songs
     }
 
-    fun getAllAlbums(): List<Album> {
-        if (albumCache.isNotEmpty()) return albumCache
+    suspend fun getAllAlbums(): List<Album> = withContext(Dispatchers.IO) {
+        if (albumCache.isNotEmpty()) return@withContext albumCache
 
         val albums = mutableListOf<Album>()
 
-        val collection =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Audio.Albums.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL
-                )
-            } else {
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
-            }
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Albums.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Audio.Albums._ID,
@@ -159,24 +157,23 @@ class LocalMusicRepository(
             }
         }
 
-        this.albumCache = albums
+        this@LocalMusicRepository.albumCache = albums
 
-        return albums
+        albums
     }
 
-    fun getAllArtists(): List<Artist> {
-        if (artistCache.isNotEmpty()) return artistCache
+    suspend fun getAllArtists(): List<Artist> = withContext(Dispatchers.IO) {
+        if (artistCache.isNotEmpty()) return@withContext artistCache
 
         val artists = mutableListOf<Artist>()
 
-        val collection =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Audio.Albums.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL
-                )
-            } else {
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
-            }
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Albums.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Audio.Artists._ID,
@@ -209,35 +206,29 @@ class LocalMusicRepository(
             }
         }
 
-        this.artistCache = artists
+        this@LocalMusicRepository.artistCache = artists
 
-        return artists
+        artists
     }
 
     suspend fun getSearchResult(query: String): List<Song> {
-        return withContext(Dispatchers.IO) {
-            val lowerQuery = query.lowercase()
-            getAllSongs().filter {
-                it.title.lowercase().contains(lowerQuery)
-            }
+        val lowerQuery = query.lowercase()
+        return getAllSongs().filter {
+            it.title.lowercase().contains(lowerQuery)
         }
     }
 
     suspend fun getAlbumsResult(query: String): List<Album> {
-        return withContext(Dispatchers.IO) {
-            val lowerQuery = query.lowercase()
-            getAllAlbums().filter {
-                it.title.lowercase().contains(lowerQuery)
-            }
+        val lowerQuery = query.lowercase()
+        return getAllAlbums().filter {
+            it.title.lowercase().contains(lowerQuery)
         }
     }
 
     suspend fun getArtistResult(query: String): List<Artist> {
-        return withContext(Dispatchers.IO) {
-            val lowerQuery = query.lowercase()
-            getAllArtists().filter {
-                it.artistsText.lowercase().contains(lowerQuery)
-            }
+        val lowerQuery = query.lowercase()
+        return getAllArtists().filter {
+            it.artistsText.lowercase().contains(lowerQuery)
         }
     }
 
