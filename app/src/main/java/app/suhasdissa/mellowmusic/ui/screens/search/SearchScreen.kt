@@ -213,7 +213,7 @@ fun SearchScreen(
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        pipedSearchViewModel.getPlaylistInfo(it.playlistId)
+                                        pipedSearchViewModel.getPlaylistInfo(it.id)
                                         onNavigate(Destination.Playlists)
                                     },
                                     onLongPress = {

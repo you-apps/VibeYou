@@ -67,7 +67,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
 
                     LocalSearchFilter.Albums -> {
                         PipedSearchState.Success.Playlists(
-                            musicRepository.getPlaylistResult(
+                            musicRepository.getAlbumsResult(
                                 search
                             )
                         )

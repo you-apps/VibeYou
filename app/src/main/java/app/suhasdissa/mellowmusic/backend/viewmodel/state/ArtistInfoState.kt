@@ -1,6 +1,6 @@
 package app.suhasdissa.mellowmusic.backend.viewmodel.state
 
-import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
+import app.suhasdissa.mellowmusic.backend.data.Album
 
 sealed interface ArtistInfoState {
     object Loading : ArtistInfoState
@@ -9,7 +9,7 @@ sealed interface ArtistInfoState {
         val name: String,
         val thumbnail: String?,
         val description: String?,
-        val playlists: List<Playlist>
+        val playlists: List<Album>
 
     ) : ArtistInfoState
 }

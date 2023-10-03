@@ -6,9 +6,11 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
+import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 
 val SongItem.asSong: Song
@@ -49,6 +51,15 @@ fun PipedSongResponse.asSong(id: String): Song {
         thumbnailUrl = thumbnailUrl ?: ""
     )
 }
+
+val Playlist.asAlbum: Album
+    get() = Album(
+        id = playlistId,
+        title = name,
+        artistsText = uploaderName,
+        thumbnailUrl = thumbnail
+
+    )
 
 val Song.asMediaItem: MediaItem
     @SuppressLint("UnsafeOptInUsageError")

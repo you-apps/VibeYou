@@ -39,7 +39,7 @@ fun ArtistScreen(
             ArtistInfoState.Loading -> LoadingScreen()
             is ArtistInfoState.Success -> {
                 AlbumList(items = state.playlists, onClickCard = {
-                    artistViewModel.getPlaylistInfo(it.playlistId)
+                    artistViewModel.getPlaylistInfo(it.id)
                     onNavigate(Destination.Playlists)
                 }, onLongPress = {
                 })

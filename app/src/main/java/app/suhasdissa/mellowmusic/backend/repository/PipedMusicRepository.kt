@@ -3,6 +3,7 @@ package app.suhasdissa.mellowmusic.backend.repository
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
+import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
@@ -11,9 +12,9 @@ import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.models.artists.Artist
 import app.suhasdissa.mellowmusic.backend.models.artists.Channel
 import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
-import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
 import app.suhasdissa.mellowmusic.utils.RetrofitHelper
+import app.suhasdissa.mellowmusic.utils.asAlbum
 import app.suhasdissa.mellowmusic.utils.asSong
 import app.suhasdissa.mellowmusic.utils.asSongEntity
 
@@ -47,13 +48,13 @@ class PipedMusicRepository(
     suspend fun getChannelInfo(channelId: String): Channel =
         pipedApi.getChannel(channelId = channelId)
 
-    suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
-        val data = tabs.firstOrNull { it.name == "playlists" }?.data ?: return null
+    suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Album> {
+        val data = tabs.firstOrNull { it.name == "playlists" }?.data ?: return listOf()
         return try {
-            pipedApi.getChannelTab(data = data).content
+            pipedApi.getChannelTab(data = data).content.map { it.asAlbum }
         } catch (e: Exception) {
             Log.e("GetChannel Playlists", e.message, e)
-            null
+            listOf()
         }
     }
 
@@ -68,13 +69,16 @@ class PipedMusicRepository(
         }
     }
 
-    suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> {
+    suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Album> {
         if (filter != SearchFilter.Playlists && filter != SearchFilter.Albums) {
             throw Exception(
                 "Invalid filter for search"
             )
         }
-        return pipedApi.searchPipedPlaylists(query = query, filter = filter.value).items
+        return pipedApi.searchPipedPlaylists(
+            query = query,
+            filter = filter.value
+        ).items.map { it.asAlbum }
     }
 
     suspend fun getArtistResult(query: String): List<Artist> {
