@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -45,6 +46,7 @@ import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.MainActivity
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.navigateTo
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
@@ -56,7 +58,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigate: (Destination) -> Unit
+    onNavigate: (Destination) -> Unit,
+    localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory)
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -152,7 +155,7 @@ fun HomeScreen(
                             LocalMusicRepository.permissions
                         )
                     }
-                    LocalMusicScreen()
+                    LocalMusicScreen(onNavigate, localSearchViewModel)
                 }
             }
         }

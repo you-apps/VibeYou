@@ -16,16 +16,19 @@ import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.LocalSearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import kotlinx.coroutines.launch
 
 class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : ViewModel() {
 
-    var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
+    var state: SearchState by mutableStateOf(SearchState.Empty)
     var history: List<String> by mutableStateOf(listOf())
     var searchFilter = LocalSearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
+    var playlistInfoState: PlaylistInfoState by mutableStateOf(PlaylistInfoState.Loading)
+        private set
 
     fun getSuggestions() {
         if (search.length < 3) return
@@ -50,15 +53,32 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
         }
     }
 
+    fun getAlbumInfo(albumId: Long, name: String) {
+        viewModelScope.launch {
+            playlistInfoState = PlaylistInfoState.Loading
+            playlistInfoState = try {
+                val info = musicRepository.getAlbumInfo(albumId)
+                PlaylistInfoState.Success(
+                    name,
+                    info.thumbnailUrl,
+                    info.songs
+                )
+            } catch (e: Exception) {
+                Log.e("Playlist Info", e.toString())
+                PlaylistInfoState.Error
+            }
+        }
+    }
+
     fun searchPiped() {
         if (search.isEmpty()) return
         viewModelScope.launch {
-            state = PipedSearchState.Loading
+            state = SearchState.Loading
             musicRepository.saveSearchQuery(search)
             state = try {
                 when (searchFilter) {
                     LocalSearchFilter.Songs -> {
-                        PipedSearchState.Success.Songs(
+                        SearchState.Success.Songs(
                             musicRepository.getSearchResult(
                                 search
                             )
@@ -66,7 +86,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
                     }
 
                     LocalSearchFilter.Albums -> {
-                        PipedSearchState.Success.Playlists(
+                        SearchState.Success.Playlists(
                             musicRepository.getAlbumsResult(
                                 search
                             )
@@ -74,7 +94,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
                     }
 
                     LocalSearchFilter.Artists -> {
-                        PipedSearchState.Success.Artists(
+                        SearchState.Success.Artists(
                             musicRepository.getArtistResult(
                                 search
                             )
@@ -83,7 +103,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
                 }
             } catch (e: Exception) {
                 Log.e("Search Piped", e.toString())
-                PipedSearchState.Error(e.toString())
+                SearchState.Error(e.toString())
             }
         }
     }

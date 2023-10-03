@@ -10,7 +10,8 @@ data class Song(
     val thumbnailUrl: String? = null,
     val likedAt: Long? = null,
     val thumbnail: Bitmap? = null,
-    val album: String? = null
+    val albumId: Long? = null,
+    val artistId: Long? = null
 ) {
     fun toggleLike(): Song {
         return copy(

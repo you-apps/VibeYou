@@ -40,7 +40,7 @@ import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
 import app.suhasdissa.mellowmusic.ui.components.ArtistList
 import app.suhasdissa.mellowmusic.ui.components.ChipSelector
@@ -59,7 +59,7 @@ fun LocalSearchScreen(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var isPopupOpen by remember {
-        mutableStateOf(localSearchViewModel.state !is PipedSearchState.Success)
+        mutableStateOf(localSearchViewModel.state !is SearchState.Success)
     }
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
@@ -177,31 +177,32 @@ fun LocalSearchScreen(
                     }, defaultValue = localSearchViewModel.searchFilter)
                 }
                 when (val searchState = localSearchViewModel.state) {
-                    is PipedSearchState.Loading -> {
+                    is SearchState.Loading -> {
                         LoadingScreen()
                     }
 
-                    is PipedSearchState.Error -> {
+                    is SearchState.Error -> {
                         IllustratedMessageScreen(
                             image = R.drawable.sad_mellow,
                             message = R.string.something_went_wrong
                         )
                     }
 
-                    is PipedSearchState.Success -> {
+                    is SearchState.Success -> {
                         when (searchState) {
-                            is PipedSearchState.Success.Playlists -> {
+                            is SearchState.Success.Playlists -> {
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        // TODO
+                                        localSearchViewModel.getAlbumInfo(it.id.toLong(), it.title)
+                                        onNavigate(Destination.LocalPlaylists)
                                     },
                                     onLongPress = {
                                     }
                                 )
                             }
 
-                            is PipedSearchState.Success.Songs -> {
+                            is SearchState.Success.Songs -> {
                                 SongList(
                                     items = searchState.items,
                                     onClickCard = { song ->
@@ -215,7 +216,7 @@ fun LocalSearchScreen(
                                 )
                             }
 
-                            is PipedSearchState.Success.Artists -> {
+                            is SearchState.Success.Artists -> {
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
@@ -228,7 +229,7 @@ fun LocalSearchScreen(
                         }
                     }
 
-                    is PipedSearchState.Empty -> {
+                    is SearchState.Empty -> {
                         IllustratedMessageScreen(
                             image = R.drawable.ic_launcher_monochrome,
                             message = R.string.search_for_a_song,

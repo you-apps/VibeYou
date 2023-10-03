@@ -17,14 +17,14 @@ import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import app.suhasdissa.mellowmusic.utils.asSong
 import kotlinx.coroutines.launch
 
 class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : ViewModel() {
 
-    var state: PipedSearchState by mutableStateOf(PipedSearchState.Empty)
+    var state: SearchState by mutableStateOf(SearchState.Empty)
     var suggestions: List<String> by mutableStateOf(listOf())
     var history: List<String> by mutableStateOf(listOf())
     var searchFilter = SearchFilter.Songs
@@ -83,7 +83,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
                     info.name ?: "",
                     info.avatarUrl,
                     info.description,
-                    playlists ?: listOf()
+                    playlists
                 )
             } catch (e: Exception) {
                 Log.e("Playlist Info", e.toString())
@@ -101,12 +101,12 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
     fun searchPiped() {
         if (search.isEmpty()) return
         viewModelScope.launch {
-            state = PipedSearchState.Loading
+            state = SearchState.Loading
             musicRepository.saveSearchQuery(search)
             state = try {
                 when (searchFilter) {
                     SearchFilter.Songs, SearchFilter.Videos -> {
-                        PipedSearchState.Success.Songs(
+                        SearchState.Success.Songs(
                             musicRepository.getSearchResult(
                                 search,
                                 searchFilter
@@ -115,7 +115,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
                     }
 
                     SearchFilter.Albums, SearchFilter.Playlists -> {
-                        PipedSearchState.Success.Playlists(
+                        SearchState.Success.Playlists(
                             musicRepository.getPlaylistResult(
                                 search,
                                 searchFilter
@@ -124,7 +124,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
                     }
 
                     SearchFilter.Artists -> {
-                        PipedSearchState.Success.Artists(
+                        SearchState.Success.Artists(
                             musicRepository.getArtistResult(
                                 search
                             )
@@ -133,7 +133,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
                 }
             } catch (e: Exception) {
                 Log.e("Search Piped", e.toString())
-                PipedSearchState.Error(e.toString())
+                SearchState.Error(e.toString())
             }
         }
     }

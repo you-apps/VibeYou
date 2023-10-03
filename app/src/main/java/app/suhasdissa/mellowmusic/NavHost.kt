@@ -3,9 +3,13 @@ package app.suhasdissa.mellowmusic
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSongViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.LocalSearchScreen
@@ -70,7 +74,17 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(Destination.Playlists.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                PlaylistScreen()
+                val searchViewModel: PipedSearchViewModel =
+                    viewModel(factory = PipedSearchViewModel.Factory)
+                PlaylistScreen(searchViewModel.playlistInfoState)
+            }
+        }
+
+        composable(Destination.LocalPlaylists.route) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                val searchViewModel: LocalSearchViewModel =
+                    viewModel(factory = LocalSongViewModel.Factory)
+                PlaylistScreen(searchViewModel.playlistInfoState)
             }
         }
 

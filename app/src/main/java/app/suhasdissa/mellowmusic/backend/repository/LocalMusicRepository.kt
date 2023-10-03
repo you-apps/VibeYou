@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.AlbumInfo
 import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
@@ -43,10 +44,11 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.ARTIST,
-            MediaStore.Audio.Media.ALBUM
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST_ID
         )
 
-        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
 
         val query = contentResolver.query(
             collection,
@@ -63,7 +65,8 @@ class LocalMusicRepository(
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+            val artistIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -77,7 +80,8 @@ class LocalMusicRepository(
                     }
                 val duration = cursor.getLong(durationColumn)
                 val artist = cursor.getString(artistColumn)
-                val album = cursor.getString(albumColumn)
+                val album = cursor.getLong(albumColumn)
+                val artistId = cursor.getLong(artistIdColumn)
 
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -91,7 +95,8 @@ class LocalMusicRepository(
                         durationText = DateUtils.formatElapsedTime(duration / 1000),
                         thumbnail = null,
                         artistsText = artist,
-                        album = album
+                        albumId = album,
+                        artistId = artistId
                     )
                 )
             }
@@ -236,33 +241,11 @@ class LocalMusicRepository(
         }
     }
 
-//    override suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo {
-//        val songs = getAllSongs()
-//            .filter { it.album == playlistId }
-//            .map {
-//                SongItem(
-//                    url = it.id,
-//                    title = it.title,
-//                    thumbnail = it.thumbnailUrl.orEmpty(),
-//                    duration = it.totalPlayTimeMs.toInt() / 1000
-//                )
-//            }
-//        return PlaylistInfo(name = playlistId, relatedStreams = ArrayList(songs))
-//    }
-//
-//
-//    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
-//        return getAllSongs()
-//            .filter { it.artistsText == channelId }
-//            .map {
-//                Playlist(
-//                    url = it.id,
-//                    uploaderName = it.artistsText.orEmpty(),
-//                    thumbnail = it.thumbnailUrl.orEmpty(),
-//                    name = it.title
-//                )
-//            }
-//    }
+    suspend fun getAlbumInfo(albumId: Long): AlbumInfo {
+        val songs = getAllSongs()
+            .filter { it.albumId == albumId }
+        return AlbumInfo(name = "", songs = songs)
+    }
 
     fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
     fun getSearchHistory() = searchDao.getSearchHistory()

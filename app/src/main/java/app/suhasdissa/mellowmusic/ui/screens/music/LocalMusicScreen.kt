@@ -24,7 +24,9 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
@@ -35,6 +37,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LocalMusicScreen(
+    onNavigate: (Destination) -> Unit,
+    localSearchViewModel: LocalSearchViewModel,
     localSongViewModel: LocalSongViewModel = viewModel(factory = LocalSongViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
@@ -114,11 +118,10 @@ fun LocalMusicScreen(
                     }
                 }
 
-                1 -> AlbumList(
-                    items = localSongViewModel.albums,
-                    onClickCard = {},
-                    onLongPress = {}
-                )
+                1 -> AlbumList(items = localSongViewModel.albums, onClickCard = {
+                    localSearchViewModel.getAlbumInfo(it.id.toLong(), it.title)
+                    onNavigate(Destination.LocalPlaylists)
+                }, onLongPress = {})
 
                 2 -> ArtistList(
                     items = localSongViewModel.artists,

@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
-import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
@@ -41,11 +40,11 @@ import coil.compose.AsyncImage
 
 @Composable
 fun PlaylistScreen(
-    playlistViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
+    state: PlaylistInfoState,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     MiniPlayerScaffold {
-        when (val state = playlistViewModel.playlistInfoState) {
+        when (state) {
             PlaylistInfoState.Error -> IllustratedMessageScreen(
                 image = R.drawable.sad_mellow,
                 message = R.string.something_went_wrong
