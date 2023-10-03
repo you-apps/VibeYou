@@ -16,7 +16,10 @@ import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
+import app.suhasdissa.mellowmusic.utils.asSong
 import kotlinx.coroutines.launch
 
 class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : ViewModel() {
@@ -27,6 +30,10 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
     var searchFilter = SearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
+    var playlistInfoState: PlaylistInfoState by mutableStateOf(PlaylistInfoState.Loading)
+        private set
+    var artistInfoState: ArtistInfoState by mutableStateOf(ArtistInfoState.Loading)
+        private set
 
     fun getSuggestions() {
         if (search.length < 3) return
@@ -47,6 +54,42 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
             },
             500L
         )
+    }
+
+    fun getPlaylistInfo(playlistId: String) {
+        viewModelScope.launch {
+            playlistInfoState = PlaylistInfoState.Loading
+            playlistInfoState = try {
+                val info = musicRepository.getPlaylistInfo(playlistId)
+                PlaylistInfoState.Success(
+                    info.name,
+                    info.thumbnailUrl,
+                    info.relatedStreams.map { it.asSong }
+                )
+            } catch (e: Exception) {
+                Log.e("Playlist Info", e.toString())
+                PlaylistInfoState.Error
+            }
+        }
+    }
+
+    fun getChannelInfo(channelId: String) {
+        viewModelScope.launch {
+            artistInfoState = ArtistInfoState.Loading
+            artistInfoState = try {
+                val info = musicRepository.getChannelInfo(channelId)
+                val playlists = musicRepository.getChannelPlaylists(channelId, info.tabs)
+                ArtistInfoState.Success(
+                    info.name ?: "",
+                    info.avatarUrl,
+                    info.description,
+                    playlists ?: listOf()
+                )
+            } catch (e: Exception) {
+                Log.e("Playlist Info", e.toString())
+                ArtistInfoState.Error
+            }
+        }
     }
 
     fun setSearchHistory() {

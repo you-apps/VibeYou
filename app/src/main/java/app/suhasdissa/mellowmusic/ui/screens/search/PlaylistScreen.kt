@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
+import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
@@ -41,7 +41,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun PlaylistScreen(
-    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
+    playlistViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     MiniPlayerScaffold {

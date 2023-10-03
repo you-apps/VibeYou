@@ -38,10 +38,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
-import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.PipedSearchState
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
 import app.suhasdissa.mellowmusic.ui.components.ArtistList
@@ -58,9 +56,7 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 fun LocalSearchScreen(
     onNavigate: (Destination) -> Unit,
     localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory),
-    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory),
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
-    artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory)
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var isPopupOpen by remember {
         mutableStateOf(localSearchViewModel.state !is PipedSearchState.Success)
@@ -198,8 +194,7 @@ fun LocalSearchScreen(
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        playlistViewModel.getPlaylistInfo(it.playlistId)
-                                        onNavigate(Destination.Playlists)
+                                        // TODO
                                     },
                                     onLongPress = {
                                     }
@@ -224,8 +219,7 @@ fun LocalSearchScreen(
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        artistViewModel.getChannelInfo(it.artistId)
-                                        onNavigate(Destination.Artist)
+                                        // TODO
                                     },
                                     onLongPress = {
                                     }
