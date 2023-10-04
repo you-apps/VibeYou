@@ -237,10 +237,10 @@ class LocalMusicRepository(
     suspend fun getAlbumInfo(albumId: Long): AlbumInfo {
         val songs = getAllSongs()
             .filter { it.albumId == albumId }
-        return AlbumInfo(name = "", songs = songs)
+        return AlbumInfo(name = "", songs = songs, thumbnailUri = getAlbumArt(albumId))
     }
 
-    fun getAlbumArt(albumId: Long): Uri {
+    private fun getAlbumArt(albumId: Long): Uri {
         val sArtworkUri = "content://media/external/audio/albumart".toUri()
         return ContentUris.withAppendedId(sArtworkUri, albumId)
     }
