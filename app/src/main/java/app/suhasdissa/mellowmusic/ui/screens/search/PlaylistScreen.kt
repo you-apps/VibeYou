@@ -85,10 +85,7 @@ fun PlaylistScreen(
                     }
                     items(items = state.songs) { item ->
                         SongCard(
-                            thumbnail = item.thumbnailUrl,
-                            title = item.title,
-                            artist = item.artistsText,
-                            duration = item.durationText,
+                            song = item,
                             onClickCard = {
                                 playerViewModel.playSong(item)
                                 playerViewModel.saveSong(item)

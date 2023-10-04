@@ -30,9 +30,7 @@ fun AlbumList(
     ) {
         items(items = items) { item ->
             AlbumCard(
-                thumbnail = item.thumbnailUrl,
-                title = item.title,
-                subtitle = item.artistsText,
+                album = item,
                 onClickCard = { onClickCard(item) },
                 onLongPress = { onLongPress(item) }
             )

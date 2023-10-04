@@ -29,10 +29,7 @@ fun SongList(
     ) {
         items(items = items) { item ->
             SongCard(
-                thumbnail = item.thumbnailUrl,
-                title = item.title,
-                artist = item.artistsText,
-                duration = item.durationText,
+                song = item,
                 onClickCard = {
                     onClickCard(item)
                 },

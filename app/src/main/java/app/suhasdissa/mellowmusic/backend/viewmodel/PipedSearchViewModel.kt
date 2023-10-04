@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -63,7 +64,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
                 val info = musicRepository.getPlaylistInfo(playlistId)
                 PlaylistInfoState.Success(
                     info.name,
-                    info.thumbnailUrl,
+                    info.thumbnailUrl?.toUri(),
                     info.relatedStreams.map { it.asSong }
                 )
             } catch (e: Exception) {

@@ -30,15 +30,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.data.Song
 import coil.compose.AsyncImage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongCard(
-    thumbnail: String?,
-    title: String,
-    artist: String?,
-    duration: String?,
+    song: Song,
     onClickCard: () -> Unit,
     onLongPress: () -> Unit
 ) {
@@ -65,7 +63,7 @@ fun SongCard(
                 .padding(8.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(8.dp)),
-            model = thumbnail,
+            model = song.thumbnailUri,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.music_placeholder)
@@ -76,23 +74,23 @@ fun SongCard(
                 .padding(8.dp)
         ) {
             Text(
-                title,
+                song.title,
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            artist?.let {
+            song.artistsText?.let {
                 Text(
-                    artist,
+                    it,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-        duration?.let {
+        song.durationText?.let {
             Text(
-                duration,
+                it,
                 modifier = Modifier
                     .padding(horizontal = 8.dp),
                 style = MaterialTheme.typography.bodyMedium
@@ -160,10 +158,7 @@ fun SongCardCompact(
 @Composable
 private fun SongCardPreview() {
     SongCard(
-        thumbnail = "",
-        title = "Song Name",
-        artist = "Artist Name",
-        duration = "8.37",
+        Song("", "Title", "Artist", "0:00"),
         onClickCard = {},
         onLongPress = {}
     )

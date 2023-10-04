@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
+import androidx.core.net.toUri
 import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.data.AlbumInfo
 import app.suhasdissa.mellowmusic.backend.data.Artist
@@ -92,7 +93,7 @@ class LocalMusicRepository(
                         id = contentUri.toString(),
                         title = name,
                         durationText = DateUtils.formatElapsedTime(duration / 1000),
-                        thumbnail = null,
+                        thumbnailUri = getAlbumArt(album),
                         artistsText = artist,
                         albumId = album,
                         artistId = artistId
@@ -151,7 +152,8 @@ class LocalMusicRepository(
                     Album(
                         id = id.toString(),
                         title = name,
-                        artistsText = artist
+                        artistsText = artist,
+                        thumbnailUri = getAlbumArt(id)
                     )
                 )
             }
@@ -236,6 +238,11 @@ class LocalMusicRepository(
         val songs = getAllSongs()
             .filter { it.albumId == albumId }
         return AlbumInfo(name = "", songs = songs)
+    }
+
+    fun getAlbumArt(albumId: Long): Uri {
+        val sArtworkUri = "content://media/external/audio/albumart".toUri()
+        return ContentUris.withAppendedId(sArtworkUri, albumId)
     }
 
     fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))

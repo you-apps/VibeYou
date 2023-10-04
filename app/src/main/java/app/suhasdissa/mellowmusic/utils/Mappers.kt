@@ -20,7 +20,7 @@ val SongItem.asSong: Song
         title = title,
         artistsText = uploaderName,
         durationText = DateUtils.formatElapsedTime(duration.toLong()),
-        thumbnailUrl = thumbnail
+        thumbnailUri = thumbnail.toUri()
     )
 
 val Song.asSongEntity: SongEntity
@@ -29,7 +29,7 @@ val Song.asSongEntity: SongEntity
         title = title,
         artistsText = artistsText,
         durationText = durationText,
-        thumbnailUrl = thumbnailUrl,
+        thumbnailUrl = thumbnailUri.toString(),
         likedAt = likedAt
     )
 
@@ -39,7 +39,7 @@ val SongEntity.asSong: Song
         title = title,
         artistsText = artistsText,
         durationText = durationText,
-        thumbnailUrl = thumbnailUrl,
+        thumbnailUri = thumbnailUrl?.toUri(),
         likedAt = likedAt
     )
 
@@ -49,7 +49,7 @@ fun PipedSongResponse.asSong(id: String): Song {
         title = title!!,
         artistsText = uploader ?: "",
         durationText = DateUtils.formatElapsedTime(duration?.toLong() ?: 0L),
-        thumbnailUrl = thumbnailUrl ?: ""
+        thumbnailUri = thumbnailUrl?.toUri()
     )
 }
 
@@ -58,8 +58,7 @@ val Playlist.asAlbum: Album
         id = playlistId,
         title = name,
         artistsText = uploaderName,
-        thumbnailUrl = thumbnail
-
+        thumbnailUri = thumbnail.toUri()
     )
 
 val app.suhasdissa.mellowmusic.backend.models.artists.Artist.asArtist: Artist
@@ -77,7 +76,7 @@ val Song.asMediaItem: MediaItem
             MediaMetadata.Builder()
                 .setTitle(title)
                 .setArtist(artistsText)
-                .setArtworkUri(thumbnailUrl?.toUri())
+                .setArtworkUri(thumbnailUri)
                 .setExtras(
                     bundleOf("isFavourite" to isFavourite)
                 )

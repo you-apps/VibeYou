@@ -1,15 +1,14 @@
 package app.suhasdissa.mellowmusic.backend.data
 
-import android.graphics.Bitmap
+import android.net.Uri
 
 data class Song(
     val id: String,
     val title: String,
     val artistsText: String? = null,
     val durationText: String?,
-    val thumbnailUrl: String? = null,
     val likedAt: Long? = null,
-    val thumbnail: Bitmap? = null,
+    val thumbnailUri: Uri? = null,
     val albumId: Long? = null,
     val artistId: Long? = null
 ) {

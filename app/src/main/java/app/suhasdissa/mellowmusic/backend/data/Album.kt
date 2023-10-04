@@ -1,11 +1,10 @@
 package app.suhasdissa.mellowmusic.backend.data
 
-import android.graphics.Bitmap
+import android.net.Uri
 
 data class Album(
     val id: String,
     val title: String,
-    val thumbnail: Bitmap? = null,
-    val thumbnailUrl: String? = null,
+    val thumbnailUri: Uri? = null,
     val artistsText: String
 )

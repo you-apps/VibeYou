@@ -60,7 +60,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
                 val info = musicRepository.getAlbumInfo(albumId)
                 PlaylistInfoState.Success(
                     name,
-                    info.thumbnailUrl,
+                    info.thumbnailUri,
                     info.songs
                 )
             } catch (e: Exception) {

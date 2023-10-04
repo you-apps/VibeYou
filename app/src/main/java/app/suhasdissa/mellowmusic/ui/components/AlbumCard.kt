@@ -26,14 +26,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.data.Album
 import coil.compose.AsyncImage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumCard(
-    thumbnail: String?,
-    title: String,
-    subtitle: String,
+    album: Album,
     onClickCard: () -> Unit,
     onLongPress: () -> Unit
 ) {
@@ -59,21 +58,21 @@ fun AlbumCard(
                 .size(148.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(16.dp)),
-            model = thumbnail,
+            model = album.thumbnailUri,
             contentDescription = stringResource(R.string.album_art),
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.music_placeholder)
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            title,
+            album.title,
             style = MaterialTheme.typography.titleSmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center
         )
         Text(
-            subtitle,
+            album.artistsText,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
