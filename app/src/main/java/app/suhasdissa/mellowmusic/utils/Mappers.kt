@@ -64,7 +64,7 @@ val Playlist.asAlbum: Album
 val app.suhasdissa.mellowmusic.backend.models.artists.Artist.asArtist: Artist
     get() = Artist(
         id = artistId,
-        thumbnailUrl = thumbnail,
+        thumbnailUri = thumbnail?.toUri(),
         description = description,
         artistsText = name
     )

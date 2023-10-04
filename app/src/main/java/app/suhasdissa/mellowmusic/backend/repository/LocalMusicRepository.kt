@@ -176,7 +176,8 @@ class LocalMusicRepository(
 
         val projection = arrayOf(
             MediaStore.Audio.Artists._ID,
-            MediaStore.Audio.Artists.ARTIST
+            MediaStore.Audio.Artists.ARTIST,
+            MediaStore.Audio.Artists.Albums.ALBUM_ID
         )
 
         val sortOrder = "${MediaStore.Audio.Albums.ALBUM} ASC"
@@ -191,6 +192,8 @@ class LocalMusicRepository(
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists._ID)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.ARTIST)
+            val albumIdColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ID)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -198,7 +201,8 @@ class LocalMusicRepository(
                 artists.add(
                     Artist(
                         id = id.toString(),
-                        artistsText = cursor.getString(artistColumn)
+                        artistsText = cursor.getString(artistColumn),
+                        thumbnailUri = getAlbumArt(cursor.getLong(albumIdColumn))
                     )
                 )
             }

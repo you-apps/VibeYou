@@ -30,8 +30,7 @@ fun ArtistList(
     ) {
         items(items = items) { item ->
             ArtistCard(
-                thumbnail = item.thumbnailUrl,
-                title = item.artistsText,
+                artist = item,
                 onClickCard = { onClickCard(item) },
                 onLongPress = { onLongPress(item) }
             )

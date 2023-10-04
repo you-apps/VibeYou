@@ -25,7 +25,7 @@ fun ArtistScreen(
     MiniPlayerScaffold(topBar = {
         TopAppBar(title = {
             when (val state = artistViewModel.artistInfoState) {
-                is ArtistInfoState.Success -> Text(text = state.name)
+                is ArtistInfoState.Success -> Text(text = state.artist.artistsText)
                 else -> Text(stringResource(R.string.artist))
             }
         }, scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior())

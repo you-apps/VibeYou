@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -14,6 +15,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
@@ -73,16 +75,17 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
         }
     }
 
-    fun getChannelInfo(channelId: String) {
+    fun getChannelInfo(artist: Artist) {
         viewModelScope.launch {
             artistInfoState = ArtistInfoState.Loading
             artistInfoState = try {
-                val info = musicRepository.getChannelInfo(channelId)
-                val playlists = musicRepository.getChannelPlaylists(channelId, info.tabs)
+                val info = musicRepository.getChannelInfo(artist.id)
+                val playlists = musicRepository.getChannelPlaylists(artist.id, info.tabs)
                 ArtistInfoState.Success(
-                    info.name ?: "",
-                    info.avatarUrl,
-                    info.description,
+                    artist.copy(
+                        thumbnailUri = info.avatarUrl?.toUri(),
+                        description = info.description
+                    ),
                     playlists
                 )
             } catch (e: Exception) {

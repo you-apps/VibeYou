@@ -236,7 +236,7 @@ fun SearchScreen(
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        pipedSearchViewModel.getChannelInfo(it.id)
+                                        pipedSearchViewModel.getChannelInfo(it)
                                         onNavigate(Destination.Artist)
                                     },
                                     onLongPress = {
