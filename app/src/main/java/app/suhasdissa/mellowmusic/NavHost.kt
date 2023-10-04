@@ -11,9 +11,9 @@ import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
+import app.suhasdissa.mellowmusic.ui.screens.search.AlbumScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.LocalSearchScreen
-import app.suhasdissa.mellowmusic.ui.screens.search.PlaylistScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.SearchScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.AboutScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.DatabaseSettingsScreen
@@ -76,7 +76,7 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 val searchViewModel: PipedSearchViewModel =
                     viewModel(factory = PipedSearchViewModel.Factory)
-                PlaylistScreen(searchViewModel.playlistInfoState)
+                AlbumScreen(searchViewModel.albumInfoState)
             }
         }
 
@@ -84,7 +84,7 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 val searchViewModel: LocalSearchViewModel =
                     viewModel(factory = LocalSongViewModel.Factory)
-                PlaylistScreen(searchViewModel.playlistInfoState)
+                AlbumScreen(searchViewModel.albumInfoState)
             }
         }
 

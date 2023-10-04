@@ -13,10 +13,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
+import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.LocalSearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.AlbumInfoState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,7 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
     var searchFilter = LocalSearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
-    var playlistInfoState: PlaylistInfoState by mutableStateOf(PlaylistInfoState.Loading)
+    var albumInfoState: AlbumInfoState by mutableStateOf(AlbumInfoState.Loading)
         private set
 
     fun getSuggestions() {
@@ -53,19 +54,17 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
         }
     }
 
-    fun getAlbumInfo(albumId: Long, name: String) {
+    fun getAlbumInfo(album: Album) {
         viewModelScope.launch {
-            playlistInfoState = PlaylistInfoState.Loading
-            playlistInfoState = try {
-                val info = musicRepository.getAlbumInfo(albumId)
-                PlaylistInfoState.Success(
-                    name,
-                    info.thumbnailUri,
-                    info.songs
+            albumInfoState = AlbumInfoState.Loading
+            albumInfoState = try {
+                AlbumInfoState.Success(
+                    album,
+                    musicRepository.getAlbumInfo(album.id.toLong())
                 )
             } catch (e: Exception) {
                 Log.e("Playlist Info", e.toString())
-                PlaylistInfoState.Error
+                AlbumInfoState.Error
             }
         }
     }

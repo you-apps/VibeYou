@@ -191,7 +191,7 @@ fun LocalSearchScreen(
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        localSearchViewModel.getAlbumInfo(it.id.toLong(), it.title)
+                                        localSearchViewModel.getAlbumInfo(it)
                                         onNavigate(Destination.LocalPlaylists)
                                     },
                                     onLongPress = {

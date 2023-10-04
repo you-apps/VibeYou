@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -14,11 +13,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
+import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.AlbumInfoState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import app.suhasdissa.mellowmusic.utils.asSong
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
     var searchFilter = SearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
-    var playlistInfoState: PlaylistInfoState by mutableStateOf(PlaylistInfoState.Loading)
+    var albumInfoState: AlbumInfoState by mutableStateOf(AlbumInfoState.Loading)
         private set
     var artistInfoState: ArtistInfoState by mutableStateOf(ArtistInfoState.Loading)
         private set
@@ -57,19 +57,18 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
         )
     }
 
-    fun getPlaylistInfo(playlistId: String) {
+    fun getPlaylistInfo(playlist: Album) {
         viewModelScope.launch {
-            playlistInfoState = PlaylistInfoState.Loading
-            playlistInfoState = try {
-                val info = musicRepository.getPlaylistInfo(playlistId)
-                PlaylistInfoState.Success(
-                    info.name,
-                    info.thumbnailUrl?.toUri(),
+            albumInfoState = AlbumInfoState.Loading
+            albumInfoState = try {
+                val info = musicRepository.getPlaylistInfo(playlist.id)
+                AlbumInfoState.Success(
+                    playlist,
                     info.relatedStreams.map { it.asSong }
                 )
             } catch (e: Exception) {
                 Log.e("Playlist Info", e.toString())
-                PlaylistInfoState.Error
+                AlbumInfoState.Error
             }
         }
     }

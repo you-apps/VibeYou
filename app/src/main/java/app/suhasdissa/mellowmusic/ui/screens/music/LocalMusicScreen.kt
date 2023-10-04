@@ -119,7 +119,7 @@ fun LocalMusicScreen(
                 }
 
                 1 -> AlbumList(items = localSongViewModel.albums, onClickCard = {
-                    localSearchViewModel.getAlbumInfo(it.id.toLong(), it.title)
+                    localSearchViewModel.getAlbumInfo(it)
                     onNavigate(Destination.LocalPlaylists)
                 }, onLongPress = {})
 

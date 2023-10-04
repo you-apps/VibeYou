@@ -30,7 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.state.PlaylistInfoState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.AlbumInfoState
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.LoadingScreen
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
@@ -39,19 +39,19 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheetSearchPage
 import coil.compose.AsyncImage
 
 @Composable
-fun PlaylistScreen(
-    state: PlaylistInfoState,
+fun AlbumScreen(
+    state: AlbumInfoState,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     MiniPlayerScaffold {
         when (state) {
-            PlaylistInfoState.Error -> IllustratedMessageScreen(
+            AlbumInfoState.Error -> IllustratedMessageScreen(
                 image = R.drawable.sad_mellow,
                 message = R.string.something_went_wrong
             )
 
-            PlaylistInfoState.Loading -> LoadingScreen()
-            is PlaylistInfoState.Success -> {
+            AlbumInfoState.Loading -> LoadingScreen()
+            is AlbumInfoState.Success -> {
                 var showSongSettings by remember { mutableStateOf(false) }
                 var selectedSong by remember { mutableStateOf<Song?>(null) }
                 LazyColumn(
@@ -70,13 +70,13 @@ fun PlaylistScreen(
                                     .size(120.dp)
                                     .aspectRatio(1f)
                                     .clip(RoundedCornerShape(16.dp)),
-                                model = state.thumbnail,
+                                model = state.album.thumbnailUri,
                                 contentDescription = stringResource(id = R.string.album_art),
                                 contentScale = ContentScale.Crop
                             )
                             Column(Modifier.padding(8.dp)) {
                                 Text(
-                                    text = state.name,
+                                    text = state.album.title,
                                     style = MaterialTheme.typography.titleLarge,
                                     textAlign = TextAlign.Center
                                 )

@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.text.format.DateUtils
 import androidx.core.net.toUri
 import app.suhasdissa.mellowmusic.backend.data.Album
-import app.suhasdissa.mellowmusic.backend.data.AlbumInfo
 import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
@@ -78,10 +77,7 @@ class LocalMusicRepository(
                             titleColumn
                         )
                     }
-                val duration = cursor.getLong(durationColumn)
-                val artist = cursor.getString(artistColumn)
-                val album = cursor.getLong(albumColumn)
-                val artistId = cursor.getLong(artistIdColumn)
+                val albumId = cursor.getLong(albumColumn)
 
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -92,11 +88,13 @@ class LocalMusicRepository(
                     Song(
                         id = contentUri.toString(),
                         title = name,
-                        durationText = DateUtils.formatElapsedTime(duration / 1000),
-                        thumbnailUri = getAlbumArt(album),
-                        artistsText = artist,
-                        albumId = album,
-                        artistId = artistId
+                        durationText = DateUtils.formatElapsedTime(
+                            cursor.getLong(durationColumn) / 1000
+                        ),
+                        thumbnailUri = getAlbumArt(albumId),
+                        artistsText = cursor.getString(artistColumn),
+                        albumId = albumId,
+                        artistId = cursor.getLong(artistIdColumn)
                     )
                 )
             }
@@ -123,7 +121,8 @@ class LocalMusicRepository(
         val projection = arrayOf(
             MediaStore.Audio.Albums._ID,
             MediaStore.Audio.Albums.ALBUM,
-            MediaStore.Audio.Albums.ARTIST
+            MediaStore.Audio.Albums.ARTIST,
+            MediaStore.Audio.Albums.NUMBER_OF_SONGS
         )
 
         val sortOrder = "${MediaStore.Audio.Albums.ALBUM} ASC"
@@ -139,21 +138,19 @@ class LocalMusicRepository(
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID)
             val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ARTIST)
+            val songsColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.NUMBER_OF_SONGS)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
-                val name =
-                    cursor.getString(
-                        nameColumn
-                    )
-                val artist = cursor.getString(artistColumn)
-
                 albums.add(
                     Album(
                         id = id.toString(),
-                        title = name,
-                        artistsText = artist,
-                        thumbnailUri = getAlbumArt(id)
+                        title = cursor.getString(
+                            nameColumn
+                        ),
+                        artistsText = cursor.getString(artistColumn),
+                        thumbnailUri = getAlbumArt(id),
+                        numberOfSongs = cursor.getInt(songsColumn)
                     )
                 )
             }
@@ -197,12 +194,11 @@ class LocalMusicRepository(
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
-                val artist = cursor.getString(artistColumn)
 
                 artists.add(
                     Artist(
                         id = id.toString(),
-                        artistsText = artist
+                        artistsText = cursor.getString(artistColumn)
                     )
                 )
             }
@@ -234,10 +230,9 @@ class LocalMusicRepository(
         }
     }
 
-    suspend fun getAlbumInfo(albumId: Long): AlbumInfo {
-        val songs = getAllSongs()
+    suspend fun getAlbumInfo(albumId: Long): List<Song> {
+        return getAllSongs()
             .filter { it.albumId == albumId }
-        return AlbumInfo(name = "", songs = songs, thumbnailUri = getAlbumArt(albumId))
     }
 
     private fun getAlbumArt(albumId: Long): Uri {
