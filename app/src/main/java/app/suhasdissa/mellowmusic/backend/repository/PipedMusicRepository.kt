@@ -23,7 +23,7 @@ class PipedMusicRepository(
     private val songsDao: SongsDao,
     private val searchDao: SearchDao
 ) {
-    private val pipedApi = RetrofitHelper.createPipedApi()
+    var pipedApi = RetrofitHelper.createPipedApi()
 
     suspend fun getAudioSource(id: String): Uri? {
         return runCatching { pipedApi.getStreams(vidId = id) }

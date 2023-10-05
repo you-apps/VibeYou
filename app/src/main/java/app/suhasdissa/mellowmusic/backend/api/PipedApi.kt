@@ -1,6 +1,7 @@
 package app.suhasdissa.mellowmusic.backend.api
 
 import app.suhasdissa.mellowmusic.backend.models.Login
+import app.suhasdissa.mellowmusic.backend.models.PipedInstance
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
 import app.suhasdissa.mellowmusic.backend.models.Token
 import app.suhasdissa.mellowmusic.backend.models.artists.Artists
@@ -25,7 +26,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/search")
     suspend fun searchPiped(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("q") query: String,
         @Query("filter") filter: String
     ): Songs
@@ -37,7 +38,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/search")
     suspend fun searchPipedPlaylists(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("q") query: String,
         @Query("filter") filter: String
     ): Playlists
@@ -48,7 +49,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/search?filter=music_artists")
     suspend fun searchPipedArtists(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("q") query: String
     ): Artists
 
@@ -58,7 +59,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/streams/{videoid}")
     suspend fun getStreams(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Path("videoid") vidId: String
     ): PipedSongResponse
 
@@ -68,7 +69,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/suggestions")
     suspend fun getSuggestions(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("query") query: String
     ): List<String>
 
@@ -78,7 +79,7 @@ interface PipedApi {
      */
     @GET("https://{instance}/playlists/{playlist_id}")
     suspend fun getPlaylistInfo(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Path("playlist_id") playlistId: String
     ): PlaylistInfo
 
@@ -93,13 +94,16 @@ interface PipedApi {
 
     @GET("https://{instance}/channel/{channelId}")
     suspend fun getChannel(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Path("channelId") channelId: String
     ): Channel
 
     @GET("https://{instance}/channels/tabs")
     suspend fun getChannelTab(
-        @Path("instance") instance: String = Pref.currentInstance,
+        @Path("instance") instance: String = Pref.currentInstance.netLoc,
         @Query("data") data: String
     ): ChannelTabResponse
+
+    @GET("https://piped-instances.kavin.rocks")
+    suspend fun getInstanceList(): List<PipedInstance>
 }
