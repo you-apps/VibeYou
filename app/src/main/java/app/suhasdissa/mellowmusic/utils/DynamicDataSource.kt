@@ -19,29 +19,25 @@ class DynamicDataSource(
     private val defaultDataSource: DefaultDataSource
 ): DataSource {
     private var isOnline = false
+    private val dataSource get() = if (isOnline) resolvingDataSource else defaultDataSource
 
     override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
-        return if (isOnline) resolvingDataSource.read(buffer, offset, length)
-        else defaultDataSource.read(buffer, offset, length)
+        return dataSource.read(buffer, offset, length)
     }
 
     override fun addTransferListener(transferListener: TransferListener) {
-        if (isOnline) resolvingDataSource.addTransferListener(transferListener)
-        else defaultDataSource.addTransferListener(transferListener)
+        dataSource.addTransferListener(transferListener)
     }
 
     override fun open(dataSpec: DataSpec): Long {
         isOnline = dataSpec.uri.scheme != "content"
-        return if (isOnline) resolvingDataSource.open(dataSpec)
-        else defaultDataSource.open(dataSpec)
+        return dataSource.open(dataSpec)
     }
 
-    override fun getUri(): Uri? {
-        return if (isOnline) resolvingDataSource.uri else defaultDataSource.uri
-    }
+    override fun getUri(): Uri? = dataSource.uri
 
     override fun close() {
-        if (isOnline) resolvingDataSource.close() else defaultDataSource.close()
+        dataSource.close()
     }
 
     companion object {
