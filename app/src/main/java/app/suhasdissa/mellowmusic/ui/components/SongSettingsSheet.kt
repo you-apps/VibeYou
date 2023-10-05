@@ -36,18 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.SongViewModel
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,8 +76,7 @@ fun SongSettingsSheet(
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(song.thumbnailUrl).crossfade(true).build(),
+                model = song.thumbnailUri,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -185,8 +182,7 @@ fun SongSettingsSheetSearchPage(
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(song.thumbnailUrl).crossfade(true).build(),
+                model = song.thumbnailUri,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

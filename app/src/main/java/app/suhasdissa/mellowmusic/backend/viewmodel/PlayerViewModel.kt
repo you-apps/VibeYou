@@ -15,9 +15,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
-import app.suhasdissa.mellowmusic.backend.repository.SongRepository
+import app.suhasdissa.mellowmusic.backend.data.Song
+import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
+import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepository
 import app.suhasdissa.mellowmusic.utils.addNext
 import app.suhasdissa.mellowmusic.utils.asMediaItem
 import app.suhasdissa.mellowmusic.utils.enqueue
@@ -30,8 +30,8 @@ import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val songRepository: SongRepository,
-    private val musicRepository: MusicRepository,
+    private val songDatabaseRepository: SongDatabaseRepository,
+    private val musicRepository: PipedMusicRepository,
     private val controllerFuture: ListenableFuture<MediaController>
 ) :
     ViewModel() {
@@ -86,7 +86,7 @@ class PlayerViewModel(
 
     fun saveSong(song: Song) {
         viewModelScope.launch {
-            songRepository.addSong(song)
+            songDatabaseRepository.addSong(song)
         }
     }
 
@@ -104,15 +104,15 @@ class PlayerViewModel(
 
     fun toggleFavourite(id: String) {
         viewModelScope.launch {
-            val song = songRepository.getSongById(id)
+            val song = songDatabaseRepository.getSongById(id)
             song?.let {
-                songRepository.addSong(it.toggleLike())
+                songDatabaseRepository.addSong(it.toggleLike())
             }
         }
     }
 
     suspend fun isFavourite(id: String): Boolean {
-        val song = songRepository.getSongById(id)
+        val song = songDatabaseRepository.getSongById(id)
         song ?: return false
         return song.isFavourite
     }
@@ -135,8 +135,8 @@ class PlayerViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as MellowMusicApplication)
                 PlayerViewModel(
-                    application.container.songRepository,
-                    application.container.musicRepository,
+                    application.container.songDatabaseRepository,
+                    application.container.pipedMusicRepository,
                     application.container.controllerFuture
                 )
             }

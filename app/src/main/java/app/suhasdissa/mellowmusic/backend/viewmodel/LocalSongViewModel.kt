@@ -9,16 +9,22 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import kotlinx.coroutines.launch
 
 class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : ViewModel() {
     var songs by mutableStateOf(listOf<Song>())
+    var albums by mutableStateOf(listOf<Album>())
+    var artists by mutableStateOf(listOf<Artist>())
 
     init {
         viewModelScope.launch {
             songs = musicRepository.getAllSongs()
+            albums = musicRepository.getAllAlbums()
+            artists = musicRepository.getAllArtists()
         }
     }
 

@@ -7,10 +7,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.ui.screens.home.HomeScreen
+import app.suhasdissa.mellowmusic.ui.screens.search.AlbumScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.ArtistScreen
-import app.suhasdissa.mellowmusic.ui.screens.search.PlaylistScreen
+import app.suhasdissa.mellowmusic.ui.screens.search.LocalSearchScreen
 import app.suhasdissa.mellowmusic.ui.screens.search.SearchScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.AboutScreen
 import app.suhasdissa.mellowmusic.ui.screens.settings.DatabaseSettingsScreen
@@ -28,26 +31,26 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
                     navHostController.navigateTo(destination.route)
-                }, onSearch = {
-                    navHostController.navigateTo("${Destination.Search.route}/$it")
                 })
             }
         }
 
         composable(
-            route = Destination.Search.routeWithArgs,
-            arguments = Destination.Search.args
-        ) { nav ->
-            val isOnline = nav.arguments?.getBoolean(Destination.Search.arg)
+            route = Destination.OnlineSearch.route
+        ) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val pipedSearchViewModel: PipedSearchViewModel = if (isOnline == true) {
-                    viewModel(factory = PipedSearchViewModel.OnlineFactory, key = "online_search")
-                } else {
-                    viewModel(factory = PipedSearchViewModel.LocalFactory, key = "local_search")
-                }
                 SearchScreen(onNavigate = {
                     navHostController.navigateTo(it.route)
-                }, pipedSearchViewModel)
+                })
+            }
+        }
+        composable(
+            route = Destination.LocalSearch.route
+        ) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                LocalSearchScreen(onNavigate = {
+                    navHostController.navigateTo(it.route)
+                })
             }
         }
 
@@ -71,7 +74,17 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(Destination.Playlists.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                PlaylistScreen()
+                val searchViewModel: PipedSearchViewModel =
+                    viewModel(factory = PipedSearchViewModel.Factory)
+                AlbumScreen(searchViewModel.albumInfoState)
+            }
+        }
+
+        composable(Destination.LocalPlaylists.route) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                val searchViewModel: LocalSearchViewModel =
+                    viewModel(factory = LocalSongViewModel.Factory)
+                AlbumScreen(searchViewModel.albumInfoState)
             }
         }
 

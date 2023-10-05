@@ -8,38 +8,34 @@ import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
 import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
+import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
-import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
-import app.suhasdissa.mellowmusic.backend.models.SearchFilter
-import app.suhasdissa.mellowmusic.backend.models.artists.Artist
-import app.suhasdissa.mellowmusic.backend.models.artists.Channel
-import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
-import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
-import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
-import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
+import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class LocalMusicRepository(
-    songsDao: SongsDao,
-    searchDao: SearchDao,
-    private val contentResolver: ContentResolver
-) : MusicRepository(searchDao, songsDao) {
+    private val contentResolver: ContentResolver,
+    private val searchDao: SearchDao
+) {
     private var songsCache = listOf<Song>()
+    private var albumCache = listOf<Album>()
+    private var artistCache = listOf<Artist>()
 
-    fun getAllSongs(): List<Song> {
-        if (songsCache.isNotEmpty()) return songsCache
+    suspend fun getAllSongs(): List<Song> = withContext(Dispatchers.IO) {
+        if (songsCache.isNotEmpty()) return@withContext songsCache
 
         val songs = mutableListOf<Song>()
 
-        val collection =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Audio.Media.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL
-                )
-            } else {
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
@@ -47,10 +43,11 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.ARTIST,
-            MediaStore.Audio.Media.ALBUM
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST_ID
         )
 
-        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
 
         val query = contentResolver.query(
             collection,
@@ -67,7 +64,8 @@ class LocalMusicRepository(
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+            val artistIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -79,9 +77,7 @@ class LocalMusicRepository(
                             titleColumn
                         )
                     }
-                val duration = cursor.getLong(durationColumn)
-                val artist = cursor.getString(artistColumn)
-                val album = cursor.getString(albumColumn)
+                val albumId = cursor.getLong(albumColumn)
 
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -92,84 +88,164 @@ class LocalMusicRepository(
                     Song(
                         id = contentUri.toString(),
                         title = name,
-                        durationText = DateUtils.formatElapsedTime(duration / 1000),
-                        thumbnailUrl = contentUri.toString(),
-                        totalPlayTimeMs = duration,
-                        artistsText = artist,
-                        album = album
+                        durationText = DateUtils.formatElapsedTime(
+                            cursor.getLong(durationColumn) / 1000
+                        ),
+                        thumbnailUri = getAlbumArt(albumId),
+                        artistsText = cursor.getString(artistColumn),
+                        albumId = albumId,
+                        artistId = cursor.getLong(artistIdColumn)
                     )
                 )
             }
         }
 
-        this.songsCache = songs
+        this@LocalMusicRepository.songsCache = songs
 
-        return songs
+        songs
     }
 
-    override suspend fun getAudioSource(id: String): Uri {
-        return id.toUri()
-    }
+    suspend fun getAllAlbums(): List<Album> = withContext(Dispatchers.IO) {
+        if (albumCache.isNotEmpty()) return@withContext albumCache
 
-    override suspend fun getRecommendedSongs(id: String): List<MediaItem> = listOf()
+        val albums = mutableListOf<Album>()
 
-    override suspend fun getSuggestions(query: String): List<String> = listOf()
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Albums.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+        }
 
-    override suspend fun getSearchResult(query: String, filter: SearchFilter): List<Song> {
-        val lowerQuery = query.lowercase()
-        return getAllSongs().filter { it.title.lowercase().contains(lowerQuery) }
-    }
+        val projection = arrayOf(
+            MediaStore.Audio.Albums._ID,
+            MediaStore.Audio.Albums.ALBUM,
+            MediaStore.Audio.Albums.ARTIST,
+            MediaStore.Audio.Albums.NUMBER_OF_SONGS
+        )
 
-    override suspend fun getPlaylistResult(query: String, filter: SearchFilter): List<Playlist> {
-        val lowerQuery = query.lowercase()
-        return getAllSongs()
-            .groupBy { it.album }
-            .map { Playlist(url = it.key.toString(), name = it.key.toString()) }
-            .distinct()
-            .filter { it.name.lowercase().contains(lowerQuery) }
-    }
+        val sortOrder = "${MediaStore.Audio.Albums.ALBUM} ASC"
 
-    override suspend fun getArtistResult(query: String): List<Artist> {
-        val lowerQuery = query.lowercase()
-        return getAllSongs()
-            .filter { it.artistsText?.lowercase()?.contains(lowerQuery) == true }
-            .map { Artist(url = it.artistsText!!, name = it.artistsText) }
-    }
+        val query = contentResolver.query(
+            collection,
+            projection,
+            null,
+            null,
+            sortOrder
+        )
+        query?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM)
+            val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ARTIST)
+            val songsColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.NUMBER_OF_SONGS)
 
-    override suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo {
-        val songs = getAllSongs()
-            .filter { it.album == playlistId }
-            .map {
-                SongItem(
-                    url = it.id,
-                    title = it.title,
-                    thumbnail = it.thumbnailUrl.orEmpty(),
-                    duration = it.totalPlayTimeMs.toInt() / 1000
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(idColumn)
+                albums.add(
+                    Album(
+                        id = id.toString(),
+                        title = cursor.getString(
+                            nameColumn
+                        ),
+                        artistsText = cursor.getString(artistColumn),
+                        thumbnailUri = getAlbumArt(id),
+                        numberOfSongs = cursor.getInt(songsColumn)
+                    )
                 )
             }
-        return PlaylistInfo(name = playlistId, relatedStreams = ArrayList(songs))
+        }
+
+        this@LocalMusicRepository.albumCache = albums
+
+        albums
     }
 
-    override suspend fun getChannelInfo(channelId: String): Channel {
-        return Channel(id = channelId, name = channelId)
-    }
+    suspend fun getAllArtists(): List<Artist> = withContext(Dispatchers.IO) {
+        if (artistCache.isNotEmpty()) return@withContext artistCache
 
-    override suspend fun getChannelPlaylists(channelId: String, tabs: List<ChannelTab>): List<Playlist>? {
-        return getAllSongs()
-            .filter { it.artistsText == channelId }
-            .map {
-                Playlist(
-                    url = it.id,
-                    uploaderName = it.artistsText.orEmpty(),
-                    thumbnail = it.thumbnailUrl.orEmpty(),
-                    name = it.title
+        val artists = mutableListOf<Artist>()
+
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Albums.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+        }
+
+        val projection = arrayOf(
+            MediaStore.Audio.Artists._ID,
+            MediaStore.Audio.Artists.ARTIST,
+            MediaStore.Audio.Artists.Albums.ALBUM_ID
+        )
+
+        val sortOrder = "${MediaStore.Audio.Albums.ALBUM} ASC"
+
+        val query = contentResolver.query(
+            collection,
+            projection,
+            null,
+            null,
+            sortOrder
+        )
+        query?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists._ID)
+            val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.ARTIST)
+            val albumIdColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ID)
+
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(idColumn)
+
+                artists.add(
+                    Artist(
+                        id = id.toString(),
+                        artistsText = cursor.getString(artistColumn),
+                        thumbnailUri = getAlbumArt(cursor.getLong(albumIdColumn))
+                    )
                 )
             }
+        }
+
+        this@LocalMusicRepository.artistCache = artists
+
+        artists
     }
 
-    override suspend fun searchSongId(id: String): Song? {
-        return getAllSongs().firstOrNull { it.id == id }?.also { songsDao.addSong(it) }
+    suspend fun getSearchResult(query: String): List<Song> {
+        val lowerQuery = query.lowercase()
+        return getAllSongs().filter {
+            it.title.lowercase().contains(lowerQuery)
+        }
     }
+
+    suspend fun getAlbumsResult(query: String): List<Album> {
+        val lowerQuery = query.lowercase()
+        return getAllAlbums().filter {
+            it.title.lowercase().contains(lowerQuery)
+        }
+    }
+
+    suspend fun getArtistResult(query: String): List<Artist> {
+        val lowerQuery = query.lowercase()
+        return getAllArtists().filter {
+            it.artistsText.lowercase().contains(lowerQuery)
+        }
+    }
+
+    suspend fun getAlbumInfo(albumId: Long): List<Song> {
+        return getAllSongs()
+            .filter { it.albumId == albumId }
+    }
+
+    private fun getAlbumArt(albumId: Long): Uri {
+        val sArtworkUri = "content://media/external/audio/albumart".toUri()
+        return ContentUris.withAppendedId(sArtworkUri, albumId)
+    }
+
+    fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    fun getSearchHistory() = searchDao.getSearchHistory()
 
     companion object {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

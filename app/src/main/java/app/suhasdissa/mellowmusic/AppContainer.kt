@@ -6,16 +6,14 @@ import app.suhasdissa.mellowmusic.backend.database.SongDatabase
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepository
 import app.suhasdissa.mellowmusic.backend.repository.AuthRepositoryImpl
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
-import app.suhasdissa.mellowmusic.backend.repository.MusicRepository
 import app.suhasdissa.mellowmusic.backend.repository.PipedMusicRepository
-import app.suhasdissa.mellowmusic.backend.repository.SongRepository
-import app.suhasdissa.mellowmusic.backend.repository.SongRepositoryImpl
+import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepository
+import app.suhasdissa.mellowmusic.backend.repository.SongDatabaseRepositoryImpl
 import com.google.common.util.concurrent.ListenableFuture
 
 interface AppContainer {
     val database: SongDatabase
-    val songRepository: SongRepository
-    var musicRepository: MusicRepository
+    val songDatabaseRepository: SongDatabaseRepository
     val pipedMusicRepository: PipedMusicRepository
     val localMusicRepository: LocalMusicRepository
     val authRepository: AuthRepository
@@ -28,16 +26,15 @@ class DefaultAppContainer(
     override val controllerFuture: ListenableFuture<MediaController>,
     override val contentResolver: ContentResolver
 ) : AppContainer {
-    override val songRepository: SongRepository by lazy {
-        SongRepositoryImpl(database.songsDao())
+    override val songDatabaseRepository: SongDatabaseRepository by lazy {
+        SongDatabaseRepositoryImpl(database.songsDao())
     }
     override val pipedMusicRepository: PipedMusicRepository by lazy {
         PipedMusicRepository(database.songsDao(), database.searchDao())
     }
     override val localMusicRepository: LocalMusicRepository by lazy {
-        LocalMusicRepository(database.songsDao(), database.searchDao(), contentResolver)
+        LocalMusicRepository(contentResolver, database.searchDao())
     }
-    override var musicRepository: MusicRepository = pipedMusicRepository
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl()
     }

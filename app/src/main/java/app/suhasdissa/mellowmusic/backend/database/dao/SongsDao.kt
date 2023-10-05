@@ -5,38 +5,38 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SongsDao {
-    @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
-    fun addSong(song: Song)
+    @Insert(entity = SongEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    fun addSong(song: SongEntity)
 
-    @Insert(entity = Song::class, onConflict = OnConflictStrategy.REPLACE)
-    fun addSongs(songs: List<Song>)
+    @Insert(entity = SongEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    fun addSongs(songs: List<SongEntity>)
 
-    @Delete(entity = Song::class)
-    fun removeSong(song: Song)
+    @Delete(entity = SongEntity::class)
+    fun removeSong(song: SongEntity)
 
-    @Query("SELECT * from Song WHERE id=:id")
-    fun getSongById(id: String): Song?
+    @Query("SELECT * from song WHERE id=:id")
+    fun getSongById(id: String): SongEntity?
 
-    @Query("SELECT * from Song")
-    fun getAllSongs(): List<Song>
+    @Query("SELECT * from song")
+    fun getAllSongs(): List<SongEntity>
 
-    @Query("SELECT * from Song WHERE likedAt IS NOT NULL")
-    fun getFavSongs(): List<Song>
+    @Query("SELECT * from song WHERE likedAt IS NOT NULL")
+    fun getFavSongs(): List<SongEntity>
 
-    @Query("SELECT * from Song ORDER BY title ASC")
-    fun getAllSongsStream(): Flow<List<Song>>
+    @Query("SELECT * from song ORDER BY title ASC")
+    fun getAllSongsStream(): Flow<List<SongEntity>>
 
-    @Query("SELECT * from Song WHERE likedAt IS NOT NULL ORDER BY title ASC")
-    fun getFavSongsStream(): Flow<List<Song>>
+    @Query("SELECT * from song WHERE likedAt IS NOT NULL ORDER BY title ASC")
+    fun getFavSongsStream(): Flow<List<SongEntity>>
 
-    @Query("SELECT * from Song ORDER BY id DESC LIMIT :limit")
-    fun getRecentSongs(limit: Int): List<Song>
+    @Query("SELECT * from song ORDER BY id DESC LIMIT :limit")
+    fun getRecentSongs(limit: Int): List<SongEntity>
 
-    @Query("SELECT * FROM Song WHERE title LIKE :search OR artistsText LIKE :search")
-    fun search(search: String): List<Song>
+    @Query("SELECT * from song WHERE title LIKE :search OR artistsText LIKE :search")
+    fun search(search: String): List<SongEntity>
 }

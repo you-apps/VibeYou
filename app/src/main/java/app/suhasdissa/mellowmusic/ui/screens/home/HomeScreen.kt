@@ -38,14 +38,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.MainActivity
-import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
+import app.suhasdissa.mellowmusic.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.mellowmusic.navigateTo
 import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
@@ -58,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     onNavigate: (Destination) -> Unit,
-    onSearch: (isOnline: Boolean) -> Unit
+    localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory)
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -104,7 +105,11 @@ fun HomeScreen(
                         .fillMaxWidth(0.9f)
                         .clickable {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
-                            onSearch(currentDestination == Destination.PipedMusic)
+                            if (currentDestination == Destination.PipedMusic) {
+                                onNavigate(Destination.OnlineSearch)
+                            } else {
+                                onNavigate(Destination.LocalSearch)
+                            }
                         },
                     shape = RoundedCornerShape(50)
                 ) {
@@ -140,22 +145,17 @@ fun HomeScreen(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                val container = (mainActivity.application as MellowMusicApplication).container
                 composable(Destination.PipedMusic.route) {
-                    LaunchedEffect(Unit) {
-                        container.musicRepository = container.pipedMusicRepository
-                    }
                     MusicScreen()
                 }
                 composable(Destination.LocalMusic.route) {
                     LaunchedEffect(Unit) {
-                        container.musicRepository = container.localMusicRepository
                         PermissionHelper.checkPermissions(
                             mainActivity,
                             LocalMusicRepository.permissions
                         )
                     }
-                    LocalMusicScreen()
+                    LocalMusicScreen(onNavigate, localSearchViewModel)
                 }
             }
         }

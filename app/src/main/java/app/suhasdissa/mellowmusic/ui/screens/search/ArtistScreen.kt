@@ -9,8 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
-import app.suhasdissa.mellowmusic.backend.viewmodel.ArtistViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.PlaylistViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.PipedSearchViewModel
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
 import app.suhasdissa.mellowmusic.ui.components.AlbumList
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
@@ -21,13 +20,12 @@ import app.suhasdissa.mellowmusic.ui.components.MiniPlayerScaffold
 @Composable
 fun ArtistScreen(
     onNavigate: (Destination) -> Unit,
-    artistViewModel: ArtistViewModel = viewModel(factory = ArtistViewModel.Factory),
-    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory)
+    artistViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory)
 ) {
     MiniPlayerScaffold(topBar = {
         TopAppBar(title = {
             when (val state = artistViewModel.artistInfoState) {
-                is ArtistInfoState.Success -> Text(text = state.name)
+                is ArtistInfoState.Success -> Text(text = state.artist.artistsText)
                 else -> Text(stringResource(R.string.artist))
             }
         }, scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior())
@@ -41,7 +39,7 @@ fun ArtistScreen(
             ArtistInfoState.Loading -> LoadingScreen()
             is ArtistInfoState.Success -> {
                 AlbumList(items = state.playlists, onClickCard = {
-                    playlistViewModel.getPlaylistInfo(it.playlistId)
+                    artistViewModel.getPlaylistInfo(it)
                     onNavigate(Destination.Playlists)
                 }, onLongPress = {
                 })
