@@ -6,8 +6,12 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
+import app.suhasdissa.mellowmusic.backend.data.Song
+import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 import app.suhasdissa.mellowmusic.backend.models.PipedSongResponse
+import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
 import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 
 val SongItem.asSong: Song
@@ -16,7 +20,27 @@ val SongItem.asSong: Song
         title = title,
         artistsText = uploaderName,
         durationText = DateUtils.formatElapsedTime(duration.toLong()),
-        thumbnailUrl = thumbnail
+        thumbnailUri = thumbnail.toUri()
+    )
+
+val Song.asSongEntity: SongEntity
+    get() = SongEntity(
+        id = id,
+        title = title,
+        artistsText = artistsText,
+        durationText = durationText,
+        thumbnailUrl = thumbnailUri.toString(),
+        likedAt = likedAt
+    )
+
+val SongEntity.asSong: Song
+    get() = Song(
+        id = id,
+        title = title,
+        artistsText = artistsText,
+        durationText = durationText,
+        thumbnailUri = thumbnailUrl?.toUri(),
+        likedAt = likedAt
     )
 
 fun PipedSongResponse.asSong(id: String): Song {
@@ -25,9 +49,25 @@ fun PipedSongResponse.asSong(id: String): Song {
         title = title!!,
         artistsText = uploader ?: "",
         durationText = DateUtils.formatElapsedTime(duration?.toLong() ?: 0L),
-        thumbnailUrl = thumbnailUrl ?: ""
+        thumbnailUri = thumbnailUrl?.toUri()
     )
 }
+
+val Playlist.asAlbum: Album
+    get() = Album(
+        id = playlistId,
+        title = name,
+        artistsText = uploaderName,
+        thumbnailUri = thumbnail.toUri()
+    )
+
+val app.suhasdissa.mellowmusic.backend.models.artists.Artist.asArtist: Artist
+    get() = Artist(
+        id = artistId,
+        thumbnailUri = thumbnail?.toUri(),
+        description = description,
+        artistsText = name
+    )
 
 val Song.asMediaItem: MediaItem
     @SuppressLint("UnsafeOptInUsageError")
@@ -36,7 +76,7 @@ val Song.asMediaItem: MediaItem
             MediaMetadata.Builder()
                 .setTitle(title)
                 .setArtist(artistsText)
-                .setArtworkUri(thumbnailUrl?.toUri())
+                .setArtworkUri(thumbnailUri)
                 .setExtras(
                     bundleOf("isFavourite" to isFavourite)
                 )

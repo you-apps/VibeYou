@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
-import app.suhasdissa.mellowmusic.backend.models.artists.Artist
+import app.suhasdissa.mellowmusic.backend.data.Artist
 
 @Composable
 fun ArtistList(
@@ -30,8 +30,7 @@ fun ArtistList(
     ) {
         items(items = items) { item ->
             ArtistCard(
-                thumbnail = item.thumbnail,
-                title = item.name,
+                artist = item,
                 onClickCard = { onClickCard(item) },
                 onLongPress = { onLongPress(item) }
             )

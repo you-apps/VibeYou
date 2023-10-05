@@ -7,3 +7,9 @@ enum class SearchFilter(val value: String) {
     Playlists("music_playlists"),
     Artists("music_artists")
 }
+
+enum class LocalSearchFilter {
+    Songs,
+    Albums,
+    Artists
+}

@@ -47,7 +47,7 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
                 ComponentName(this, PlayerService::class.java)
             )
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
-        container = DefaultAppContainer(database, controllerFuture)
+        container = DefaultAppContainer(database, controllerFuture, contentResolver)
         preferences.registerOnSharedPreferenceChangeListener(listener)
         UpdateUtil.getCurrentVersion(this.applicationContext)
     }

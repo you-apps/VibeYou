@@ -9,13 +9,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.mellowmusic.ui.components.NavDrawerContent
 import app.suhasdissa.mellowmusic.ui.theme.LibreMusicTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -29,7 +39,29 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    AppNavHost(navHostController = navHostController)
+                    val drawerState = rememberDrawerState(DrawerValue.Closed)
+                    val scope = rememberCoroutineScope()
+                    var currentDestination by remember {
+                        mutableStateOf<Destination>(Destination.PipedMusic)
+                    }
+                    ModalNavigationDrawer(
+                        drawerState = drawerState,
+                        gesturesEnabled = drawerState.isOpen,
+                        drawerContent = {
+                            NavDrawerContent(
+                                currentDestination = currentDestination,
+                                onDestinationSelected = {
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                    navHostController.navigateTo(it.route)
+                                    currentDestination = it
+                                }
+                            )
+                        }
+                    ) {
+                        AppNavHost(navHostController = navHostController)
+                    }
                 }
             }
         }

@@ -8,11 +8,11 @@ import app.suhasdissa.mellowmusic.backend.database.dao.RawDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SearchDao
 import app.suhasdissa.mellowmusic.backend.database.dao.SongsDao
 import app.suhasdissa.mellowmusic.backend.database.entities.SearchQuery
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.database.entities.SongEntity
 
 @Database(
     entities = [
-        Song::class,
+        SongEntity::class,
         SearchQuery::class
     ],
     version = 1,

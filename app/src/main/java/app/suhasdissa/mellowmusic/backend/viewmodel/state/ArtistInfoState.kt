@@ -1,15 +1,14 @@
 package app.suhasdissa.mellowmusic.backend.viewmodel.state
 
-import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
+import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 
 sealed interface ArtistInfoState {
     object Loading : ArtistInfoState
     object Error : ArtistInfoState
     data class Success(
-        val name: String,
-        val thumbnail: String?,
-        val description: String?,
-        val playlists: List<Playlist>
+        val artist: Artist,
+        val playlists: List<Album>
 
     ) : ArtistInfoState
 }

@@ -10,23 +10,31 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.mellowmusic.backend.viewmodel.SongViewModel
+import app.suhasdissa.mellowmusic.utils.asSong
 
 @Composable
 fun SongsScreen(
     showFavourites: Boolean,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory)
 ) {
     val view = LocalView.current
+    val songs =
+        (if (showFavourites) songViewModel.favSongs.collectAsState() else songViewModel.songs.collectAsState()).value.map {
+            it.asSong
+        }
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
             view.playSoundEffect(SoundEffectConstants.CLICK)
-            if (showFavourites) playerViewModel.shuffleFavourites() else playerViewModel.shuffleAll()
+            playerViewModel.shuffleSongs(songs)
         }) {
             Icon(
                 imageVector = Icons.Default.Shuffle,
@@ -39,7 +47,7 @@ fun SongsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            SongListView(showFavourites)
+            SongListView(songs)
         }
     }
 }

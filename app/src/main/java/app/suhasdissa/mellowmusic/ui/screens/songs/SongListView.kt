@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,9 +24,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
-import app.suhasdissa.mellowmusic.backend.database.entities.Song
+import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.mellowmusic.backend.viewmodel.SongViewModel
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.SongCard
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheet
@@ -35,13 +33,11 @@ import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheet
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongListView(
-    showFavourites: Boolean,
-    songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory),
+    songs: List<Song>,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
-    val songs by if (showFavourites) songViewModel.favSongs.collectAsState() else songViewModel.songs.collectAsState()
     if (songs.isEmpty()) {
         IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
     } else {
@@ -73,10 +69,7 @@ fun SongListView(
                 }
                 items(items = group.value) { item ->
                     SongCard(
-                        thumbnail = item.thumbnailUrl,
-                        title = item.title,
-                        artist = item.artistsText,
-                        duration = item.durationText,
+                        song = item,
                         onClickCard = {
                             playerViewModel.playSong(item)
                         },

@@ -10,13 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
-import app.suhasdissa.mellowmusic.backend.models.playlists.Playlist
+import app.suhasdissa.mellowmusic.backend.data.Album
 
 @Composable
 fun AlbumList(
-    items: List<Playlist>,
-    onClickCard: (playlist: Playlist) -> Unit,
-    onLongPress: (playlist: Playlist) -> Unit
+    items: List<Album>,
+    onClickCard: (playlist: Album) -> Unit,
+    onLongPress: (playlist: Album) -> Unit
 ) {
     if (items.isEmpty()) {
         IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
@@ -30,9 +30,7 @@ fun AlbumList(
     ) {
         items(items = items) { item ->
             AlbumCard(
-                thumbnail = item.thumbnail,
-                title = item.name,
-                subtitle = item.uploaderName,
+                album = item,
                 onClickCard = { onClickCard(item) },
                 onLongPress = { onLongPress(item) }
             )
