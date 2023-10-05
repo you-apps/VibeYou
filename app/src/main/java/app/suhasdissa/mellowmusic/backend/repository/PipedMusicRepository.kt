@@ -13,7 +13,7 @@ import app.suhasdissa.mellowmusic.backend.models.SearchFilter
 import app.suhasdissa.mellowmusic.backend.models.artists.Channel
 import app.suhasdissa.mellowmusic.backend.models.artists.ChannelTab
 import app.suhasdissa.mellowmusic.backend.models.playlists.PlaylistInfo
-import app.suhasdissa.mellowmusic.utils.RetrofitHelper
+import app.suhasdissa.mellowmusic.utils.ApiHelper
 import app.suhasdissa.mellowmusic.utils.asAlbum
 import app.suhasdissa.mellowmusic.utils.asArtist
 import app.suhasdissa.mellowmusic.utils.asSong
@@ -23,7 +23,7 @@ class PipedMusicRepository(
     private val songsDao: SongsDao,
     private val searchDao: SearchDao
 ) {
-    private val pipedApi = RetrofitHelper.createPipedApi()
+    private val pipedApi = ApiHelper.createPipedApi()
 
     suspend fun getAudioSource(id: String): Uri? {
         return runCatching { pipedApi.getStreams(vidId = id) }
