@@ -2,7 +2,6 @@ package app.suhasdissa.mellowmusic
 
 import android.app.Application
 import android.content.ComponentName
-import android.content.SharedPreferences
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.suhasdissa.mellowmusic.backend.database.SongDatabase
@@ -19,27 +18,7 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
     private val database by lazy { SongDatabase.getDatabase(this) }
     lateinit var container: AppContainer
 
-    private val listener =
-        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            if (key == Pref.pipedInstanceKey) {
-                Pref.pipedUrl = sharedPreferences.getInt(Pref.pipedInstanceKey, 0)
-                Pref.currentInstance =
-                    (
-                        Pref.pipedInstances.getOrNull(Pref.pipedUrl)
-                            ?: Pref.pipedInstances.first()
-                        ).instance
-            }
-        }
-
     override fun onCreate() {
-        with(preferences) {
-            Pref.pipedUrl = getInt(Pref.pipedInstanceKey, 0)
-            Pref.currentInstance =
-                (
-                    Pref.pipedInstances.getOrNull(Pref.pipedUrl)
-                        ?: Pref.pipedInstances.first()
-                    ).instance
-        }
         super.onCreate()
         val sessionToken =
             SessionToken(
@@ -48,7 +27,7 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
             )
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         container = DefaultAppContainer(database, controllerFuture, contentResolver)
-        preferences.registerOnSharedPreferenceChangeListener(listener)
+        Pref.sharedPreferences = preferences
         UpdateUtil.getCurrentVersion(this.applicationContext)
     }
 
@@ -61,10 +40,5 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
                     .directory(cacheDir.resolve("image_cache"))
                     .build()
             ).build()
-    }
-
-    override fun onTerminate() {
-        preferences.unregisterOnSharedPreferenceChangeListener(listener)
-        super.onTerminate()
     }
 }

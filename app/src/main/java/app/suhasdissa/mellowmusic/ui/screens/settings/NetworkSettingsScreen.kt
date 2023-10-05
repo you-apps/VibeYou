@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,23 +19,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.mellowmusic.R
+import app.suhasdissa.mellowmusic.backend.viewmodel.SettingsViewModel
 import app.suhasdissa.mellowmusic.ui.components.InstanceSelectDialog
 import app.suhasdissa.mellowmusic.ui.components.SettingItem
 import app.suhasdissa.mellowmusic.utils.Pref
-import app.suhasdissa.mellowmusic.utils.rememberPreference
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NetworkSettingsScreen() {
-    val currentServerId by rememberPreference(key = Pref.pipedInstanceKey, defaultValue = 0)
+    val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory)
+
     var showDialog by remember { mutableStateOf(false) }
     var currentServer by remember {
-        mutableStateOf(
-            Pref.pipedInstances.getOrNull(currentServerId)?.name ?: Pref.pipedInstances.first().name
-        )
+        mutableStateOf(Pref.currentInstance)
     }
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    LaunchedEffect(Unit) {
+        viewModel.loadInstances()
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         LargeTopAppBar(
@@ -51,7 +55,7 @@ fun NetworkSettingsScreen() {
             item {
                 SettingItem(
                     title = stringResource(R.string.change_server),
-                    description = currentServer,
+                    description = currentServer.name,
                     icon = Icons.Default.Web
                 ) {
                     showDialog = true
@@ -62,8 +66,9 @@ fun NetworkSettingsScreen() {
     if (showDialog) {
         InstanceSelectDialog(onDismissRequest = {
             showDialog = false
-        }, onSelectionChange = { name ->
-            currentServer = name
+        }, onSelectionChange = { instance ->
+            currentServer = instance
+            Pref.setInstance(instance)
         })
     }
 }

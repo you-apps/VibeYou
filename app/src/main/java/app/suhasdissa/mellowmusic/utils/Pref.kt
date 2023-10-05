@@ -1,51 +1,60 @@
 package app.suhasdissa.mellowmusic.utils
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import app.suhasdissa.mellowmusic.backend.models.PipedInstance
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object Pref {
-    const val pipedInstanceKey = "PipedInstanceKey"
+    private const val pipedInstanceKey = "SelectedPipedInstanceKey"
     const val authTokenKey = "AuthTokenKey"
+
+    lateinit var sharedPreferences: SharedPreferences
 
     val pipedInstances = listOf(
         PipedInstance(
             "kavin.rocks",
             "https://pipedapi.kavin.rocks/",
-            "pipedapi.kavin.rocks"
         ),
         PipedInstance(
             "lunar.icu",
             "https://piped-api.lunar.icu/",
-            "piped-api.lunar.icu",
-            "https://piped-proxy.lunar.icu/"
         ),
         PipedInstance(
             "whatever.social",
             "https://watchapi.whatever.social/",
-            "watchapi.whatever.social",
-            "https://watchproxy-nl.whatever.social"
         ),
         PipedInstance(
             "tokhmi.xyz",
             "https://pipedapi.tokhmi.xyz/",
-            "pipedapi.tokhmi.xyz"
         ),
         PipedInstance(
             "mha.fi",
             "https://api-piped.mha.fi/",
-            "api-piped.mha.fi"
         ),
         PipedInstance(
             "garudalinux.org",
             "https://piped-api.garudalinux.org/",
-            "piped-api.garudalinux.org"
         ),
         PipedInstance(
             "piped.yt",
             "https://api.piped.yt/",
-            "api.piped.yt"
         )
     )
-    var pipedUrl = 0
-    var currentInstance: String =
-        (pipedInstances.getOrNull(pipedUrl) ?: pipedInstances.first()).instance
+
+    val currentInstance get() = run {
+        runCatching {
+            val instanceJsonStr = sharedPreferences.getString(pipedInstanceKey, "").orEmpty()
+            return@run json.decodeFromString<PipedInstance>(instanceJsonStr)
+        }
+        pipedInstances.first()
+    }
+
+    private val json = Json { ignoreUnknownKeys = true }
+
+    fun setInstance(instance: PipedInstance) {
+        val instanceJson = json.encodeToString(instance)
+        sharedPreferences.edit(commit = true) { putString(pipedInstanceKey, instanceJson) }
+    }
 }
