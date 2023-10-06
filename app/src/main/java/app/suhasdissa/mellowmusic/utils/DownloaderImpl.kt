@@ -4,7 +4,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.downloader.Request
 import org.schabi.newpipe.extractor.downloader.Response
@@ -12,49 +12,49 @@ import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
 
 class DownloaderImpl : Downloader() {
     private val client: OkHttpClient = OkHttpClient.Builder()
-        .readTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .build()
 
     @Throws(IOException::class, ReCaptchaException::class)
     override fun execute(request: Request): Response {
-        val httpMethod = request.httpMethod()
         val url = request.url()
-        val headers = request.headers()
-        val dataToSend = request.dataToSend()
-        val requestBody: RequestBody? =
-            dataToSend?.let { RequestBody.create("application/json".toMediaType(), it) }
-        val requestBuilder: okhttp3.Request.Builder = okhttp3.Request.Builder().apply {
-            method(httpMethod, requestBody)
-            url(url)
-            addHeader("User-Agent", USER_AGENT)
+
+        val requestBody = request.dataToSend()?.let {
+            it.toRequestBody(APPLICATION_JSON, 0, it.size)
         }
-        for ((headerName, headerValueList) in headers) {
-            if (headerValueList.size > 1) {
-                requestBuilder.removeHeader(headerName)
-                for (headerValue in headerValueList) {
-                    requestBuilder.addHeader(headerName, headerValue)
-                }
-            } else if (headerValueList.size == 1) {
-                requestBuilder.header(headerName, headerValueList[0])
+
+        val requestBuilder = okhttp3.Request.Builder()
+            .method(request.httpMethod(), requestBody)
+            .url(url)
+            .addHeader(USER_AGENT_HEADER_NAME, USER_AGENT)
+
+        for ((headerName, headerValueList) in request.headers()) {
+            requestBuilder.removeHeader(headerName)
+            for (headerValue in headerValueList) {
+                requestBuilder.addHeader(headerName, headerValue)
             }
         }
+
         val response = client.newCall(requestBuilder.build()).execute()
-        if (response.code == 429) {
+        if (response.code == CAPTCHA_STATUS_CODE) {
             response.close()
             throw ReCaptchaException("reCaptcha Challenge requested", url)
         }
-        val body = response.body?.toString()
-        val latestUrl = response.request.url.toString()
+
         return Response(
             response.code,
             response.message,
             response.headers.toMultimap(),
-            body,
-            latestUrl
+            response.body?.string(),
+            response.request.url.toString()
         )
     }
 
     companion object {
-        const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0"
+        private const val USER_AGENT_HEADER_NAME = "User-Agent"
+        private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101 Firefox/102.0"
+        private const val CAPTCHA_STATUS_CODE = 429
+        private val APPLICATION_JSON = "application/json".toMediaType()
+        private const val READ_TIMEOUT_SECONDS = 30L
     }
 }

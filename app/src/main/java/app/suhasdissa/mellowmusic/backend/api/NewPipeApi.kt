@@ -26,7 +26,7 @@ import org.schabi.newpipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.extractor.stream.StreamInfoItem
 
 class NewPipeApi : PipedApi {
-    private val youtubeService = NewPipe.getService(0)
+    private val youtubeService = NewPipe.getService("YouTube")
 
     init {
         NewPipe.init(DownloaderImpl())
