@@ -19,7 +19,7 @@ val SongItem.asSong: Song
         id = videoId,
         title = title,
         artistsText = uploaderName,
-        durationText = DateUtils.formatElapsedTime(duration.toLong()),
+        durationText = DateUtils.formatElapsedTime(duration),
         thumbnailUri = thumbnail.toUri()
     )
 
@@ -48,7 +48,7 @@ fun PipedSongResponse.asSong(id: String): Song {
         id = id,
         title = title!!,
         artistsText = uploader ?: "",
-        durationText = DateUtils.formatElapsedTime(duration?.toLong() ?: 0L),
+        durationText = DateUtils.formatElapsedTime(duration ?: 0L),
         thumbnailUri = thumbnailUrl?.toUri()
     )
 }
@@ -92,3 +92,7 @@ val MediaItem.maxResThumbnail: String
             ?: "https://piped-proxy.lunar.icu/"
         return "${pipedUrl}vi_webp/$mediaId/maxresdefault.webp?host=i.ytimg.com"
     }
+
+fun String.substringYouTube(): String {
+    return this.substringAfter("youtube.com")
+}

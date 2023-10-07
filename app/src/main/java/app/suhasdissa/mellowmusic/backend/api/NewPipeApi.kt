@@ -15,6 +15,7 @@ import app.suhasdissa.mellowmusic.backend.models.playlists.Playlists
 import app.suhasdissa.mellowmusic.backend.models.songs.SongItem
 import app.suhasdissa.mellowmusic.backend.models.songs.Songs
 import app.suhasdissa.mellowmusic.utils.DownloaderImpl
+import app.suhasdissa.mellowmusic.utils.substringYouTube
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
@@ -43,7 +44,7 @@ class NewPipeApi : PipedApi {
                 .filterIsInstance(StreamInfoItem::class.java)
                 .map { item: StreamInfoItem ->
                     SongItem(
-                        url = item.url,
+                        url = item.url.substringYouTube(),
                         title = item.name,
                         thumbnail = item.thumbnailUrl,
                         uploaderName = item.uploaderName,
@@ -68,7 +69,7 @@ class NewPipeApi : PipedApi {
                 .filterIsInstance(PlaylistInfoItem::class.java)
                 .map { item: PlaylistInfoItem ->
                     Playlist(
-                        url = item.url,
+                        url = item.url.substringYouTube(),
                         type = item.playlistType.name,
                         name = item.name,
                         thumbnail = item.thumbnailUrl,
@@ -89,7 +90,7 @@ class NewPipeApi : PipedApi {
                 .filterIsInstance(ChannelInfoItem::class.java)
                 .map { item: ChannelInfoItem ->
                     Artist(
-                        url = item.url,
+                        url = item.url.substringYouTube(),
                         name = item.name,
                         thumbnail = item.thumbnailUrl,
                         description = item.description
@@ -102,6 +103,7 @@ class NewPipeApi : PipedApi {
     override suspend fun getStreams(instance: String, vidId: String): PipedSongResponse {
         return withContext(Dispatchers.IO) {
             try {
+                Log.d("getStreams", "getting streams from : https://www.youtube.com/watch?v=$vidId")
                 val resp =
                     StreamInfo.getInfo("https://www.youtube.com/watch?v=$vidId")
                 val audioStreams = resp.audioStreams.map {
