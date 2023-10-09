@@ -9,6 +9,7 @@ import kotlinx.serialization.json.Json
 object Pref {
     private const val pipedInstanceKey = "SelectedPipedInstanceKey"
     const val authTokenKey = "AuthTokenKey"
+    const val exoCacheKey = "ExoCacheKey"
 
     lateinit var sharedPreferences: SharedPreferences
 

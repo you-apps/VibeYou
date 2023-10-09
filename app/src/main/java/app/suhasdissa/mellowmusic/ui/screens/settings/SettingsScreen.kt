@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SettingsBackupRestore
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Web
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
@@ -25,6 +26,7 @@ import app.suhasdissa.mellowmusic.Destination
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.models.Login
 import app.suhasdissa.mellowmusic.backend.viewmodel.AuthViewModel
+import app.suhasdissa.mellowmusic.ui.components.CacheSizeDialog
 import app.suhasdissa.mellowmusic.ui.components.SettingItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +38,7 @@ fun SettingsScreen(
     var showLoginDialog by remember { mutableStateOf(false) }
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    var showImageCacheDialog by remember { mutableStateOf(false) }
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         LargeTopAppBar(
@@ -64,6 +67,16 @@ fun SettingsScreen(
                     description = stringResource(R.string.network_settings_description),
                     onClick = { onNavigate(Destination.NetworkSettings.route) },
                     icon = Icons.Default.Web
+                )
+            }
+            item {
+                SettingItem(
+                    title = stringResource(R.string.music_cache_limit),
+                    description = stringResource(R.string.change_music_cache_size),
+                    onClick = {
+                        showImageCacheDialog = true
+                    },
+                    icon = Icons.Default.Storage
                 )
             }
             /*
@@ -114,5 +127,10 @@ fun SettingsScreen(
                 }
             }
         )
+    }
+    if (showImageCacheDialog) {
+        CacheSizeDialog {
+            showImageCacheDialog = false
+        }
     }
 }
