@@ -4,10 +4,13 @@ on:
   push:
     paths-ignore:
         - "README*.md"
-        - "app/src/res/**"
+        - "app/src/main/res/**"
         - ".github/**"
-    branches:
-      - main
+  pull_request:
+    paths-ignore:
+        - "README*.md"
+        - "app/src/main/res/**"
+        - ".github/**"
 
 jobs:
   apk:
