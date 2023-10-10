@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.utils.Pref
+import app.suhasdissa.mellowmusic.utils.formatMB
 import app.suhasdissa.mellowmusic.utils.rememberPreference
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,14 +46,12 @@ fun CacheSizeDialog(onDismissRequest: () -> Unit) {
                         onClick = { prefSize = it },
                         label = {
                             Text(
-                                if (it >= 1024) {
-                                    "${it / 1024} GB"
-                                } else if (it == 0) {
+                                if (it == 0) {
                                     stringResource(
                                         R.string.unlimited
                                     )
                                 } else {
-                                    "$it MB"
+                                    formatMB(it)
                                 }
                             )
                         }
