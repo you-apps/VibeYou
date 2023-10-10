@@ -109,6 +109,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+    implementation("com.github.nanihadesuka:LazyColumnScrollbar:1.8.0")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
