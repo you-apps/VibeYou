@@ -6,6 +6,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import app.suhasdissa.mellowmusic.R
 import app.suhasdissa.mellowmusic.backend.data.Album
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
@@ -23,7 +24,12 @@ fun ArtistScreen(
     MiniPlayerScaffold(topBar = {
         TopAppBar(title = {
             when (state) {
-                is ArtistInfoState.Success -> Text(text = state.artist.artistsText)
+                is ArtistInfoState.Success -> Text(
+                    text = state.artist.artistsText,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
                 else -> Text(stringResource(R.string.artist))
             }
         }, scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior())
