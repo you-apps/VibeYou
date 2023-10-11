@@ -172,7 +172,7 @@ class LocalMusicRepository(
                 MediaStore.VOLUME_EXTERNAL
             )
         } else {
-            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+            MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI
         }
 
         val projection = arrayOf(
