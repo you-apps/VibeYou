@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -78,7 +79,8 @@ fun SongSettingsSheet(
                     .clip(RoundedCornerShape(8.dp)),
                 model = song.thumbnailUri,
                 contentDescription = null,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.music_placeholder)
             )
             Column(
                 Modifier
@@ -188,7 +190,8 @@ fun SongSettingsSheetSearchPage(
                     .clip(RoundedCornerShape(8.dp)),
                 model = song.thumbnailUri,
                 contentDescription = null,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.music_placeholder)
             )
             Column(
                 Modifier
