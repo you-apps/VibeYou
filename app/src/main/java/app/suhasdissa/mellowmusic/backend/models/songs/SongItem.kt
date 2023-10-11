@@ -9,7 +9,7 @@ data class SongItem(
     @SerialName("title") var title: String = "",
     @SerialName("thumbnail") var thumbnail: String = "",
     @SerialName("uploaderName") var uploaderName: String = "",
-    @SerialName("duration") var duration: Int = 0
+    @SerialName("duration") var duration: Long = 0
 ) {
     val videoId
         get() = url.replace("/watch?v=", "")

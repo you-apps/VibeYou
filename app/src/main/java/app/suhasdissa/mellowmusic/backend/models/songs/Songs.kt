@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Songs(
-    @SerialName("items") var items: ArrayList<SongItem> = arrayListOf()
+    @SerialName("items") var items: List<SongItem> = listOf()
 )

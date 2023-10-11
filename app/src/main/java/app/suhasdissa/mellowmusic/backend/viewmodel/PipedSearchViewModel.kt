@@ -48,8 +48,10 @@ class PipedSearchViewModel(private val musicRepository: PipedMusicRepository) : 
             {
                 if (insertedTextTemp == search) {
                     viewModelScope.launch {
-                        runCatching {
+                        try {
                             suggestions = musicRepository.getSuggestions(search).take(6)
+                        } catch (e: Exception) {
+                            Log.e("Getting Suggestions", e.message, e)
                         }
                         Log.e("Search ViewModel", "getting query for \"$search\"")
                     }

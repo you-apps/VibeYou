@@ -11,9 +11,9 @@ data class PipedSongResponse(
     @SerialName("uploader") var uploader: String? = null,
     @SerialName("thumbnailUrl") var thumbnailUrl: String? = null,
     @SerialName("hls") var hls: String? = null,
-    @SerialName("duration") var duration: Int? = null,
-    @SerialName("audioStreams") var audioStreams: ArrayList<AudioStreams> = arrayListOf(),
-    @SerialName("relatedStreams") var relatedStreams: ArrayList<SongItem> = arrayListOf()
+    @SerialName("duration") var duration: Long? = null,
+    @SerialName("audioStreams") var audioStreams: List<AudioStreams> = listOf(),
+    @SerialName("relatedStreams") var relatedStreams: List<SongItem> = listOf()
 
 )
 
