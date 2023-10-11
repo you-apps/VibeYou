@@ -90,9 +90,23 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(route = Destination.Artist.route) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                ArtistScreen(onNavigate = {
-                    navHostController.navigateTo(it.route)
-                })
+                val searchViewModel: PipedSearchViewModel =
+                    viewModel(factory = PipedSearchViewModel.Factory)
+                ArtistScreen(onClickAlbum = {
+                    searchViewModel.getPlaylistInfo(it)
+                    navHostController.navigateTo(Destination.Playlists.route)
+                }, searchViewModel.artistInfoState)
+            }
+        }
+
+        composable(route = Destination.LocalArtist.route) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                val searchViewModel: LocalSearchViewModel =
+                    viewModel(factory = LocalSearchViewModel.Factory)
+                ArtistScreen(onClickAlbum = {
+                    searchViewModel.getAlbumInfo(it)
+                    navHostController.navigateTo(Destination.LocalPlaylists.route)
+                }, searchViewModel.artistInfoState)
             }
         }
     }

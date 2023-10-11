@@ -216,7 +216,8 @@ fun LocalSearchScreen(
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        // TODO
+                                        localSearchViewModel.getArtistInfo(it)
+                                        onNavigate(Destination.LocalArtist)
                                     },
                                     onLongPress = {
                                     }

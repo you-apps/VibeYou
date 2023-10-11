@@ -125,7 +125,10 @@ fun LocalMusicScreen(
 
                 2 -> ArtistList(
                     items = localSongViewModel.artists,
-                    onClickCard = {},
+                    onClickCard = {
+                        localSearchViewModel.getArtistInfo(it)
+                        onNavigate(Destination.LocalArtist)
+                    },
                     onLongPress = {}
                 )
             }

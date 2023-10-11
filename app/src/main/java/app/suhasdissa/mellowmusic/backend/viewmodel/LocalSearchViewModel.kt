@@ -14,10 +14,12 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.backend.data.Album
+import app.suhasdissa.mellowmusic.backend.data.Artist
 import app.suhasdissa.mellowmusic.backend.data.Song
 import app.suhasdissa.mellowmusic.backend.models.LocalSearchFilter
 import app.suhasdissa.mellowmusic.backend.repository.LocalMusicRepository
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.AlbumInfoState
+import app.suhasdissa.mellowmusic.backend.viewmodel.state.ArtistInfoState
 import app.suhasdissa.mellowmusic.backend.viewmodel.state.SearchState
 import kotlinx.coroutines.launch
 
@@ -29,6 +31,8 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
     var albumInfoState: AlbumInfoState by mutableStateOf(AlbumInfoState.Loading)
+        private set
+    var artistInfoState: ArtistInfoState by mutableStateOf(ArtistInfoState.Loading)
         private set
 
     fun getSuggestions() {
@@ -65,6 +69,21 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
             } catch (e: Exception) {
                 Log.e("Playlist Info", e.toString())
                 AlbumInfoState.Error
+            }
+        }
+    }
+
+    fun getArtistInfo(artist: Artist) {
+        viewModelScope.launch {
+            artistInfoState = ArtistInfoState.Loading
+            artistInfoState = try {
+                ArtistInfoState.Success(
+                    artist,
+                    musicRepository.getArtistInfo(artist.artistsText)
+                )
+            } catch (e: Exception) {
+                Log.e("Artist Info", e.toString())
+                ArtistInfoState.Error
             }
         }
     }

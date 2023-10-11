@@ -3,7 +3,6 @@ package app.suhasdissa.mellowmusic
 sealed class Destination(val route: String) {
     object PipedMusic : Destination("piped_music")
     object LocalMusic : Destination("local_music")
-    object YoutubeMusic : Destination("yt_music")
     object OnlineSearch : Destination("online_search")
     object LocalSearch : Destination("local_search")
     object Settings : Destination("settings")
@@ -13,4 +12,5 @@ sealed class Destination(val route: String) {
     object Playlists : Destination("playlist_screen")
     object LocalPlaylists : Destination("local_playlist_screen")
     object Artist : Destination("artist")
+    object LocalArtist : Destination("local_artist")
 }
