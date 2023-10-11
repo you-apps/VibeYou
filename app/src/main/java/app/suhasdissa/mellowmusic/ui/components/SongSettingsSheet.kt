@@ -100,20 +100,22 @@ fun SongSettingsSheet(
                     )
                 }
             }
-            Column(
-                Modifier
-                    .padding(8.dp)
-            ) {
-                var favouriteState by remember { mutableStateOf(song.isFavourite) }
-                IconButton(onClick = {
-                    view.playSoundEffect(SoundEffectConstants.CLICK)
-                    songViewModel.toggleFavourite(song.id)
-                    favouriteState = !favouriteState
-                }) {
-                    if (favouriteState) {
-                        Icon(Icons.Default.Favorite, contentDescription = null)
-                    } else {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+            if (!song.isLocal) {
+                Column(
+                    Modifier
+                        .padding(8.dp)
+                ) {
+                    var favouriteState by remember { mutableStateOf(song.isFavourite) }
+                    IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        songViewModel.toggleFavourite(song.id)
+                        favouriteState = !favouriteState
+                    }) {
+                        if (favouriteState) {
+                            Icon(Icons.Default.Favorite, contentDescription = null)
+                        } else {
+                            Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+                        }
                     }
                 }
             }
@@ -143,14 +145,16 @@ fun SongSettingsSheet(
                     onDismissRequest()
                 }
             )
-            SheetSettingItem(
-                icon = Icons.Default.Delete,
-                description = R.string.delete_song,
-                onClick = {
-                    songViewModel.removeSong(song)
-                    onDismissRequest()
-                }
-            )
+            if (!song.isLocal) {
+                SheetSettingItem(
+                    icon = Icons.Default.Delete,
+                    description = R.string.delete_song,
+                    onClick = {
+                        songViewModel.removeSong(song)
+                        onDismissRequest()
+                    }
+                )
+            }
         }
     }
 }

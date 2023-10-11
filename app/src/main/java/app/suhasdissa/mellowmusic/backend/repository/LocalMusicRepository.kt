@@ -94,7 +94,8 @@ class LocalMusicRepository(
                         thumbnailUri = getAlbumArt(albumId),
                         artistsText = cursor.getString(artistColumn),
                         albumId = albumId,
-                        artistId = cursor.getLong(artistIdColumn)
+                        artistId = cursor.getLong(artistIdColumn),
+                        isLocal = true
                     )
                 )
             }
