@@ -48,7 +48,23 @@
 alt="Get it on GitHub"
 height="80">](https://github.com/you-apps/MellowMusic/releases/latest)
 
-## 🧾 Translation
+<!-- ---------- Contribution ---------- -->
+## Feedback and contributions
+***All contributions are very welcome!***
 
-[Crowdin Translate](https://crowdin.com/project/mellowmusic/)
+* Feel free to join the [Matrix room](https://matrix.to/#/#you-apps:matrix.org) for discussions about the app.
+* Bug reports and feature requests can be submitted [here](https://github.com/you-apps/VibeYou/issues) (please make sure to fill out all the requested information properly!).
+* If you are a developer and wish to contribute to the app, please **fork** the project and submit a [**pull request**](https://help.github.com/articles/about-pull-requests/).
+
+## Translation
+<a href="https://hosted.weblate.org/projects/you-apps/vibe-you/">
+<img src="https://hosted.weblate.org/widgets/you-apps/-/vibe-you/287x66-grey.png" alt="Translation status" />
+</a>
+
+## Credits
+* Icon design by [M00NJ](https://github.com/M00NJ)
+
+## License
+
+Vibe You is licensed under the [**GNU General Public License**](https://www.gnu.org/licenses/gpl.html): You can use, study and share it as you want.
 
