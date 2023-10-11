@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import app.suhasdissa.mellowmusic.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.mellowmusic.ui.components.IllustratedMessageScreen
 import app.suhasdissa.mellowmusic.ui.components.SongCard
 import app.suhasdissa.mellowmusic.ui.components.SongSettingsSheet
+import my.nanihadesuka.compose.LazyColumnScrollbar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,42 +44,51 @@ fun SongListView(
         IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
     } else {
         val groups = remember(songs) { songs.groupBy { song -> song.title.first().toString() } }
-        LazyColumn(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+        val state = rememberLazyListState()
+        LazyColumnScrollbar(
+            listState = state,
+            thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+            thumbSelectedColor = MaterialTheme.colorScheme.primary,
+            thickness = 8.dp
         ) {
-            groups.forEach { group ->
-                stickyHeader {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
-                    ) {
-                        Text(
-                            text = group.key,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                state = state,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                groups.forEach { group ->
+                    stickyHeader {
+                        Row(
+                            Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(50))
-                                .background(MaterialTheme.colorScheme.secondaryContainer)
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
+                                .background(MaterialTheme.colorScheme.background)
+                        ) {
+                            Text(
+                                text = group.key,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(50))
+                                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                            )
+                        }
+                    }
+                    items(items = group.value) { item ->
+                        SongCard(
+                            song = item,
+                            onClickCard = {
+                                playerViewModel.playSong(item)
+                            },
+                            onLongPress = {
+                                selectedSong = item
+                                showSongSettings = true
+                            }
                         )
                     }
-                }
-                items(items = group.value) { item ->
-                    SongCard(
-                        song = item,
-                        onClickCard = {
-                            playerViewModel.playSong(item)
-                        },
-                        onLongPress = {
-                            selectedSong = item
-                            showSongSettings = true
-                        }
-                    )
                 }
             }
         }
