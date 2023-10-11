@@ -53,21 +53,6 @@ fun NavDrawerContent(
         NavigationDrawerItem(
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_piped),
-                    contentDescription = null
-                )
-            },
-            label = { Text(text = stringResource(id = R.string.piped_music)) },
-            selected = currentDestination == Destination.PipedMusic,
-            onClick = {
-                view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(Destination.PipedMusic)
-            }
-        )
-        Spacer(Modifier.height(16.dp))
-        NavigationDrawerItem(
-            icon = {
-                Icon(
                     imageVector = Icons.Rounded.MusicNote,
                     contentDescription = null
                 )
@@ -77,6 +62,21 @@ fun NavDrawerContent(
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 onDestinationSelected(Destination.LocalMusic)
+            }
+        )
+        Spacer(Modifier.height(16.dp))
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_piped),
+                    contentDescription = null
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.piped_music)) },
+            selected = currentDestination == Destination.PipedMusic,
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onDestinationSelected(Destination.PipedMusic)
             }
         )
         Spacer(Modifier.height(16.dp))

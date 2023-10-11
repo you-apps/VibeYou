@@ -67,7 +67,7 @@ fun HomeScreen(
     val view = LocalView.current
     val mainActivity = (LocalContext.current as MainActivity)
     var currentDestination by remember {
-        mutableStateOf<Destination>(Destination.PipedMusic)
+        mutableStateOf<Destination>(Destination.LocalMusic)
     }
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -139,7 +139,7 @@ fun HomeScreen(
         }) {
             NavHost(
                 navController,
-                startDestination = Destination.PipedMusic.route,
+                startDestination = Destination.LocalMusic.route,
                 Modifier
                     .fillMaxSize(),
                 enterTransition = { EnterTransition.None },
@@ -147,9 +147,13 @@ fun HomeScreen(
             ) {
                 composable(Destination.PipedMusic.route) {
                     MusicScreen()
+                    LaunchedEffect(Unit) {
+                        currentDestination = Destination.PipedMusic
+                    }
                 }
                 composable(Destination.LocalMusic.route) {
                     LaunchedEffect(Unit) {
+                        currentDestination = Destination.LocalMusic
                         PermissionHelper.checkPermissions(
                             mainActivity,
                             LocalMusicRepository.permissions
