@@ -142,7 +142,11 @@ fun FullScreenPlayer(
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(16.dp))
-                Text(artist, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    artist,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
+                )
             }
             PlayerController(
                 isfavourite = isFavourite,
