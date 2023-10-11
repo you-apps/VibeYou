@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MellowMusic</string>
+    <string name="app_name" translatable="false">Vibe You</string>
     <string name="settings_title">Settings</string>
     <string name="songs">Songs</string>
     <string name="about_title">About</string>
