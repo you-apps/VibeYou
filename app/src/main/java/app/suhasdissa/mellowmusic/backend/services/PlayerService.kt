@@ -18,6 +18,7 @@ import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.ExoPlayer
@@ -35,6 +36,7 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.mellowmusic.MellowMusicApplication
 import app.suhasdissa.mellowmusic.utils.DynamicDataSource
+import app.suhasdissa.mellowmusic.utils.Pref
 import app.suhasdissa.mellowmusic.utils.mediaIdList
 import coil.ImageLoader
 import coil.request.ErrorResult
@@ -60,7 +62,9 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
-        val cacheEvictor = NoOpCacheEvictor()
+        val maxMBytes = Pref.sharedPreferences.getInt(Pref.exoCacheKey, 0)
+        val cacheEvictor =
+            if (maxMBytes > 0) LeastRecentlyUsedCacheEvictor(maxMBytes * 1024 * 1024L) else NoOpCacheEvictor()
         val directory = cacheDir.resolve("exoplayer").also { directory ->
             directory.mkdir()
         }
