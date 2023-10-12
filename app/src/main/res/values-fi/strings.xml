@@ -1,2 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="favourite_songs">Suosikit</string>
+    <string name="close_player">Sulje soitin</string>
+    <string name="close_queue">Sulje jono</string>
+    <string name="backup_description">Luo varmuuskopiotiedosto</string>
+    <string name="latest_release">Uusin julkaisu</string>
+    <string name="password">Salasana</string>
+    <string name="album_art">Albumin kuvitus</string>
+    <string name="network_settings">Verkkoasetukset</string>
+    <string name="remove_item_from_queue">Poista jonosta</string>
+    <string name="recent_songs">Viimeisimmät kappaleet</string>
+    <string name="repeat_all">Kertaa kaikki</string>
+    <string name="skip_next">Ohita seuraava</string>
+    <string name="change_server">Vaihda palvelin</string>
+    <string name="pause">Keskeytä</string>
+    <string name="restore">Palauta tietokanta</string>
+    <string name="unlimited">Rajoittamaton</string>
+    <string name="delete_song">Poista kappale</string>
+    <string name="play_song">Toista kappale</string>
+    <string name="repeat_one">Kertaa yksi</string>
+    <string name="settings_title">Asetukset</string>
+    <string name="username">Käyttäjätunnus</string>
+    <string name="restore_description">Palauta edellinen varmuuskopiotiedosto</string>
+    <string name="backup_restore">Varmuuskopioi ja palauta</string>
+    <string name="current_version">Nykyinen versio</string>
+    <string name="ok">OK</string>
+    <string name="artists">Esittäjät</string>
+    <string name="something_went_wrong">Jokin meni pieleen</string>
+    <string name="search_for_a_song">Etsi kappaletta</string>
+    <string name="albums">Albumit</string>
+    <string name="backup">Varmuuskopioi tietokanta</string>
+    <string name="artist">Esittäjä</string>
+    <string name="song_options">Kappaleen valinnat</string>
+    <string name="show_queue">Näytä jono</string>
+    <string name="shuffle">Sekoita</string>
+    <string name="select_server">Valitse palvelin</string>
+    <string name="now_playing">Nyt soi</string>
+    <string name="songs">Kappaleet</string>
+    <string name="login">Kirjaudu</string>
+    <string name="piped_music">Piped-musiikki</string>
+    <string name="network_settings_description">Vaihda palvelinta korjataksesi toisto-ongelmat</string>
+    <string name="clear_search">Tyhjennä haku</string>
+    <string name="settings">Asetukset</string>
+    <string name="play">Toista</string>
+    <string name="repeat_off">Kertaus pois</string>
+    <string name="local_music">Paikallinen musiikki</string>
+    <string name="enqueue_song">Lisää jonoon</string>
+    <string name="backup_restore_setting_description">Varmuuskopioi kappalelista tai palauta varmuuskopio.</string>
+    <string name="close_search">Sulje haku</string>
+    <string name="search_songs">Etsi kappaleita</string>
+    <string name="about_title">Tietoja</string>
+    <string name="play_next">Toista seuraava</string>
+</resources>
