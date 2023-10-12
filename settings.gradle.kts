@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
     }
 }
-rootProject.name = "MellowMusic"
+rootProject.name = "VibeYou"
 include(":app")

@@ -69,7 +69,7 @@
 
         </activity>
         <service
-            android:name="app.suhasdissa.mellowmusic.backend.services.PlayerService"
+            android:name="app.suhasdissa.vibeyou.backend.services.PlayerService"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
