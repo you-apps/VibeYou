@@ -3,7 +3,7 @@
     <string name="favourite_songs">Избранное</string>
     <string name="close_player">Закрыть проигрыватель</string>
     <string name="close_queue">Закрыть очередь</string>
-    <string name="backup_description">Создать резервную копию</string>
+    <string name="backup_description">Сохранить резервную копию базы данных в файл</string>
     <string name="latest_release">Актуальная версия</string>
     <string name="password">Пароль</string>
     <string name="album_art">Обложка альбома</string>
@@ -16,7 +16,7 @@
     <string name="music_cache_limit">Ограничение кэша музыки</string>
     <string name="change_server">Сменить сервер</string>
     <string name="pause">Пауза</string>
-    <string name="restore">Восстановить базу данных</string>
+    <string name="restore">Восстановить из копии</string>
     <string name="unlimited">Не ограничен</string>
     <string name="song_album_art">Обложка композиции</string>
     <string name="delete_song">Удалить</string>
@@ -24,8 +24,8 @@
     <string name="repeat_one">Повторять один и тот же</string>
     <string name="settings_title">Настройки</string>
     <string name="username">Имя пользователя</string>
-    <string name="restore_description">Восстановить из резервной копии</string>
-    <string name="backup_restore">Резервн. копирование и восст.</string>
+    <string name="restore_description">Восстановить базу данных из резервной копии</string>
+    <string name="backup_restore">Резервные копии</string>
     <string name="readme">README</string>
     <string name="current_version">Текущая версия</string>
     <string name="about_setting_description">Версия, Контакты</string>
@@ -33,7 +33,7 @@
     <string name="artists">Исполнители</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
     <string name="albums">Альбомы</string>
-    <string name="backup">Резервная копия базы данных</string>
+    <string name="backup">Создать копию</string>
     <string name="artist">Исполнитель</string>
     <string name="player_queue">Очередь воспроизведения</string>
     <string name="show_queue">Показать очередь</string>
@@ -45,7 +45,7 @@
     <string name="change_music_cache_size">Изменить размер кэша музыки</string>
     <string name="login">Войти</string>
     <string name="piped_music">Музыка Piped</string>
-    <string name="network_settings_description">Смените сервер для исправления проблем с сетью</string>
+    <string name="network_settings_description">Изменение сервера для исправления проблем с воспроизведением</string>
     <string name="clear_search">Очистить поиск</string>
     <string name="settings">Настройки</string>
     <string name="play">Воспроизвести</string>
@@ -53,9 +53,9 @@
     <string name="local_music">Локальная музыка</string>
     <string name="enqueue_song">Добавить в очередь</string>
     <string name="github_issue">Обратная связь через GitHub</string>
-    <string name="backup_restore_setting_description">Сохранить резервную копию списка мелодий или восстановите из копии.</string>
+    <string name="backup_restore_setting_description">Сохранить резервную копию списка мелодий или восстановить.</string>
     <string name="close_search">Закрыть поиск</string>
-    <string name="search_songs">Поиск...</string>
+    <string name="search_songs">Искать Музыку</string>
     <string name="about_title">О программе</string>
     <string name="play_next">Играть следующим</string>
     <string name="search_for_a_song">Найти Музыку</string>
