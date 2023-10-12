@@ -220,7 +220,9 @@ fun SongSettingsSheetSearchPage(
                 description = R.string.play_song,
                 onClick = {
                     playerViewModel.playSong(song)
-                    playerViewModel.saveSong(song)
+                    if (!song.isLocal) {
+                        playerViewModel.saveSong(song)
+                    }
                     onDismissRequest()
                 }
             )
@@ -229,7 +231,9 @@ fun SongSettingsSheetSearchPage(
                 description = R.string.play_next,
                 onClick = {
                     playerViewModel.playNext(song)
-                    playerViewModel.saveSong(song)
+                    if (!song.isLocal) {
+                        playerViewModel.saveSong(song)
+                    }
                     onDismissRequest()
                 }
             )
@@ -238,7 +242,9 @@ fun SongSettingsSheetSearchPage(
                 description = R.string.enqueue_song,
                 onClick = {
                     playerViewModel.enqueueSong(song)
-                    playerViewModel.saveSong(song)
+                    if (!song.isLocal) {
+                        playerViewModel.saveSong(song)
+                    }
                     onDismissRequest()
                 }
             )

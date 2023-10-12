@@ -88,7 +88,9 @@ fun AlbumScreen(
                             song = item,
                             onClickCard = {
                                 playerViewModel.playSong(item)
-                                playerViewModel.saveSong(item)
+                                if (!item.isLocal) {
+                                    playerViewModel.saveSong(item)
+                                }
                             },
                             onLongPress = {
                                 selectedSong = item

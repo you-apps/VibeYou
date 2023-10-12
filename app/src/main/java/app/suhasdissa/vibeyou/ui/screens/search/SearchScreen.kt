@@ -223,7 +223,9 @@ fun SearchScreen(
                                     items = searchState.items,
                                     onClickCard = { song ->
                                         playerViewModel.playSong(song)
-                                        playerViewModel.saveSong(song)
+                                        if (!song.isLocal) {
+                                            playerViewModel.saveSong(song)
+                                        }
                                     },
                                     onLongPress = { song ->
                                         selectedSong = song
