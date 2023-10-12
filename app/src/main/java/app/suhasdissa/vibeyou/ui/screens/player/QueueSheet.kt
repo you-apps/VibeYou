@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -21,10 +20,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.media3.common.Player
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.vibeyou.utils.DisposableListener
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,19 +35,6 @@ fun QueueSheet(
     )
     val scope = rememberCoroutineScope()
     val view = LocalView.current
-    playerViewModel.controller?.let {
-        it.DisposableListener {
-            object : Player.Listener {
-                override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    if (playerSheetState.currentValue == SheetValue.Hidden) {
-                        scope.launch {
-                            playerSheetState.expand()
-                        }
-                    }
-                }
-            }
-        }
-    }
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = playerSheetState,

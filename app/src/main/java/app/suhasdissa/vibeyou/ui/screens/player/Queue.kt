@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,9 +24,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.ui.components.SongCardCompact
+import app.suhasdissa.vibeyou.utils.DisposableListener
 import app.suhasdissa.vibeyou.utils.queue
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -38,17 +42,14 @@ fun Queue(
     controller: MediaController
 ) {
     var queueItems by remember { mutableStateOf(controller.currentTimeline.queue) }
-    // This code seems to break the drag and drop animation
-    /*
+    var currentItemIndex by remember { mutableIntStateOf(controller.currentMediaItemIndex) }
     controller.DisposableListener {
         object : Player.Listener {
-            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-                queueItems.clear()
-                queueItems.addAll(timeline.queue)
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                currentItemIndex = controller.currentMediaItemIndex
             }
         }
     }
-     */
     val state = rememberReorderableLazyListState(onMove = { from, to ->
         queueItems = queueItems.toMutableList().apply {
             val removedItem = removeAt(from.index)
@@ -71,6 +72,7 @@ fun Queue(
                     thumbnail = mediaItem.mediaMetadata.artworkUri,
                     title = mediaItem.mediaMetadata.title.toString(),
                     artist = mediaItem.mediaMetadata.artist.toString(),
+                    active = queue.first == currentItemIndex,
                     TrailingContent = {
                         IconButton(onClick = {
                             view.playSoundEffect(SoundEffectConstants.CLICK)

@@ -3,17 +3,22 @@ package app.suhasdissa.vibeyou.ui.components
 import android.net.Uri
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -104,6 +109,7 @@ fun SongCardCompact(
     thumbnail: Uri?,
     title: String,
     artist: String?,
+    active: Boolean = false,
     onClickVideoCard: () -> Unit,
     TrailingContent: @Composable () -> Unit,
     modifier: Modifier = Modifier
@@ -114,17 +120,35 @@ fun SongCardCompact(
             .clickable { onClickVideoCard() },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(64.dp)
-                .padding(8.dp)
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(8.dp)),
-            model = thumbnail,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(id = R.drawable.music_placeholder)
-        )
+        if (active) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Icon(
+                    Icons.Rounded.BarChart,
+                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+        } else {
+            AsyncImage(
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(8.dp)),
+                model = thumbnail,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.music_placeholder)
+            )
+        }
         Column(
             Modifier
                 .weight(1f)
