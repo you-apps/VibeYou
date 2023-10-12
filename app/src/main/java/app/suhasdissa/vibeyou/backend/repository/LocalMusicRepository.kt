@@ -84,13 +84,17 @@ class LocalMusicRepository(
                     id
                 )
 
+                val duration = cursor.getLong(durationColumn) / 1000
+
+                // some non-audio files are returned by the media store and hence have a duration of 0ms
+                // these entries are hence skipped to remove bloat from the results
+                if (duration == 0L) continue
+
                 songs.add(
                     Song(
                         id = contentUri.toString(),
                         title = name,
-                        durationText = DateUtils.formatElapsedTime(
-                            cursor.getLong(durationColumn) / 1000
-                        ),
+                        durationText = DateUtils.formatElapsedTime(duration),
                         thumbnailUri = getAlbumArt(albumId),
                         artistsText = cursor.getString(artistColumn),
                         albumId = albumId,
