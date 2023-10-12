@@ -58,4 +58,7 @@
     <string name="search_songs">Поиск...</string>
     <string name="about_title">О программе</string>
     <string name="play_next">Играть следующим</string>
+    <string name="search_for_a_song">Найти Музыку</string>
+    <string name="song_options">Параметры Музыки</string>
+    <string name="songs">Песни</string>
 </resources>
