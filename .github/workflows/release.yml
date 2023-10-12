@@ -1,16 +1,6 @@
-name: Create Debug Apk
+name: Create Release Apk
 
-on:
-  push:
-    paths-ignore:
-        - "README*.md"
-        - "app/src/main/res/**"
-        - ".github/**"
-  pull_request:
-    paths-ignore:
-        - "README*.md"
-        - "app/src/main/res/**"
-        - ".github/**"
+on: workflow_dispatch
 
 jobs:
   debug-builds:
@@ -27,13 +17,13 @@ jobs:
           java-version: 17
           cache: "gradle"
       - name: Build APK
-        run: bash ./gradlew assembleDebug --stacktrace
+        run: bash ./gradlew assembleRelease --stacktrace
       - name: Sign Apk
         continue-on-error: true
         id: sign_apk
         uses: ilharp/sign-android-release@v1
         with:
-          releaseDir: app/build/outputs/apk/debug
+          releaseDir: app/build/outputs/apk/release
           signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
           keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -45,5 +35,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: app
-          path: app/build/outputs/apk/debug/*.apk
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
