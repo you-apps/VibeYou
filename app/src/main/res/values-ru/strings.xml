@@ -55,7 +55,7 @@
     <string name="github_issue">Обратная связь через GitHub</string>
     <string name="backup_restore_setting_description">Сохранить резервную копию списка мелодий или восстановить.</string>
     <string name="close_search">Закрыть поиск</string>
-    <string name="search_songs">Поиск...</string>
+    <string name="search_songs">Искать Музыку</string>
     <string name="about_title">О программе</string>
     <string name="play_next">Играть следующим</string>
     <string name="search_for_a_song">Найти Музыку</string>
