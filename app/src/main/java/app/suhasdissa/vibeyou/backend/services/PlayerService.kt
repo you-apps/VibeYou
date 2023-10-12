@@ -37,7 +37,6 @@ import androidx.media3.session.MediaSessionService
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.utils.DynamicDataSource
 import app.suhasdissa.vibeyou.utils.Pref
-import app.suhasdissa.vibeyou.utils.mediaIdList
 import coil.ImageLoader
 import coil.request.ErrorResult
 import coil.request.ImageRequest
@@ -204,11 +203,8 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         controller: MediaSession.ControllerInfo,
         mediaItems: MutableList<MediaItem>
     ): ListenableFuture<MutableList<MediaItem>> {
-        val mediaIdList = mediaSession.player.currentTimeline.mediaIdList
         val updatedMediaItems =
-            mediaItems.filterNot {
-                mediaIdList.contains(it.mediaId)
-            }.map {
+            mediaItems.map {
                 it.buildUpon().setUri(it.mediaId).setCustomCacheKey(it.mediaId).build()
             }.toMutableList()
         return Futures.immediateFuture(updatedMediaItems)
