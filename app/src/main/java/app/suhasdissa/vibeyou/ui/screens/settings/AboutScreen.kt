@@ -27,7 +27,7 @@ fun AboutScreen(
     updateViewModel: CheckUpdateViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val githubRepo = "https://github.com/SuhasDissa/MellowMusic"
+    val githubRepo = "https://github.com/you-apps/VibeYou"
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
