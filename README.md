@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="150" src="/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="App icon">
+  <img width="200" height="200" src="fastlane/metadata/android/en-US/images/icon.png"" alt="App icon">
   <h1 align="center">Vibe You</h1>
   <b>Vibe You</b>(formerly MellowMusic) is a music app that lets you play music from your device storage and Piped Music. It has a Material You dynamic theme with dark mode support, offline cached playback, shuffle, queue, and more.
 </div>
