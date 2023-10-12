@@ -1,5 +1,6 @@
 package app.suhasdissa.vibeyou.backend.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,9 +23,25 @@ class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : Vi
 
     init {
         viewModelScope.launch {
-            songs = musicRepository.getAllSongs()
-            albums = musicRepository.getAllAlbums()
-            artists = musicRepository.getAllArtists()
+            try {
+                songs = musicRepository.getAllSongs()
+            } catch (e: Exception) {
+                Log.e("Get All Songs", e.message, e)
+            }
+        }
+        viewModelScope.launch {
+            try {
+                albums = musicRepository.getAllAlbums()
+            } catch (e: Exception) {
+                Log.e("Get All Albums", e.message, e)
+            }
+        }
+        viewModelScope.launch {
+            try {
+                artists = musicRepository.getAllArtists()
+            } catch (e: Exception) {
+                Log.e("Get All Artists", e.message, e)
+            }
         }
     }
 
