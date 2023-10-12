@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.RepeatOneOn
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,6 +40,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -89,9 +89,9 @@ fun FullScreenPlayer(
             )
         }
     }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
-        IconButton(onClick = { }) {
-            Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
-        }
+//        IconButton(onClick = { }) {
+//            Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
+//        }
     })
     Divider(Modifier.fillMaxWidth())
     Column(
@@ -101,12 +101,12 @@ fun FullScreenPlayer(
         Alignment.CenterHorizontally
     ) {
         val mediaItem by controller.mediaItemState()
-        var isFavourite by remember {
+        val isFavourite = remember {
             mutableStateOf(false)
         }
         mediaItem?.let {
             LaunchedEffect(mediaItem) {
-                isFavourite = playerViewModel.isFavourite(mediaItem!!.mediaId)
+                isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
             }
             SubcomposeAsyncImage(
                 modifier = Modifier
@@ -172,7 +172,7 @@ fun FullScreenPlayer(
 @Composable
 fun PlayerController(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
-    isfavourite: Boolean,
+    isfavourite: MutableState<Boolean>,
     onToggleFavourite: () -> Unit
 ) {
     val view = LocalView.current
@@ -206,7 +206,7 @@ fun PlayerController(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                var favouriteState by remember(isfavourite) { mutableStateOf(isfavourite) }
+                var favouriteState by isfavourite
                 IconButton(onClick = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
                     onToggleFavourite()
@@ -334,5 +334,5 @@ fun PlayerController(
 @Preview(showBackground = true)
 @Composable
 private fun PlayerControllerPreview() {
-    PlayerController(isfavourite = false, onToggleFavourite = {})
+    PlayerController(isfavourite = remember { mutableStateOf(false) }, onToggleFavourite = {})
 }
