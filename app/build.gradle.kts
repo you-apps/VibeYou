@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "app.suhasdissa.mellowmusic"
+    namespace = "app.suhasdissa.vibeyou"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "app.suhasdissa.mellowmusic"
+        applicationId = "app.suhasdissa.vibeyou"
         minSdk = 26
         targetSdk = 34
         versionCode = 9
