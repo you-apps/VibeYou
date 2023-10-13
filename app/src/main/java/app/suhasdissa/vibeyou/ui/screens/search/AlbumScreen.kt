@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +47,18 @@ fun AlbumScreen(
     state: AlbumInfoState,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
-    MiniPlayerScaffold {
+    MiniPlayerScaffold(fab = {
+        if (state is AlbumInfoState.Success) {
+            FloatingActionButton(onClick = {
+                playerViewModel.shuffleSongs(state.songs)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Shuffle,
+                    contentDescription = stringResource(R.string.shuffle)
+                )
+            }
+        }
+    }) {
         when (state) {
             AlbumInfoState.Error -> IllustratedMessageScreen(
                 image = R.drawable.sad_mellow,
