@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +24,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -200,7 +202,20 @@ fun SearchScreen(
                     is SearchState.Error -> {
                         IllustratedMessageScreen(
                             image = R.drawable.sad_mellow,
-                            message = R.string.something_went_wrong
+                            message = R.string.something_went_wrong,
+                            action = {
+                                TextButton(
+                                    onClick = {
+                                        onNavigate(Destination.NetworkSettings)
+                                    },
+                                    colors = ButtonDefaults.textButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                ) {
+                                    Text(stringResource(id = R.string.network_settings))
+                                }
+                            }
                         )
                     }
 

@@ -28,7 +28,8 @@ import app.suhasdissa.vibeyou.R
 fun IllustratedMessageScreen(
     @DrawableRes image: Int,
     @StringRes message: Int? = null,
-    messageColor: Color = MaterialTheme.colorScheme.error
+    messageColor: Color = MaterialTheme.colorScheme.error,
+    action: @Composable () -> Unit = {}
 ) {
     Column(
         Modifier.fillMaxSize(),
@@ -63,6 +64,7 @@ fun IllustratedMessageScreen(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onErrorContainer)
             )
         }
+        action()
     }
 }
 
