@@ -1,1 +1,1 @@
-Vibe You is a music app that lets you play music from your device storage and Piped Music. It has a Material You dynamic theme with dark mode support, offline cached playback, shuffle, queue, and more.
+Music app supporting playback via local storage and Piped
