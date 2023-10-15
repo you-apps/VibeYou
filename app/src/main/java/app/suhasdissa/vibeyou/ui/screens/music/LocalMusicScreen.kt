@@ -2,6 +2,7 @@ package app.suhasdissa.vibeyou.ui.screens.music
 
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,8 +25,14 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +44,7 @@ import app.suhasdissa.vibeyou.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.vibeyou.ui.components.AlbumList
 import app.suhasdissa.vibeyou.ui.components.ArtistList
+import app.suhasdissa.vibeyou.ui.dialogs.SortOrderDialog
 import app.suhasdissa.vibeyou.ui.screens.songs.SongListView
 import kotlinx.coroutines.launch
 
@@ -48,6 +58,11 @@ fun LocalMusicScreen(
 ) {
     val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
+
+    var showSortDialog by remember {
+        mutableStateOf(false)
+    }
+
     Column {
         TabRow(selectedTabIndex = pagerState.currentPage, Modifier.fillMaxWidth()) {
             val view = LocalView.current
@@ -131,7 +146,21 @@ fun LocalMusicScreen(
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         ) {
-                            SongListView(songs = localSongViewModel.songs)
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.End)
+                                    .padding(top = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                                    .clickable {
+                                        showSortDialog = true
+                                    }
+                            ) {
+                                Text(text = stringResource(R.string.sort_order))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Icon(imageVector = Icons.Default.Sort, contentDescription = null)
+                            }
+                            SongListView(songs = localSongViewModel.songs, sortOrder = localSongViewModel.songsSortOrder)
                         }
                     }
                 }
@@ -151,5 +180,18 @@ fun LocalMusicScreen(
                 )
             }
         }
+    }
+
+    if (showSortDialog) {
+        SortOrderDialog(
+            onDismissRequest = { showSortDialog = false },
+            defaultSortOrder = localSongViewModel.songsSortOrder,
+            defaultReverse = localSongViewModel.reverseSongs,
+            onSortOrderChange = { sortOrder, reverse ->
+                localSongViewModel.songsSortOrder = sortOrder
+                localSongViewModel.reverseSongs = reverse
+                localSongViewModel.updateSongsSortOrder()
+            }
+        )
     }
 }
