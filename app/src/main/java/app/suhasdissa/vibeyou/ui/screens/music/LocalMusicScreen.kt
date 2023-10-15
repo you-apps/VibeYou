@@ -3,12 +3,16 @@ package app.suhasdissa.vibeyou.ui.screens.music
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -98,14 +102,28 @@ fun LocalMusicScreen(
                 0 -> {
                     val view = LocalView.current
                     Scaffold(floatingActionButton = {
-                        FloatingActionButton(onClick = {
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            playerViewModel.shuffleSongs(localSongViewModel.songs)
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Shuffle,
-                                contentDescription = stringResource(R.string.shuffle)
-                            )
+                        Row {
+                            FloatingActionButton(onClick = {
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                playerViewModel.playSongs(localSongViewModel.songs)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = stringResource(R.string.play_all)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.width(12.dp))
+
+                            FloatingActionButton(onClick = {
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                playerViewModel.playSongs(localSongViewModel.songs, shuffle = true)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Shuffle,
+                                    contentDescription = stringResource(R.string.shuffle)
+                                )
+                            }
                         }
                     }) { innerPadding ->
                         Column(

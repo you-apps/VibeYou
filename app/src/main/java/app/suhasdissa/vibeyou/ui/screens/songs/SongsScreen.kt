@@ -34,7 +34,7 @@ fun SongsScreen(
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
             view.playSoundEffect(SoundEffectConstants.CLICK)
-            playerViewModel.shuffleSongs(songs)
+            playerViewModel.playSongs(songs)
         }) {
             Icon(
                 imageVector = Icons.Default.Shuffle,

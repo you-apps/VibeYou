@@ -50,7 +50,7 @@ fun AlbumScreen(
     MiniPlayerScaffold(fab = {
         if (state is AlbumInfoState.Success) {
             FloatingActionButton(onClick = {
-                playerViewModel.shuffleSongs(state.songs)
+                playerViewModel.playSongs(state.songs, shuffle = true)
             }) {
                 Icon(
                     imageVector = Icons.Default.Shuffle,

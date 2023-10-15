@@ -72,10 +72,15 @@ class PlayerViewModel(
         controller!!.seekToPrevious()
     }
 
-    fun shuffleSongs(songs: List<Song>) {
+    fun playSongs(songs: List<Song>, shuffle: Boolean = false) {
         viewModelScope.launch {
-            val shuffleQueue = songs.shuffled().map { it.asMediaItem }
-            playAll(shuffleQueue)
+            val queue = if (shuffle) {
+                songs.shuffled()
+            } else {
+                songs
+            }
+                .map { it.asMediaItem }
+            playAll(queue)
         }
     }
 
