@@ -42,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,7 +69,6 @@ import app.suhasdissa.vibeyou.utils.positionAndDurationState
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
-import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,27 +109,31 @@ fun FullScreenPlayer(
             LaunchedEffect(mediaItem) {
                 isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
             }
+            var thumbnailUrl by remember {
+                mutableStateOf(it.maxResThumbnail)
+            }
+
             SubcomposeAsyncImage(
                 modifier = Modifier
                     .size(300.dp)
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = it.maxResThumbnail,
+                model = it.maxResThumbnail.ifEmpty { it.mediaMetadata.artworkUri },
                 contentDescription = stringResource(id = R.string.album_art),
-                contentScale = ContentScale.Crop
-            ) {
-                val state = painter.state
-                if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = it.mediaMetadata.artworkUri),
-                        contentDescription,
+                contentScale = ContentScale.Crop,
+                onError = { _ ->
+                    if (thumbnailUrl != it.mediaMetadata.artworkUri.toString()) {
+                        thumbnailUrl = it.mediaMetadata.artworkUri.toString()
+                    }
+                },
+                error = {
+                    SubcomposeAsyncImageContent(
+                        painter = painterResource(id = R.drawable.music_placeholder),
                         contentScale = contentScale
                     )
-                } else {
-                    SubcomposeAsyncImageContent(contentScale = contentScale)
-                }
-            }
+                },
+            )
             val title = it.mediaMetadata.title.toString()
             val artist = it.mediaMetadata.artist.toString()
 
