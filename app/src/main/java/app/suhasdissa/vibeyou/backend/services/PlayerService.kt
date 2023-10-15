@@ -4,9 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
 import android.os.Handler
+import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -56,7 +61,8 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
     private var loudnessEnhancer: LoudnessEnhancer? = null
 
-    val container get() = (application as MellowMusicApplication).container
+    val appInstance get() = application as MellowMusicApplication
+    val container get() = appInstance.container
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate() {
@@ -99,7 +105,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         mediaSession
 
     @SuppressLint("UnsafeOptInUsageError")
-    class CustomBitmapLoader(private val context: Context) : BitmapLoader {
+    inner class CustomBitmapLoader(private val context: Context) : BitmapLoader {
         private val scope = CoroutineScope(Dispatchers.IO)
         override fun decodeBitmap(data: ByteArray): ListenableFuture<Bitmap> {
             val future = SettableFuture.create<Bitmap>()
@@ -115,13 +121,14 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
         override fun loadBitmap(uri: Uri): ListenableFuture<Bitmap> {
             val future = SettableFuture.create<Bitmap>()
+
             scope.launch {
                 if ("file" == uri.scheme) {
                     try {
                         val bitmap = BitmapFactory.decodeFile(uri.path)
                         future.set(bitmap)
                     } catch (e: Exception) {
-                        future.setException(e)
+                        future.set(createOneColorImage(appInstance.accentColor))
                     }
                 } else {
                     val imageLoader = ImageLoader.Builder(context).build()
@@ -132,11 +139,25 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                     if (result is SuccessResult) {
                         future.set(result.drawable.toBitmap())
                     } else if (result is ErrorResult) {
-                        future.setException(result.throwable)
+                        future.set(createOneColorImage(appInstance.accentColor))
                     }
                 }
             }
             return future
+        }
+
+        private fun createOneColorImage(@ColorInt color: Int): Bitmap {
+            val rect = Rect(0, 0, 1, 1)
+
+            val image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+
+            val paint = Paint()
+            paint.color = color
+
+            canvas.drawRect(rect, paint)
+
+            return image
         }
     }
 
