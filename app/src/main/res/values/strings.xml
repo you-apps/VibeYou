@@ -62,4 +62,6 @@
     <string name="change_music_cache_size">Change music cache size</string>
     <string name="music_cache_limit">Music cache limit</string>
     <string name="unlimited">Unlimited</string>
+    <string name="playback_speed">Playback speed</string>
+    <string name="pitch">Pitch</string>
 </resources>

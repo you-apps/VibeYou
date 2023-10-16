@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.data.Song
@@ -101,6 +102,12 @@ class PlayerViewModel(
     fun playSong(song: Song) {
         controller!!.playGracefully(song.asMediaItem)
     }
+
+    fun setPlaybackParams(speed: Float, pitch: Float) {
+        controller!!.playbackParameters = PlaybackParameters(speed, pitch)
+    }
+
+    fun getPlaybackParams() = controller!!.playbackParameters
 
     fun toggleFavourite(id: String) {
         viewModelScope.launch {
