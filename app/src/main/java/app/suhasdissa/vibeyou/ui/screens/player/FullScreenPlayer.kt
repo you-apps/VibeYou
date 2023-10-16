@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.RepeatOneOn
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -77,6 +78,8 @@ fun FullScreenPlayer(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var showQueueSheet by remember { mutableStateOf(false) }
+    var showSongOptions by remember { mutableStateOf(false) }
+
     val view = LocalView.current
     CenterAlignedTopAppBar(navigationIcon = {
         IconButton({
@@ -89,9 +92,9 @@ fun FullScreenPlayer(
             )
         }
     }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
-//        IconButton(onClick = { }) {
-//            Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
-//        }
+        IconButton(onClick = { showSongOptions = true }) {
+            Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
+        }
     })
     Divider(Modifier.fillMaxWidth())
     Column(
@@ -167,6 +170,7 @@ fun FullScreenPlayer(
         }
     }
     if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false })
+    if (showSongOptions) SongOptionsSheet(onDismissRequest = { showSongOptions = false })
 }
 
 @Composable
