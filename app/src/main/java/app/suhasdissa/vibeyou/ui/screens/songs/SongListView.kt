@@ -30,12 +30,15 @@ import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
 import app.suhasdissa.vibeyou.ui.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.ui.components.SongCard
 import app.suhasdissa.vibeyou.ui.components.SongSettingsSheet
+import app.suhasdissa.vibeyou.ui.dialogs.SortOrder
+import app.suhasdissa.vibeyou.utils.TimeUtil
 import my.nanihadesuka.compose.LazyColumnScrollbar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongListView(
     songs: List<Song>,
+    sortOrder: SortOrder = SortOrder.Alphabetic,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var showSongSettings by remember { mutableStateOf(false) }
@@ -43,7 +46,14 @@ fun SongListView(
     if (songs.isEmpty()) {
         IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
     } else {
-        val groups = remember(songs) { songs.groupBy { song -> song.title.first().toString() } }
+        val groups = remember(songs) {
+            when (sortOrder) {
+                SortOrder.Alphabetic -> songs.groupBy { song -> song.title.first().toString() }
+                SortOrder.Artist_Name -> songs.groupBy { song -> song.artistsText.orEmpty() }
+                SortOrder.Creation_Date -> songs.groupBy { song -> TimeUtil.getYear(song.creationDate ?: 0).toString() }
+                SortOrder.Date_Added -> songs.groupBy { song -> TimeUtil.getYear(song.dateAdded ?: 0).toString() }
+            }
+        }
         val state = rememberLazyListState()
         LazyColumnScrollbar(
             listState = state,

@@ -37,7 +37,7 @@ inline fun <reified T : Enum<T>> ChipSelector(
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 selectedOption = it
                 onItemSelected(it)
-            }, label = { Text(it.name) })
+            }, label = { Text(it.name.replace("_", " ")) })
         }
     }
 }

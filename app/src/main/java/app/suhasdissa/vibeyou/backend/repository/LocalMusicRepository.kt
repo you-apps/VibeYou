@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.core.net.toUri
 import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
@@ -44,7 +45,9 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.ARTIST_ID
+            MediaStore.Audio.Media.ARTIST_ID,
+            MediaStore.Audio.Media.DATE_MODIFIED,
+            MediaStore.Audio.Media.DATE_ADDED,
         )
 
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
@@ -66,6 +69,8 @@ class LocalMusicRepository(
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
             val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
             val artistIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
+            val creationDateColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
+            val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -99,7 +104,9 @@ class LocalMusicRepository(
                         artistsText = cursor.getString(artistColumn),
                         albumId = albumId,
                         artistId = cursor.getLong(artistIdColumn),
-                        isLocal = true
+                        isLocal = true,
+                        creationDate = cursor.getLong(creationDateColumn),
+                        dateAdded = cursor.getLong(dateAddedColumn)
                     )
                 )
             }

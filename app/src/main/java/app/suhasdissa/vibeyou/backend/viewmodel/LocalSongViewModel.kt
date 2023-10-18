@@ -14,12 +14,16 @@ import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.ui.dialogs.SortOrder
 import kotlinx.coroutines.launch
 
 class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : ViewModel() {
     var songs by mutableStateOf(listOf<Song>())
     var albums by mutableStateOf(listOf<Album>())
     var artists by mutableStateOf(listOf<Artist>())
+
+    var songsSortOrder = SortOrder.Alphabetic
+    var reverseSongs = false
 
     init {
         viewModelScope.launch {
@@ -43,6 +47,16 @@ class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : Vi
                 Log.e("Get All Artists", e.message, e)
             }
         }
+    }
+
+    fun updateSongsSortOrder() {
+        val sortedSongs = when (songsSortOrder) {
+            SortOrder.Alphabetic -> songs.sortedBy { it.title.lowercase() }
+            SortOrder.Creation_Date -> songs.sortedBy { it.creationDate }
+            SortOrder.Date_Added -> songs.sortedBy { it.dateAdded }
+            SortOrder.Artist_Name -> songs.sortedBy { it.artistsText.orEmpty().lowercase() }
+        }
+        songs = if (reverseSongs) sortedSongs.reversed() else sortedSongs
     }
 
     companion object {

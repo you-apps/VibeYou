@@ -64,4 +64,8 @@
     <string name="unlimited">Unlimited</string>
     <string name="playback_speed">Playback speed</string>
     <string name="pitch">Pitch</string>
+    <string name="play_all">Play all</string>
+    <string name="sort_order">Sort Order</string>
+    <string name="cancel">Cancel</string>
+    <string name="reversed">Reversed</string>
 </resources>
