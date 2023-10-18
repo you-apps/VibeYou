@@ -61,4 +61,6 @@
     <string name="search_songs">Hledat skladby</string>
     <string name="about_title">O aplikaci</string>
     <string name="play_next">Přehrát další</string>
+    <string name="pitch">Výška</string>
+    <string name="playback_speed">Rychlost přehrávání</string>
 </resources>
