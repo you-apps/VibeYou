@@ -61,4 +61,10 @@
     <string name="search_songs">Buscar las canciones</string>
     <string name="about_title">Acerca de</string>
     <string name="play_next">Siguiente</string>
+    <string name="pitch">Tono</string>
+    <string name="sort_order">Clasificar</string>
+    <string name="reversed">Invertido</string>
+    <string name="playback_speed">Velocidad de reproducción</string>
+    <string name="cancel">Cancelar</string>
+    <string name="play_all">Reproducir todo</string>
 </resources>
