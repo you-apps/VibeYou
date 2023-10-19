@@ -63,4 +63,8 @@
     <string name="play_next">Přehrát další</string>
     <string name="pitch">Výška</string>
     <string name="playback_speed">Rychlost přehrávání</string>
+    <string name="sort_order">Pořadí řazení</string>
+    <string name="reversed">Obráceně</string>
+    <string name="cancel">Zrušit</string>
+    <string name="play_all">Přehrát vše</string>
 </resources>
