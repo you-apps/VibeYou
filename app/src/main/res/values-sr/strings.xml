@@ -45,7 +45,7 @@
     <string name="select_server">Избор сервера</string>
     <string name="now_playing">Сада пуштено</string>
     <string name="songs">Песме</string>
-    <string name="change_music_cache_size">Промени величину кеша музике</string>
+    <string name="change_music_cache_size">Промените величину кеша музике</string>
     <string name="login">Пријава</string>
     <string name="piped_music">Piped музика</string>
     <string name="network_settings_description">Промените сервер да бисте решили проблеме са репродукцијом</string>
@@ -61,4 +61,6 @@
     <string name="search_songs">Претрага песама</string>
     <string name="about_title">О апликацији</string>
     <string name="play_next">Пусти следеће</string>
+    <string name="pitch">Висина тона</string>
+    <string name="playback_speed">Брзина репродукције</string>
 </resources>

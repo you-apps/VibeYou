@@ -61,4 +61,6 @@
     <string name="search_for_a_song">Найти Музыку</string>
     <string name="song_options">Параметры Музыки</string>
     <string name="songs">Песни</string>
+    <string name="pitch">Высота</string>
+    <string name="playback_speed">Скорость воспроизведения</string>
 </resources>
