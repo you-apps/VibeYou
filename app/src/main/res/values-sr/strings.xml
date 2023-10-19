@@ -63,4 +63,8 @@
     <string name="play_next">Пусти следеће</string>
     <string name="pitch">Висина тона</string>
     <string name="playback_speed">Брзина репродукције</string>
+    <string name="sort_order">Редослед сортирања</string>
+    <string name="reversed">Обрнуто</string>
+    <string name="cancel">Откажи</string>
+    <string name="play_all">Пусти све</string>
 </resources>
