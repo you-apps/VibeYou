@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.media.audiofx.LoudnessEnhancer
@@ -128,7 +127,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                         val bitmap = BitmapFactory.decodeFile(uri.path)
                         future.set(bitmap)
                     } catch (e: Exception) {
-                        future.set(createOneColorImage(appInstance.accentColor))
+                        handleBitmapLoadFailure(future, e)
                     }
                 } else {
                     val imageLoader = ImageLoader.Builder(context).build()
@@ -139,11 +138,19 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                     if (result is SuccessResult) {
                         future.set(result.drawable.toBitmap())
                     } else if (result is ErrorResult) {
-                        future.set(createOneColorImage(appInstance.accentColor))
+                        handleBitmapLoadFailure(future, result.throwable)
                     }
                 }
             }
             return future
+        }
+
+        private fun handleBitmapLoadFailure(future: SettableFuture<Bitmap>, error: Throwable) {
+            if (Pref.sharedPreferences.getBoolean(Pref.thumbnailColorFallbackKey, false)) {
+                future.set(createOneColorImage(appInstance.accentColor))
+            } else {
+                future.setException(error)
+            }
         }
 
         private fun createOneColorImage(@ColorInt color: Int): Bitmap {

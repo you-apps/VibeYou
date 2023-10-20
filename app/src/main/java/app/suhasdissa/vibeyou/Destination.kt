@@ -9,6 +9,7 @@ sealed class Destination(val route: String) {
     object About : Destination("about")
     object NetworkSettings : Destination("net_settings")
     object DatabaseSettings : Destination("database_settings")
+    object AppearanceSettings : Destination("appearance_settings")
     object Playlists : Destination("playlist_screen")
     object LocalPlaylists : Destination("local_playlist_screen")
     object Artist : Destination("artist")

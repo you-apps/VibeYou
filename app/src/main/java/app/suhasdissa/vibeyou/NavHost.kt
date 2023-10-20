@@ -16,6 +16,7 @@ import app.suhasdissa.vibeyou.ui.screens.search.ArtistScreen
 import app.suhasdissa.vibeyou.ui.screens.search.LocalSearchScreen
 import app.suhasdissa.vibeyou.ui.screens.search.SearchScreen
 import app.suhasdissa.vibeyou.ui.screens.settings.AboutScreen
+import app.suhasdissa.vibeyou.ui.screens.settings.AppearanceSettingsScreen
 import app.suhasdissa.vibeyou.ui.screens.settings.DatabaseSettingsScreen
 import app.suhasdissa.vibeyou.ui.screens.settings.NetworkSettingsScreen
 import app.suhasdissa.vibeyou.ui.screens.settings.SettingsScreen
@@ -70,6 +71,10 @@ fun AppNavHost(navHostController: NavHostController) {
 
         composable(route = Destination.DatabaseSettings.route) {
             DatabaseSettingsScreen()
+        }
+
+        composable(route = Destination.AppearanceSettings.route) {
+            AppearanceSettingsScreen()
         }
 
         composable(Destination.Playlists.route) {

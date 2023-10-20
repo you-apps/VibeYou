@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Landscape
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Web
@@ -67,6 +68,14 @@ fun SettingsScreen(
                     description = stringResource(R.string.network_settings_description),
                     onClick = { onNavigate(Destination.NetworkSettings.route) },
                     icon = Icons.Default.Web
+                )
+            }
+            item {
+                SettingItem(
+                    title = stringResource(R.string.appearance_settings),
+                    description = stringResource(R.string.appearance_settings_description),
+                    onClick = { onNavigate(Destination.AppearanceSettings.route) },
+                    icon = Icons.Default.Landscape
                 )
             }
             item {
