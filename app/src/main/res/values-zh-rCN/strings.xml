@@ -4,7 +4,7 @@
     <string name="close_player">关闭播放器</string>
     <string name="close_queue">关闭队列</string>
     <string name="backup_description">创建备份文件</string>
-    <string name="latest_release">最新发行版</string>
+    <string name="latest_release">最新发布</string>
     <string name="password">密码</string>
     <string name="pitch">音调</string>
     <string name="album_art">专辑封面</string>
