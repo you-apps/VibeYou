@@ -67,4 +67,8 @@
     <string name="reversed">Обратная</string>
     <string name="cancel">Отмена</string>
     <string name="play_all">Проиграть всё</string>
+    <string name="fallback_thumnail_accent">Резервный вариант миниатюры уведомлений</string>
+    <string name="appearance_settings_description">Настройте внешний вид под себя.</string>
+    <string name="appearance_settings">Настройки внешнего вида</string>
+    <string name="fallback_thumnail_accent_description">Вернитесь к использованию акцентного цвета системы/темы в качестве миниатюры уведомления, если его нет.</string>
 </resources>
