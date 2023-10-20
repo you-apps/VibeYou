@@ -8,7 +8,7 @@
     <string name="password">Пароль</string>
     <string name="album_art">Обложка альбома</string>
     <string name="network_settings">Настройки сети</string>
-    <string name="remove_item_from_queue">Удалить предмет из очереди</string>
+    <string name="remove_item_from_queue">Удалить элемент из очереди</string>
     <string name="recent_songs">Недавние мелодии</string>
     <string name="repeat_all">Повторять все</string>
     <string name="github_issue_description">Сообщите об ошибке или запросите улучшение</string>
@@ -37,7 +37,7 @@
     <string name="artist">Исполнитель</string>
     <string name="player_queue">Очередь воспроизведения</string>
     <string name="show_queue">Показать очередь</string>
-    <string name="artist_avatar">Изображение исполнителя</string>
+    <string name="artist_avatar">Аватар исполнителя</string>
     <string name="shuffle">Перемешать все</string>
     <string name="check_repo_and_readme">Ознакомьтесь с репозиторием и README</string>
     <string name="select_server">Выберите сервер</string>
@@ -61,6 +61,6 @@
     <string name="search_for_a_song">Найти Музыку</string>
     <string name="song_options">Параметры Музыки</string>
     <string name="songs">Песни</string>
-    <string name="pitch">Высота</string>
+    <string name="pitch">Высота тона</string>
     <string name="playback_speed">Скорость воспроизведения</string>
 </resources>
