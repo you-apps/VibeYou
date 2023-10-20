@@ -68,4 +68,8 @@
     <string name="sort_order">Sort Order</string>
     <string name="cancel">Cancel</string>
     <string name="reversed">Reversed</string>
+    <string name="appearance_settings">Appearance Settings</string>
+    <string name="appearance_settings_description">Customize the appearance to fit your needs.</string>
+    <string name="fallback_thumnail_accent">Notification thumbnail fallback</string>
+    <string name="fallback_thumnail_accent_description">Fall back to a using the system/theme accent color as a notification thumbnail if there\'s none.</string>
 </resources>

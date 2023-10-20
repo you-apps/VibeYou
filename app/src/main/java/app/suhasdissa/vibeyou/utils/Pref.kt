@@ -10,6 +10,7 @@ object Pref {
     private const val pipedInstanceKey = "SelectedPipedInstanceKey"
     const val authTokenKey = "AuthTokenKey"
     const val exoCacheKey = "ExoCacheKey"
+    const val thumbnailColorFallbackKey = "ThumbnailColorFallbackef"
 
     lateinit var sharedPreferences: SharedPreferences
 

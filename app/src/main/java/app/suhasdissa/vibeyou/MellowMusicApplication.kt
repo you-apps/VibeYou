@@ -2,6 +2,7 @@ package app.suhasdissa.vibeyou
 
 import android.app.Application
 import android.content.ComponentName
+import android.graphics.Color
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.suhasdissa.vibeyou.backend.database.SongDatabase
@@ -17,6 +18,7 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
 
     private val database by lazy { SongDatabase.getDatabase(this) }
     lateinit var container: AppContainer
+    var accentColor: Int = Color.TRANSPARENT
 
     override fun onCreate() {
         super.onCreate()
