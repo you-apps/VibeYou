@@ -67,4 +67,8 @@
     <string name="reversed">Obráceně</string>
     <string name="cancel">Zrušit</string>
     <string name="play_all">Přehrát vše</string>
+    <string name="fallback_thumnail_accent">Fallback náhledu v oznámení</string>
+    <string name="appearance_settings_description">Přizpůsobte si vzhled podle sebe.</string>
+    <string name="appearance_settings">Nastavení vzhledu</string>
+    <string name="fallback_thumnail_accent_description">Vrátit se k použití systémové/tematické barvy jako náhledu oznámení, pokud žádný není k dispozici.</string>
 </resources>

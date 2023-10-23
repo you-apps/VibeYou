@@ -67,4 +67,8 @@
     <string name="reversed">Обрнуто</string>
     <string name="cancel">Откажи</string>
     <string name="play_all">Пусти све</string>
+    <string name="fallback_thumnail_accent">Повратак сличице обавештења</string>
+    <string name="appearance_settings_description">Прилагодите изглед својим потребама.</string>
+    <string name="appearance_settings">Подешавања изгледа</string>
+    <string name="fallback_thumnail_accent_description">Вратите се на коришћење боје система/теме као сличицу обавештења, ако је нема.</string>
 </resources>
