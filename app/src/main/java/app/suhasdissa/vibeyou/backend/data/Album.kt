@@ -7,5 +7,6 @@ data class Album(
     val title: String,
     val thumbnailUri: Uri? = null,
     val artistsText: String,
-    val numberOfSongs: Int? = null
+    val numberOfSongs: Int? = null,
+    val isLocal: Boolean = false
 )

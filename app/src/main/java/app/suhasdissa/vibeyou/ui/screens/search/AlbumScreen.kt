@@ -1,12 +1,15 @@
 package app.suhasdissa.vibeyou.ui.screens.search
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,9 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.rounded.LibraryAdd
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,6 +49,7 @@ import app.suhasdissa.vibeyou.ui.components.SongCard
 import app.suhasdissa.vibeyou.ui.components.SongSettingsSheetSearchPage
 import coil.compose.AsyncImage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumScreen(
     state: AlbumInfoState,
@@ -49,13 +57,36 @@ fun AlbumScreen(
 ) {
     MiniPlayerScaffold(fab = {
         if (state is AlbumInfoState.Success) {
-            FloatingActionButton(onClick = {
-                playerViewModel.playSongs(state.songs, shuffle = true)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Shuffle,
-                    contentDescription = stringResource(R.string.shuffle)
-                )
+            Column {
+                val context = LocalContext.current
+                if (!state.album.isLocal) {
+                    PlainTooltipBox(tooltip = {
+                        Text(stringResource(R.string.add_all_songs_to_the_library))
+                    }) {
+                        FloatingActionButton(onClick = {
+                            playerViewModel.saveSongs(state.songs)
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.added_all_the_songs_to_the_library),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Rounded.LibraryAdd,
+                                contentDescription = stringResource(R.string.add_to_library)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                FloatingActionButton(onClick = {
+                    playerViewModel.playSongs(state.songs, shuffle = true)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Shuffle,
+                        contentDescription = stringResource(R.string.shuffle)
+                    )
+                }
             }
         }
     }) {

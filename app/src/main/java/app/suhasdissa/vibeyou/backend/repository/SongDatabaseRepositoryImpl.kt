@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 class SongDatabaseRepositoryImpl(private val songsDao: SongsDao) :
     SongDatabaseRepository {
     override suspend fun addSong(song: Song) = songsDao.addSong(song.asSongEntity)
+    override suspend fun addSongs(songs: List<Song>) =
+        songsDao.addSongs(songs.map { it.asSongEntity })
+
     override suspend fun getSongById(id: String): Song? = songsDao.getSongById(id)?.asSong
     override fun getAllSongsStream(): Flow<List<SongEntity>> = songsDao.getAllSongsStream()
     override fun getFavSongsStream(): Flow<List<SongEntity>> = songsDao.getFavSongsStream()
