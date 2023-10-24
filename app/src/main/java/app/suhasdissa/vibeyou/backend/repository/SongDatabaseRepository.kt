@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SongDatabaseRepository {
     suspend fun addSong(song: Song)
+    suspend fun addSongs(songs: List<Song>)
     suspend fun removeSong(song: Song)
     suspend fun getSongById(id: String): Song?
     fun getAllSongsStream(): Flow<List<SongEntity>>

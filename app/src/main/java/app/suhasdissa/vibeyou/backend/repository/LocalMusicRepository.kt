@@ -162,7 +162,8 @@ class LocalMusicRepository(
                         ),
                         artistsText = cursor.getString(artistColumn),
                         thumbnailUri = getAlbumArt(id),
-                        numberOfSongs = cursor.getInt(songsColumn)
+                        numberOfSongs = cursor.getInt(songsColumn),
+                        isLocal = true
                     )
                 )
             }

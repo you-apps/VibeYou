@@ -72,4 +72,7 @@
     <string name="appearance_settings_description">Customize the appearance to fit your needs.</string>
     <string name="fallback_thumnail_accent">Notification thumbnail fallback</string>
     <string name="fallback_thumnail_accent_description">Fall back to a using the system/theme accent color as a notification thumbnail if there\'s none.</string>
+    <string name="add_to_library">Add to library</string>
+    <string name="added_all_the_songs_to_the_library">Added all the songs to the library</string>
+    <string name="add_all_songs_to_the_library">Add all songs to the library</string>
 </resources>

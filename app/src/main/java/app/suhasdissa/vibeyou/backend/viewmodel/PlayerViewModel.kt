@@ -96,6 +96,12 @@ class PlayerViewModel(
         }
     }
 
+    fun saveSongs(songs: List<Song>) {
+        viewModelScope.launch {
+            songDatabaseRepository.addSongs(songs)
+        }
+    }
+
     fun playNext(song: Song) {
         controller!!.addNext(song.asMediaItem)
     }
