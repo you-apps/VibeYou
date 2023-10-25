@@ -71,4 +71,7 @@
     <string name="appearance_settings_description">Přizpůsobte si vzhled podle sebe.</string>
     <string name="appearance_settings">Nastavení vzhledu</string>
     <string name="fallback_thumnail_accent_description">Vrátit se k použití systémové/tematické barvy jako náhledu oznámení, pokud žádný není k dispozici.</string>
+    <string name="add_all_songs_to_the_library">Přidat všechny skladby do knihovny</string>
+    <string name="add_to_library">Přidat do knihovny</string>
+    <string name="added_all_the_songs_to_the_library">Všechny skladby byly přidány do knihovny</string>
 </resources>
