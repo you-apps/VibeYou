@@ -16,9 +16,9 @@
     <string name="skip_next">ପରବର୍ତ୍ତୀକୁ ପରିତ୍ୟାଗ କରନ୍ତୁ</string>
     <string name="music_cache_limit">ସଙ୍ଗୀତ କ୍ୟାଶେ ସୀମା</string>
     <string name="change_server">ସର୍ଭର ପରିବର୍ତ୍ତନ କରନ୍ତୁ</string>
-    <string name="sort_order">ଅର୍ଡର ସର୍ଟ କରନ୍ତୁ</string>
+    <string name="sort_order">ଅର୍ଡର କୁ ସର୍ଟ କରନ୍ତୁ</string>
     <string name="pause">ବିରତି</string>
-    <string name="restore">ଡାଟାବେସକୁ ପୁନଃସ୍ଥାପନ କରନ୍ତୁ</string>
+    <string name="restore">ଡାଟାବେସ୍ କୁ ପୁନଃସ୍ଥାପନ କରନ୍ତୁ</string>
     <string name="unlimited">ଅସୀମିତ</string>
     <string name="song_album_art">ଗୀତ ଆଲବମ କଳା</string>
     <string name="delete_song">ଗୀତକୁ ଅପସାରଣ କରନ୍ତୁ</string>
@@ -71,4 +71,7 @@
     <string name="about_title">ବିଷୟ</string>
     <string name="play_next">ପରବର୍ତ୍ତୀ ଚଲାନ୍ତୁ</string>
     <string name="play_all">ସମସ୍ତ ଖେଳନ୍ତୁ</string>
+    <string name="add_all_songs_to_the_library">ଲାଇବ୍ରେରୀରେ ସମସ୍ତ ଗୀତ ଯୋଡନ୍ତୁ</string>
+    <string name="add_to_library">ଲାଇବ୍ରେରୀରେ ଯୋଡନ୍ତୁ</string>
+    <string name="added_all_the_songs_to_the_library">ସମସ୍ତ ଗୀତଗୁଡ଼ିକୁ ଲାଇବ୍ରେରୀରେ ଯୋଡିଛି</string>
 </resources>
