@@ -45,7 +45,7 @@
 - **Add songs to a favorite playlist:** Create playlists of your favorite songs and listen to them
   on demand.
 - **Shuffle songs:** Listen to your music in random order.
-- **Advanced queue management:** Add/Remove and reorder queue to personallize listening experience.
+- **Advanced queue management:** Add/Remove and reorder queue to personalize listening experience.
 
 ## Installation
 
