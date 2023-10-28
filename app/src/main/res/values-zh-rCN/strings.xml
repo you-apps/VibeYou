@@ -71,4 +71,7 @@
     <string name="appearance_settings_description">自定义外观以适合你的需要。</string>
     <string name="appearance_settings">外观设置</string>
     <string name="fallback_thumnail_accent_description">当通知缩略图不存在时，使用系统主题颜色作为回退替代。</string>
+    <string name="add_all_songs_to_the_library">将所有歌曲加入曲库</string>
+    <string name="add_to_library">添加到曲库</string>
+    <string name="added_all_the_songs_to_the_library">已将所有歌曲加入曲库</string>
 </resources>
