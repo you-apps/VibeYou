@@ -78,7 +78,7 @@ val Song.asMediaItem: MediaItem
                 .setArtist(artistsText)
                 .setArtworkUri(thumbnailUri)
                 .setExtras(
-                    bundleOf("isFavourite" to isFavourite)
+                    bundleOf(IS_LOCAL_KEY to isLocal)
                 )
                 .build()
         )
@@ -93,3 +93,5 @@ val MediaItem.maxResThumbnail: String
             Pref.currentInstance.imageProxyUrl.ifEmpty { "https://pipedproxy.kavin.rocks" }
         return "$pipedProxyUrl/vi_webp/$mediaId/maxresdefault.webp?host=i.ytimg.com"
     }
+
+const val IS_LOCAL_KEY = "isLocal"
