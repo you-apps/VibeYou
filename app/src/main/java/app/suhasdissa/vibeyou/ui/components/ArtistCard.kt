@@ -3,6 +3,7 @@ package app.suhasdissa.vibeyou.ui.components
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -74,6 +75,20 @@ fun ArtistCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                artist.numberOfAlbums?.let {
+                    Text(
+                        text = "${stringResource(id = R.string.albums)} $it",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                artist.numberOfTracks?.let {
+                    Text(
+                        text = "${stringResource(id = R.string.songs)} $it",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
         }
     }
 }

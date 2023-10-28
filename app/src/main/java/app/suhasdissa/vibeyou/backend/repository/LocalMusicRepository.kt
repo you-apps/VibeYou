@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.core.net.toUri
 import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
@@ -47,7 +46,7 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID,
             MediaStore.Audio.Media.DATE_MODIFIED,
-            MediaStore.Audio.Media.DATE_ADDED,
+            MediaStore.Audio.Media.DATE_ADDED
         )
 
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
@@ -69,7 +68,9 @@ class LocalMusicRepository(
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
             val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
             val artistIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
-            val creationDateColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
+            val creationDateColumn = cursor.getColumnIndexOrThrow(
+                MediaStore.Audio.Media.DATE_MODIFIED
+            )
             val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
 
             while (cursor.moveToNext()) {
@@ -180,7 +181,7 @@ class LocalMusicRepository(
         val artists = mutableListOf<Artist>()
 
         val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            MediaStore.Audio.Albums.getContentUri(
+            MediaStore.Audio.Artists.getContentUri(
                 MediaStore.VOLUME_EXTERNAL
             )
         } else {
@@ -190,10 +191,11 @@ class LocalMusicRepository(
         val projection = arrayOf(
             MediaStore.Audio.Artists._ID,
             MediaStore.Audio.Artists.ARTIST,
-            MediaStore.Audio.Artists.Albums.ALBUM_ID
+            MediaStore.Audio.Artists.NUMBER_OF_ALBUMS,
+            MediaStore.Audio.Artists.NUMBER_OF_TRACKS
         )
 
-        val sortOrder = "${MediaStore.Audio.Albums.ALBUM} ASC"
+        val sortOrder = "${MediaStore.Audio.Artists.ARTIST} ASC"
 
         val query = contentResolver.query(
             collection,
@@ -205,8 +207,10 @@ class LocalMusicRepository(
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists._ID)
             val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.ARTIST)
-            val albumIdColumn =
-                cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ID)
+            val noOfAlbums =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.ArtistColumns.NUMBER_OF_ALBUMS)
+            val noOfTracks =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.ArtistColumns.NUMBER_OF_TRACKS)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -215,7 +219,9 @@ class LocalMusicRepository(
                     Artist(
                         id = id.toString(),
                         artistsText = cursor.getString(artistColumn),
-                        thumbnailUri = getAlbumArt(cursor.getLong(albumIdColumn))
+                        thumbnailUri = null,
+                        numberOfAlbums = cursor.getInt(noOfAlbums),
+                        numberOfTracks = cursor.getInt(noOfTracks)
                     )
                 )
             }
