@@ -61,6 +61,7 @@ import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.models.PlayerRepeatMode
 import app.suhasdissa.vibeyou.backend.models.PlayerState
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.vibeyou.utils.IS_LOCAL_KEY
 import app.suhasdissa.vibeyou.utils.isPlayingState
 import app.suhasdissa.vibeyou.utils.maxResThumbnail
 import app.suhasdissa.vibeyou.utils.mediaItemState
@@ -107,9 +108,15 @@ fun FullScreenPlayer(
         val isFavourite = remember {
             mutableStateOf(false)
         }
+        var isLocal by remember {
+            mutableStateOf(false)
+        }
         mediaItem?.let {
             LaunchedEffect(mediaItem) {
-                isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
+                isLocal = mediaItem!!.mediaMetadata.extras?.getBoolean(IS_LOCAL_KEY) ?: false
+                if (!isLocal) {
+                    isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
+                }
             }
             SubcomposeAsyncImage(
                 modifier = Modifier
@@ -153,6 +160,7 @@ fun FullScreenPlayer(
             }
             PlayerController(
                 isfavourite = isFavourite,
+                isLocal = isLocal,
                 onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) }
             )
         }
@@ -177,6 +185,7 @@ fun FullScreenPlayer(
 fun PlayerController(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     isfavourite: MutableState<Boolean>,
+    isLocal: Boolean,
     onToggleFavourite: () -> Unit
 ) {
     val view = LocalView.current
@@ -215,7 +224,7 @@ fun PlayerController(
                     view.playSoundEffect(SoundEffectConstants.CLICK)
                     onToggleFavourite()
                     favouriteState = !favouriteState
-                }) {
+                }, enabled = !isLocal) {
                     if (favouriteState) {
                         Icon(Icons.Default.Favorite, contentDescription = null)
                     } else {
@@ -338,5 +347,9 @@ fun PlayerController(
 @Preview(showBackground = true)
 @Composable
 private fun PlayerControllerPreview() {
-    PlayerController(isfavourite = remember { mutableStateOf(false) }, onToggleFavourite = {})
+    PlayerController(
+        isfavourite = remember { mutableStateOf(false) },
+        isLocal = false,
+        onToggleFavourite = {}
+    )
 }

@@ -75,4 +75,5 @@
     <string name="add_to_library">Add to library</string>
     <string name="added_all_the_songs_to_the_library">Added all the songs to the library</string>
     <string name="add_all_songs_to_the_library">Add all songs to the library</string>
+    <string name="clear_queue">Clear Queue</string>
 </resources>

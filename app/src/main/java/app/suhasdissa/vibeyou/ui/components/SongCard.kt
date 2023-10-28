@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -110,6 +111,7 @@ fun SongCardCompact(
     title: String,
     artist: String?,
     active: Boolean = false,
+    inactive: Boolean = false,
     onClickVideoCard: () -> Unit,
     TrailingContent: @Composable () -> Unit,
     modifier: Modifier = Modifier
@@ -117,6 +119,7 @@ fun SongCardCompact(
     Row(
         modifier
             .fillMaxWidth()
+            .alpha(if (inactive) 0.5f else 1f)
             .clickable { onClickVideoCard() },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -158,14 +161,16 @@ fun SongCardCompact(
                 title,
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
             )
             artist?.let {
                 Text(
                     artist,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                 )
             }
         }

@@ -73,6 +73,7 @@ fun Queue(
                     title = mediaItem.mediaMetadata.title.toString(),
                     artist = mediaItem.mediaMetadata.artist.toString(),
                     active = queue.first == currentItemIndex,
+                    inactive = queue.first < currentItemIndex,
                     TrailingContent = {
                         IconButton(onClick = {
                             view.playSoundEffect(SoundEffectConstants.CLICK)

@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,7 +17,11 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -56,7 +63,30 @@ fun QueueSheet(
                     contentDescription = stringResource(R.string.close_queue)
                 )
             }
-        }, title = { Text(stringResource(R.string.player_queue)) })
+        }, title = { Text(stringResource(R.string.player_queue)) }, actions = {
+            var showDropdown by remember { mutableStateOf(false) }
+            IconButton({
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                showDropdown = true
+            }) {
+                Icon(
+                    Icons.Rounded.MoreVert,
+                    contentDescription = stringResource(R.string.close_queue)
+                )
+            }
+            DropdownMenu(expanded = showDropdown, onDismissRequest = { showDropdown = false }) {
+                DropdownMenuItem(text = {
+                    Text(text = stringResource(R.string.clear_queue))
+                }, onClick = {
+                    playerViewModel.controller?.clearMediaItems()
+                    scope.launch {
+                        playerSheetState.hide()
+                    }.invokeOnCompletion {
+                        onDismissRequest()
+                    }
+                })
+            }
+        })
         Divider(Modifier.fillMaxWidth())
         playerViewModel.controller?.let { controller ->
             Queue(controller)
