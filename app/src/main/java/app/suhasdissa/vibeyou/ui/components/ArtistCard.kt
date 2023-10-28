@@ -4,10 +4,10 @@ import android.view.SoundEffectConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.vibeyou.R
@@ -38,7 +37,7 @@ fun ArtistCard(
 ) {
     val view = LocalView.current
     val haptic = LocalHapticFeedback.current
-    Column(
+    Row(
         Modifier
             .fillMaxWidth()
             .combinedClickable(
@@ -51,11 +50,12 @@ fun ArtistCard(
                     onLongPress()
                 }
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(148.dp)
+                .size(80.dp)
+                .padding(8.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
             model = artist.thumbnailUri,
@@ -63,14 +63,17 @@ fun ArtistCard(
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.music_placeholder)
         )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            artist.artistsText,
-            style = MaterialTheme.typography.titleSmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center
-        )
-        Spacer(Modifier.height(8.dp))
+        Column(
+            Modifier
+                .weight(1f)
+                .padding(8.dp)
+        ) {
+            Text(
+                artist.artistsText,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }

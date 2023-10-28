@@ -3,14 +3,16 @@ package app.suhasdissa.vibeyou.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.data.Artist
+import my.nanihadesuka.compose.LazyColumnScrollbar
 
 @Composable
 fun ArtistList(
@@ -21,19 +23,26 @@ fun ArtistList(
     if (items.isEmpty()) {
         IllustratedMessageScreen(image = R.drawable.ic_launcher_monochrome)
     }
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(180.dp),
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+    val state = rememberLazyListState()
+    LazyColumnScrollbar(
+        listState = state,
+        thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+        thumbSelectedColor = MaterialTheme.colorScheme.primary,
+        thickness = 8.dp
     ) {
-        items(items = items) { item ->
-            ArtistCard(
-                artist = item,
-                onClickCard = { onClickCard(item) },
-                onLongPress = { onLongPress(item) }
-            )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = state,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+        ) {
+            items(items = items) { item ->
+                ArtistCard(
+                    artist = item,
+                    onClickCard = { onClickCard(item) },
+                    onLongPress = { onLongPress(item) }
+                )
+            }
         }
     }
 }
