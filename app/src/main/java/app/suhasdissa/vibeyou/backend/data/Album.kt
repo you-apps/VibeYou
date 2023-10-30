@@ -8,5 +8,10 @@ data class Album(
     val thumbnailUri: Uri? = null,
     val artistsText: String,
     val numberOfSongs: Int? = null,
-    val isLocal: Boolean = false
-)
+    val isLocal: Boolean = false,
+    val type: Type = Type.ALBUM
+) {
+    enum class Type {
+        PLAYLIST, ALBUM
+    }
+}

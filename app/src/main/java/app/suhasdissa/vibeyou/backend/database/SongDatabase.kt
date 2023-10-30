@@ -1,26 +1,36 @@
 package app.suhasdissa.vibeyou.backend.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import app.suhasdissa.vibeyou.backend.database.dao.PlaylistDao
 import app.suhasdissa.vibeyou.backend.database.dao.RawDao
 import app.suhasdissa.vibeyou.backend.database.dao.SearchDao
 import app.suhasdissa.vibeyou.backend.database.dao.SongsDao
+import app.suhasdissa.vibeyou.backend.database.entities.PlaylistEntity
 import app.suhasdissa.vibeyou.backend.database.entities.SearchQuery
 import app.suhasdissa.vibeyou.backend.database.entities.SongEntity
+import app.suhasdissa.vibeyou.backend.database.entities.SongPlaylistMap
 
 @Database(
     entities = [
         SongEntity::class,
-        SearchQuery::class
+        SearchQuery::class,
+        PlaylistEntity::class,
+        SongPlaylistMap::class
     ],
-    version = 1,
-    exportSchema = false
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 abstract class SongDatabase : RoomDatabase() {
 
     abstract fun songsDao(): SongsDao
+    abstract fun playlistDao(): PlaylistDao
     abstract fun searchDao(): SearchDao
     abstract fun rawDao(): RawDao
 
