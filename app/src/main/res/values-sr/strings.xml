@@ -74,4 +74,5 @@
     <string name="add_all_songs_to_the_library">Додај све песме у библиотеку</string>
     <string name="add_to_library">Додај у библиотеку</string>
     <string name="added_all_the_songs_to_the_library">Додате све песме у библиотеку</string>
+    <string name="clear_queue">Очисти ред</string>
 </resources>
