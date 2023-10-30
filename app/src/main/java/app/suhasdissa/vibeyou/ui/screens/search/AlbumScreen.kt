@@ -40,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.vibeyou.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.vibeyou.backend.viewmodel.state.AlbumInfoState
 import app.suhasdissa.vibeyou.ui.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.ui.components.LoadingScreen
@@ -51,7 +52,8 @@ import coil.compose.AsyncImage
 @Composable
 fun AlbumScreen(
     state: AlbumInfoState,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory)
 ) {
     MiniPlayerScaffold {
         when (state) {
@@ -131,7 +133,10 @@ fun AlbumScreen(
                                 FilledTonalButton(
                                     modifier = Modifier.fillMaxWidth(),
                                     onClick = {
-                                        playerViewModel.saveSongs(state.songs)
+                                        playlistViewModel.newPlaylistWithSongs(
+                                            state.album,
+                                            state.songs
+                                        )
                                         Toast.makeText(
                                             context,
                                             context.getString(

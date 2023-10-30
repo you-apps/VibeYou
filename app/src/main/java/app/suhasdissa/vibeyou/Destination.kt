@@ -12,6 +12,7 @@ sealed class Destination(val route: String) {
     object AppearanceSettings : Destination("appearance_settings")
     object Playlists : Destination("playlist_screen")
     object LocalPlaylists : Destination("local_playlist_screen")
+    object SavedPlaylists : Destination("saved_playlist_screen")
     object Artist : Destination("artist")
     object LocalArtist : Destination("local_artist")
 }

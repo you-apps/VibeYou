@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import app.suhasdissa.vibeyou.backend.viewmodel.LocalSearchViewModel
 import app.suhasdissa.vibeyou.backend.viewmodel.LocalSongViewModel
 import app.suhasdissa.vibeyou.backend.viewmodel.PipedSearchViewModel
+import app.suhasdissa.vibeyou.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.vibeyou.ui.screens.home.HomeScreen
 import app.suhasdissa.vibeyou.ui.screens.search.AlbumScreen
 import app.suhasdissa.vibeyou.ui.screens.search.ArtistScreen
@@ -89,6 +90,14 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 val searchViewModel: LocalSearchViewModel =
                     viewModel(factory = LocalSongViewModel.Factory)
+                AlbumScreen(searchViewModel.albumInfoState)
+            }
+        }
+
+        composable(Destination.SavedPlaylists.route) {
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                val searchViewModel: PlaylistViewModel =
+                    viewModel(factory = PlaylistViewModel.Factory)
                 AlbumScreen(searchViewModel.albumInfoState)
             }
         }

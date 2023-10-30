@@ -25,6 +25,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +39,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -137,6 +139,7 @@ fun HomeScreen(
                 }
             })
         }) {
+            val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
             NavHost(
                 navController,
                 startDestination = Destination.LocalMusic.route,
@@ -146,9 +149,11 @@ fun HomeScreen(
                 exitTransition = { ExitTransition.None }
             ) {
                 composable(Destination.PipedMusic.route) {
-                    MusicScreen()
-                    LaunchedEffect(Unit) {
-                        currentDestination = Destination.PipedMusic
+                    CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                        MusicScreen(onNavigate)
+                        LaunchedEffect(Unit) {
+                            currentDestination = Destination.PipedMusic
+                        }
                     }
                 }
                 composable(Destination.LocalMusic.route) {

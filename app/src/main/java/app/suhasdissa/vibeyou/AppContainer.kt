@@ -7,6 +7,7 @@ import app.suhasdissa.vibeyou.backend.repository.AuthRepository
 import app.suhasdissa.vibeyou.backend.repository.AuthRepositoryImpl
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
+import app.suhasdissa.vibeyou.backend.repository.PlaylistRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepositoryImpl
 import com.google.common.util.concurrent.ListenableFuture
@@ -16,6 +17,7 @@ interface AppContainer {
     val songDatabaseRepository: SongDatabaseRepository
     val pipedMusicRepository: PipedMusicRepository
     val localMusicRepository: LocalMusicRepository
+    val playlistRepository: PlaylistRepository
     val authRepository: AuthRepository
     val controllerFuture: ListenableFuture<MediaController>
     val contentResolver: ContentResolver
@@ -34,6 +36,9 @@ class DefaultAppContainer(
     }
     override val localMusicRepository: LocalMusicRepository by lazy {
         LocalMusicRepository(contentResolver, database.searchDao())
+    }
+    override val playlistRepository: PlaylistRepository by lazy {
+        PlaylistRepository(database.playlistDao(), database.songsDao())
     }
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl()
