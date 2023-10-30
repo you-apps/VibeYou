@@ -61,4 +61,17 @@
     <string name="search_songs">חיפוש שירים</string>
     <string name="about_title">על אודות</string>
     <string name="play_next">לנגן את הבא</string>
+    <string name="pitch">גובה צליל</string>
+    <string name="sort_order">סדר המיון</string>
+    <string name="add_all_songs_to_the_library">הוספת כל השירים לספרייה</string>
+    <string name="reversed">הפוך</string>
+    <string name="playback_speed">מהירות נגינה</string>
+    <string name="fallback_thumnail_accent">נסיגה של תמונות התראה ממוזערות</string>
+    <string name="add_to_library">הוספה לספרייה</string>
+    <string name="cancel">ביטול</string>
+    <string name="appearance_settings_description">התאמת המראה לצרכים שלך.</string>
+    <string name="appearance_settings">הגדרות מראה</string>
+    <string name="fallback_thumnail_accent_description">נסיגה לשימוש בצבע משני של מערכת/ערכת עיצוב כתמונה ממוזערת להתראה אם אין כזאת.</string>
+    <string name="added_all_the_songs_to_the_library">כל השירים נוספו לספרייה</string>
+    <string name="play_all">לנגן הכול</string>
 </resources>

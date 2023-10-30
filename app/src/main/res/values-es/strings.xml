@@ -67,4 +67,11 @@
     <string name="playback_speed">Velocidad de reproducción</string>
     <string name="cancel">Cancelar</string>
     <string name="play_all">Reproducir todo</string>
+    <string name="fallback_thumnail_accent">Notificación en miniatura</string>
+    <string name="appearance_settings_description">Personaliza la apariencia para adaptarla a tus necesidades.</string>
+    <string name="appearance_settings">Ajustes de la apariencia</string>
+    <string name="fallback_thumnail_accent_description">Volver a usar el color del acento del sistema/tema como miniatura de la notificación si no hay ninguno.</string>
+    <string name="add_all_songs_to_the_library">Añadir todas las canciones a la biblioteca</string>
+    <string name="add_to_library">Añadir a la biblioteca</string>
+    <string name="added_all_the_songs_to_the_library">Añadidas todas las canciones a la biblioteca</string>
 </resources>
