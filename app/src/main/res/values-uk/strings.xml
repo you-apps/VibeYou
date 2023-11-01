@@ -74,4 +74,5 @@
     <string name="about_title">Про застосунок</string>
     <string name="play_next">Відтворити наступним</string>
     <string name="play_all">Відтворити усе</string>
+    <string name="clear_queue">Очистити чергу</string>
 </resources>
