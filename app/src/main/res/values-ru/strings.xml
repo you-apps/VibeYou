@@ -48,7 +48,7 @@
     <string name="network_settings_description">Изменение сервера для исправления проблем с воспроизведением</string>
     <string name="clear_search">Очистить поиск</string>
     <string name="settings">Настройки</string>
-    <string name="play">Воспроизвести</string>
+    <string name="play">Проиграть</string>
     <string name="repeat_off">Повтор выключен</string>
     <string name="local_music">Локальная музыка</string>
     <string name="enqueue_song">Добавить в очередь</string>
