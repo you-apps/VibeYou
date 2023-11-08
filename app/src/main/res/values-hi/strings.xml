@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="readme">मुझे पढ़ें</string>
+    <string name="songs">गीत</string>
+    <string name="about_title">के बारे में</string>
+</resources>
