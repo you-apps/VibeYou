@@ -74,4 +74,5 @@
     <string name="add_all_songs_to_the_library">将所有歌曲加入曲库</string>
     <string name="add_to_library">添加到曲库</string>
     <string name="added_all_the_songs_to_the_library">已将所有歌曲加入曲库</string>
+    <string name="clear_queue">清除队列</string>
 </resources>
