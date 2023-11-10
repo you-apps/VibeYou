@@ -74,4 +74,5 @@
     <string name="add_all_songs_to_the_library">ଲାଇବ୍ରେରୀରେ ସମସ୍ତ ଗୀତ ଯୋଡନ୍ତୁ</string>
     <string name="add_to_library">ଲାଇବ୍ରେରୀରେ ଯୋଡନ୍ତୁ</string>
     <string name="added_all_the_songs_to_the_library">ସମସ୍ତ ଗୀତଗୁଡ଼ିକୁ ଲାଇବ୍ରେରୀରେ ଯୋଡିଛି</string>
+    <string name="clear_queue">ଧାଡ଼ି ସଫାକରନ୍ତୁ</string>
 </resources>
