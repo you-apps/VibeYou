@@ -74,4 +74,5 @@
     <string name="add_all_songs_to_the_library">Añadir todas las canciones a la biblioteca</string>
     <string name="add_to_library">Añadir a la biblioteca</string>
     <string name="added_all_the_songs_to_the_library">Añadidas todas las canciones a la biblioteca</string>
+    <string name="clear_queue">Borrar la cola</string>
 </resources>

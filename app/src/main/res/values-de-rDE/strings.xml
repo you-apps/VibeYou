@@ -26,7 +26,7 @@
     <string name="song_options">Song-Optionen</string>
     <string name="close_player">Player schließen</string>
     <string name="song_album_art">Albumcover anzeigen</string>
-    <string name="pause">Pause</string>
+    <string name="pause">Pausieren</string>
     <string name="play">Wiedergabe</string>
     <string name="skip_next">Nächstes überspringen</string>
     <string name="remove_item_from_queue">Aus der Warteschlange entfernt</string>
