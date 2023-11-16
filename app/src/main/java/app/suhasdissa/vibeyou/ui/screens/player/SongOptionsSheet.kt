@@ -88,7 +88,10 @@ fun SongOptionsSheet(
             fun updatePlaybackParams() = playerViewModel.setPlaybackParams(speed, pitch)
 
             Text(text = stringResource(R.string.playback_speed), fontSize = 16.sp)
-            Slider(value = speed, onValueChange = { speed = it; updatePlaybackParams() }, valueRange = 0.25f..4f, steps = 14)
+            Slider(value = speed, onValueChange = {
+                speed = it
+                updatePlaybackParams()
+            }, valueRange = 0.25f..4f, steps = 14)
             ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
                     modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),
@@ -96,7 +99,10 @@ fun SongOptionsSheet(
                 )
             }
             Text(text = stringResource(R.string.pitch), fontSize = 16.sp)
-            Slider(value = pitch, onValueChange = { pitch = it; updatePlaybackParams() }, valueRange = 0.5f..2f, steps = 5)
+            Slider(value = pitch, onValueChange = {
+                pitch = it
+                updatePlaybackParams()
+            }, valueRange = 0.5f..2f, steps = 5)
             ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
                     modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),

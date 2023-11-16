@@ -42,7 +42,9 @@ class DatabaseViewModel(private val database: SongDatabase) : ViewModel() {
 
             context.applicationContext.contentResolver.openInputStream(uri)
                 ?.use { inputStream ->
-                    FileOutputStream(database.openHelper.writableDatabase.path).use { outputStream ->
+                    FileOutputStream(
+                        database.openHelper.writableDatabase.path
+                    ).use { outputStream ->
                         inputStream.copyTo(outputStream)
                     }
                 }

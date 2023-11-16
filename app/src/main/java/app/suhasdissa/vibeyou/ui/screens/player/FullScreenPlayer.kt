@@ -2,7 +2,6 @@ package app.suhasdissa.vibeyou.ui.screens.player
 
 import android.text.format.DateUtils
 import android.view.SoundEffectConstants
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +42,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -68,7 +66,6 @@ import app.suhasdissa.vibeyou.utils.isPlayingState
 import app.suhasdissa.vibeyou.utils.maxResThumbnail
 import app.suhasdissa.vibeyou.utils.mediaItemState
 import app.suhasdissa.vibeyou.utils.positionAndDurationState
-import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 
@@ -142,7 +139,7 @@ fun FullScreenPlayer(
                         painter = painterResource(id = R.drawable.music_placeholder),
                         contentScale = contentScale
                     )
-                },
+                }
             )
             val title = it.mediaMetadata.title.toString()
             val artist = it.mediaMetadata.artist.toString()

@@ -31,7 +31,7 @@ fun SortOrderDialog(
     onDismissRequest: () -> Unit,
     onSortOrderChange: (order: SortOrder, reverse: Boolean) -> Unit,
     defaultSortOrder: SortOrder,
-    defaultReverse: Boolean,
+    defaultReverse: Boolean
 ) {
     var sortOrder by remember {
         mutableStateOf(defaultSortOrder)

@@ -160,7 +160,10 @@ fun LocalMusicScreen(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(imageVector = Icons.Default.Sort, contentDescription = null)
                             }
-                            SongListView(songs = localSongViewModel.songs, sortOrder = localSongViewModel.songsSortOrder)
+                            SongListView(
+                                songs = localSongViewModel.songs,
+                                sortOrder = localSongViewModel.songsSortOrder
+                            )
                         }
                     }
                 }

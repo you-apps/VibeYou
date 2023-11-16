@@ -68,7 +68,13 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         super.onCreate()
         val maxMBytes = Pref.sharedPreferences.getInt(Pref.exoCacheKey, 0)
         val cacheEvictor =
-            if (maxMBytes > 0) LeastRecentlyUsedCacheEvictor(maxMBytes * 1024 * 1024L) else NoOpCacheEvictor()
+            if (maxMBytes > 0) {
+                LeastRecentlyUsedCacheEvictor(
+                    maxMBytes * 1024 * 1024L
+                )
+            } else {
+                NoOpCacheEvictor()
+            }
         val directory = cacheDir.resolve("exoplayer").also { directory ->
             directory.mkdir()
         }

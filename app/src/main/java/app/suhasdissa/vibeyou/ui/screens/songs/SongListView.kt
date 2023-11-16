@@ -50,8 +50,16 @@ fun SongListView(
             when (sortOrder) {
                 SortOrder.Alphabetic -> songs.groupBy { song -> song.title.first().toString() }
                 SortOrder.Artist_Name -> songs.groupBy { song -> song.artistsText.orEmpty() }
-                SortOrder.Creation_Date -> songs.groupBy { song -> TimeUtil.getYear(song.creationDate ?: 0).toString() }
-                SortOrder.Date_Added -> songs.groupBy { song -> TimeUtil.getYear(song.dateAdded ?: 0).toString() }
+                SortOrder.Creation_Date -> songs.groupBy { song ->
+                    TimeUtil.getYear(
+                        song.creationDate ?: 0
+                    ).toString()
+                }
+                SortOrder.Date_Added -> songs.groupBy { song ->
+                    TimeUtil.getYear(
+                        song.dateAdded ?: 0
+                    ).toString()
+                }
             }
         }
         val state = rememberLazyListState()
