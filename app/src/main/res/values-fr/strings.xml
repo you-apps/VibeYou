@@ -9,7 +9,7 @@
     <string name="about_setting_description">Version, Contact</string>
     <string name="shuffle">Aléatoire</string>
     <string name="now_playing">Lecture en cours</string>
-    <string name="settings">Paramètres</string>
+    <string name="settings">Réglages</string>
     <string name="play">Jouer</string>
     <string name="enqueue_song">Ajouter à la file d\'attente</string>
     <string name="about_title">À propos</string>
