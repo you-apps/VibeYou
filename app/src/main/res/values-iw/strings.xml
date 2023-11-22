@@ -74,4 +74,5 @@
     <string name="fallback_thumnail_accent_description">נסיגה לשימוש בצבע משני של מערכת/ערכת עיצוב כתמונה ממוזערת להתראה אם אין כזאת.</string>
     <string name="added_all_the_songs_to_the_library">כל השירים נוספו לספרייה</string>
     <string name="play_all">לנגן הכול</string>
+    <string name="clear_queue">פינוי תור</string>
 </resources>
