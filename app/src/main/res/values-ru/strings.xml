@@ -20,7 +20,7 @@
     <string name="unlimited">Не ограничен</string>
     <string name="song_album_art">Обложка композиции</string>
     <string name="delete_song">Удалить</string>
-    <string name="play_song">Воспроизвести</string>
+    <string name="play_song">Проиграть</string>
     <string name="repeat_one">Повторять один и тот же</string>
     <string name="settings_title">Настройки</string>
     <string name="username">Имя пользователя</string>
@@ -48,7 +48,7 @@
     <string name="network_settings_description">Изменение сервера для исправления проблем с воспроизведением</string>
     <string name="clear_search">Очистить поиск</string>
     <string name="settings">Настройки</string>
-    <string name="play">Воспроизвести</string>
+    <string name="play">Проиграть</string>
     <string name="repeat_off">Повтор выключен</string>
     <string name="local_music">Локальная музыка</string>
     <string name="enqueue_song">Добавить в очередь</string>
