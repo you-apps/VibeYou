@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="favourite_songs">Favoriler</string>
+    <string name="latest_release">En son sürüm</string>
+    <string name="repeat_all">Hepsini Tekrarla</string>
+    <string name="github_issue_description">Hata bilgileri ve özellik istekleri gönder</string>
+    <string name="delete_song">Şarkıyı Çıkar</string>
+    <string name="play_song">Şarkıyı Çal</string>
+    <string name="repeat_one">Aynını Tekrarla</string>
+    <string name="settings_title">Ayarlar</string>
+    <string name="readme">README</string>
+    <string name="current_version">Cari Versiyon</string>
+    <string name="about_setting_description">Sürüm, İletişim</string>
+    <string name="search_for_a_song">Şarkı için Arama</string>
+    <string name="check_repo_and_readme">Depoyu ve README\'yi denetle</string>
+    <string name="now_playing">Şimdi Çalınıyor</string>
+    <string name="songs">Şarkılar</string>
+    <string name="clear_search">Aramayı Boşalt</string>
+    <string name="settings">Ayarlamalar</string>
+    <string name="repeat_off">Tekrarlama Kapalı</string>
+    <string name="enqueue_song">Sıraya Ekle</string>
+    <string name="github_issue">GitHub Sorunu</string>
+    <string name="search_songs">Şarkılar Ara</string>
+    <string name="about_title">Hakkında</string>
+    <string name="play_next">Sonrakini Çal</string>
+</resources>
