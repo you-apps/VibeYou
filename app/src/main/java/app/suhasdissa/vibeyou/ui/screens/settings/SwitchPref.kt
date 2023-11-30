@@ -41,6 +41,7 @@ fun SwitchPref(
                 indication = null
             ) {
                 checked = !checked
+                onCheckedChange.invoke(checked)
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

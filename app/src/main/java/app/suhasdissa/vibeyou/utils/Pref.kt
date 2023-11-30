@@ -13,6 +13,7 @@ object Pref {
     const val thumbnailColorFallbackKey = "ThumbnailColorFallbackef"
     const val latestSongsSortOrderKey = "LatestSongsSortOrderKey"
     const val latestReverseSongsPrefKey = "LatestReverseSongsPrefKey"
+    const val customPipedInstanceKey = "CustomPipedInstanceKey"
 
     lateinit var sharedPreferences: SharedPreferences
 

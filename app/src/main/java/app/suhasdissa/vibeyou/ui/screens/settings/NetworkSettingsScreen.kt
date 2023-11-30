@@ -61,6 +61,12 @@ fun NetworkSettingsScreen() {
                     showDialog = true
                 }
             }
+
+            item {
+                CustomInstanceOption {
+                    currentServer = it
+                }
+            }
         }
     }
     if (showDialog) {
