@@ -81,5 +81,4 @@
     <string name="api_url">Api Url</string>
     <string name="image_proxy_url">Image proxy url</string>
     <string name="invalid_url">Invalid url</string>
-    <string name="playlists">Playlists</string>
 </resources>
