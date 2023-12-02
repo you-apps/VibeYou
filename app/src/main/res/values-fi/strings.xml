@@ -51,4 +51,5 @@
     <string name="search_songs">Etsi kappaleita</string>
     <string name="about_title">Tietoja</string>
     <string name="play_next">Toista seuraava</string>
+    <string name="sort_order">Lajittelujärjestys</string>
 </resources>

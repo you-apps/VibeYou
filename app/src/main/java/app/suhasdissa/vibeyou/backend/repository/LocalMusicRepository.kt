@@ -235,7 +235,8 @@ class LocalMusicRepository(
     suspend fun getSearchResult(query: String): List<Song> {
         val lowerQuery = query.lowercase()
         return getAllSongs().filter {
-            it.title.lowercase().contains(lowerQuery)
+            it.title.lowercase().contains(lowerQuery) || it.artistsText?.lowercase()
+                ?.contains(lowerQuery) == true
         }
     }
 

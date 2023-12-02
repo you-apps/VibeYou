@@ -11,6 +11,9 @@ object Pref {
     const val authTokenKey = "AuthTokenKey"
     const val exoCacheKey = "ExoCacheKey"
     const val thumbnailColorFallbackKey = "ThumbnailColorFallbackef"
+    const val latestSongsSortOrderKey = "LatestSongsSortOrderKey"
+    const val latestReverseSongsPrefKey = "LatestReverseSongsPrefKey"
+    const val customPipedInstanceKey = "CustomPipedInstanceKey"
 
     lateinit var sharedPreferences: SharedPreferences
 

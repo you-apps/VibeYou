@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.edit
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.Destination
 import app.suhasdissa.vibeyou.R
@@ -46,6 +47,7 @@ import app.suhasdissa.vibeyou.ui.components.AlbumList
 import app.suhasdissa.vibeyou.ui.components.ArtistList
 import app.suhasdissa.vibeyou.ui.dialogs.SortOrderDialog
 import app.suhasdissa.vibeyou.ui.screens.songs.SongListView
+import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -160,7 +162,10 @@ fun LocalMusicScreen(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(imageVector = Icons.Default.Sort, contentDescription = null)
                             }
-                            SongListView(songs = localSongViewModel.songs, sortOrder = localSongViewModel.songsSortOrder)
+                            SongListView(
+                                songs = localSongViewModel.songs,
+                                sortOrder = localSongViewModel.songsSortOrder
+                            )
                         }
                     }
                 }
@@ -191,6 +196,10 @@ fun LocalMusicScreen(
                 localSongViewModel.songsSortOrder = sortOrder
                 localSongViewModel.reverseSongs = reverse
                 localSongViewModel.updateSongsSortOrder()
+                Pref.sharedPreferences.edit(true) {
+                    putString(Pref.latestSongsSortOrderKey, sortOrder.toString())
+                    putBoolean(Pref.latestReverseSongsPrefKey, reverse)
+                }
             }
         )
     }

@@ -2,7 +2,6 @@ package app.suhasdissa.vibeyou.ui.screens.player
 
 import android.text.format.DateUtils
 import android.view.SoundEffectConstants
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,10 +66,8 @@ import app.suhasdissa.vibeyou.utils.isPlayingState
 import app.suhasdissa.vibeyou.utils.maxResThumbnail
 import app.suhasdissa.vibeyou.utils.mediaItemState
 import app.suhasdissa.vibeyou.utils.positionAndDurationState
-import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
-import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,27 +116,31 @@ fun FullScreenPlayer(
                     isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
                 }
             }
+            var thumbnailUrl by remember {
+                mutableStateOf(it.maxResThumbnail)
+            }
+
             SubcomposeAsyncImage(
                 modifier = Modifier
                     .size(300.dp)
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = it.maxResThumbnail,
+                model = it.maxResThumbnail.ifEmpty { it.mediaMetadata.artworkUri },
                 contentDescription = stringResource(id = R.string.album_art),
-                contentScale = ContentScale.Crop
-            ) {
-                val state = painter.state
-                if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = it.mediaMetadata.artworkUri),
-                        contentDescription,
+                contentScale = ContentScale.Crop,
+                onError = { _ ->
+                    if (thumbnailUrl != it.mediaMetadata.artworkUri.toString()) {
+                        thumbnailUrl = it.mediaMetadata.artworkUri.toString()
+                    }
+                },
+                error = {
+                    SubcomposeAsyncImageContent(
+                        painter = painterResource(id = R.drawable.music_placeholder),
                         contentScale = contentScale
                     )
-                } else {
-                    SubcomposeAsyncImageContent(contentScale = contentScale)
                 }
-            }
+            )
             val title = it.mediaMetadata.title.toString()
             val artist = it.mediaMetadata.artist.toString()
 

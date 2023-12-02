@@ -15,6 +15,7 @@ import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.ui.dialogs.SortOrder
+import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.launch
 
 class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : ViewModel() {
@@ -22,8 +23,10 @@ class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : Vi
     var albums by mutableStateOf(listOf<Album>())
     var artists by mutableStateOf(listOf<Artist>())
 
-    var songsSortOrder = SortOrder.Alphabetic
-    var reverseSongs = false
+    var songsSortOrder = Pref.sharedPreferences.getString(Pref.latestSongsSortOrderKey, null)?.let {
+        runCatching { SortOrder.valueOf(it) }.getOrNull()
+    } ?: SortOrder.Alphabetic
+    var reverseSongs = Pref.sharedPreferences.getBoolean(Pref.latestReverseSongsPrefKey, false)
 
     init {
         viewModelScope.launch {
