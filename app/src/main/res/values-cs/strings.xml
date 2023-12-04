@@ -75,4 +75,8 @@
     <string name="add_to_library">Přidat do knihovny</string>
     <string name="added_all_the_songs_to_the_library">Všechny skladby byly přidány do knihovny</string>
     <string name="clear_queue">Vymazat frontu</string>
+    <string name="invalid_url">Neplatná adresa URL</string>
+    <string name="api_url">URL API</string>
+    <string name="image_proxy_url">URL proxy obrázků</string>
+    <string name="custom_instance">Vlastní instance</string>
 </resources>
