@@ -13,4 +13,8 @@
     <string name="play">Jouer</string>
     <string name="enqueue_song">Ajouter à la file d\'attente</string>
     <string name="about_title">À propos</string>
+    <string name="latest_release">Dernière version</string>
+    <string name="readme">LISEZ-MOI</string>
+    <string name="songs">Morceaux</string>
+    <string name="github_issue">GitHub Issue</string>
 </resources>
