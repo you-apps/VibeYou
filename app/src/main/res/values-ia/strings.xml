@@ -75,4 +75,8 @@
     <string name="about_title">A proposito de</string>
     <string name="play_next">Sequente</string>
     <string name="play_all">Reproducer toto</string>
+    <string name="invalid_url">URL non valide</string>
+    <string name="api_url">URL del API</string>
+    <string name="image_proxy_url">URL del proxy de imagine</string>
+    <string name="custom_instance">Instantia personalisate</string>
 </resources>
