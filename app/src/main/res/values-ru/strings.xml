@@ -75,4 +75,8 @@
     <string name="add_to_library">Добавить в библиотеку</string>
     <string name="added_all_the_songs_to_the_library">Все песни были добавлены в библиотеку</string>
     <string name="clear_queue">Очистить очередь</string>
+    <string name="invalid_url">Недействительная ссылка</string>
+    <string name="api_url">Ссылка на API</string>
+    <string name="image_proxy_url">Ссылка на прокси изображений</string>
+    <string name="custom_instance">Свой сервер</string>
 </resources>
