@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favourite_songs">Ulubione</string>
+    <string name="close_queue">Zamknij kolejkę</string>
+    <string name="backup_description">Utwórz plik kopii zapasowej</string>
+    <string name="latest_release">Najnowsze Wydanie</string>
+    <string name="password">Hasło</string>
+    <string name="network_settings">Ustawienia Sieci</string>
+    <string name="remove_item_from_queue">Usuń element z kolejki</string>
+    <string name="github_issue_description">Przesyłanie raportów o błędach i próśb o funkcje</string>
+    <string name="skip_next">Pomiń Następny</string>
+    <string name="music_cache_limit">Limit pamięci podręcznej muzyki</string>
+    <string name="change_server">Zmień serwer</string>
+    <string name="restore">Przywracanie Kopii Danych</string>
+    <string name="delete_song">Usuń Piosenkę</string>
+    <string name="play_song">Odtwórz Piosenkę</string>
+    <string name="settings_title">Ustawienia</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="restore_description">Przywróć dane z kopii zapasowej</string>
+    <string name="backup_restore">Kopia zapasowa i Przywracanie</string>
+    <string name="readme">README</string>
+    <string name="add_all_songs_to_the_library">Dodawanie wszystkich utworów do biblioteki</string>
+    <string name="current_version">Obecna Wersja</string>
+    <string name="about_setting_description">Wersja, Kontakt</string>
+    <string name="ok">OK</string>
+    <string name="something_went_wrong">Coś poszło nie tak</string>
+    <string name="backup">Utworzenie Kopii Zapasowej Danych</string>
+    <string name="player_queue">Kolejka odtwarzacza</string>
+    <string name="add_to_library">Dodaj do biblioteki</string>
+    <string name="shuffle">Losowo</string>
+    <string name="check_repo_and_readme">Sprawdź repozytorium i README</string>
+    <string name="songs">Piosenki</string>
+    <string name="change_music_cache_size">Zmiana rozmiaru pamięci podręcznej muzyki</string>
+    <string name="login">Zaloguj się</string>
+    <string name="piped_music">Piped Music</string>
+    <string name="network_settings_description">Zmiana serwera w celu naprawienia problemów z odtwarzaniem</string>
+    <string name="clear_search">Wyczyść Wyszukiwanie</string>
+    <string name="fallback_thumnail_accent_description">Powrót do używania koloru akcentu systemowego/tematycznego jako miniatury powiadomienia, jeśli go nie ma.</string>
+    <string name="settings">Ustawienia</string>
+    <string name="play">Odtwórz</string>
+    <string name="enqueue_song">Dodaj do Kolejki</string>
+    <string name="github_issue">GitHub Problem</string>
+    <string name="added_all_the_songs_to_the_library">Dodano wszystkie utwory do biblioteki</string>
+    <string name="backup_restore_setting_description">Utwórz kopię zapasową listy utworów lub przywróć starą kopię zapasową.</string>
+    <string name="search_songs">Wyszukiwanie utworów</string>
+    <string name="about_title">O aplikacji</string>
+</resources>

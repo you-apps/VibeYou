@@ -75,4 +75,8 @@
     <string name="add_to_library">Додај у библиотеку</string>
     <string name="added_all_the_songs_to_the_library">Додате све песме у библиотеку</string>
     <string name="clear_queue">Очисти ред</string>
+    <string name="invalid_url">Неважећа URL адреса</string>
+    <string name="api_url">URL адреса API-ја</string>
+    <string name="image_proxy_url">URL адреса проксија слике</string>
+    <string name="custom_instance">Прилагођена инстанца</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favourite_songs">Favoris</string>
+    <string name="close_player">Fermer le lecteur</string>
+    <string name="github_issue_description">Soumettre des rapports de bogue et des demandes de fonctionnalités</string>
+    <string name="pause">Pause</string>
+    <string name="settings_title">Paramètres</string>
+    <string name="current_version">Version actuelle</string>
+    <string name="about_setting_description">Version, Contact</string>
+    <string name="shuffle">Aléatoire</string>
+    <string name="now_playing">Lecture en cours</string>
+    <string name="settings">Réglages</string>
+    <string name="play">Jouer</string>
+    <string name="enqueue_song">Ajouter à la file d\'attente</string>
+    <string name="about_title">À propos</string>
+    <string name="latest_release">Dernière version</string>
+    <string name="readme">LISEZ-MOI</string>
+    <string name="songs">Morceaux</string>
+    <string name="github_issue">GitHub Issue</string>
+</resources>
