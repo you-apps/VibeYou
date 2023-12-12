@@ -1,5 +1,6 @@
 package app.suhasdissa.vibeyou.backend.database.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +12,6 @@ data class SongEntity(
     val durationText: String?,
     val thumbnailUrl: String?,
     val likedAt: Long? = null,
-    val totalPlayTimeMs: Long = 0
+    val totalPlayTimeMs: Long = 0,
+    @ColumnInfo(defaultValue = "0") val isLocal: Boolean = false
 )

@@ -16,6 +16,10 @@ android {
         versionCode = 2
         versionName = "2.0"
 
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true

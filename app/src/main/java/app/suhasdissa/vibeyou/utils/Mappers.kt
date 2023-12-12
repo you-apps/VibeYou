@@ -9,6 +9,7 @@ import androidx.media3.common.MediaMetadata
 import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
+import app.suhasdissa.vibeyou.backend.database.entities.PlaylistEntity
 import app.suhasdissa.vibeyou.backend.database.entities.SongEntity
 import app.suhasdissa.vibeyou.backend.models.PipedSongResponse
 import app.suhasdissa.vibeyou.backend.models.playlists.Playlist
@@ -61,6 +62,23 @@ val Playlist.asAlbum: Album
         thumbnailUri = thumbnail.toUri()
     )
 
+val Album.asPlaylistEntity: PlaylistEntity
+    get() = PlaylistEntity(
+        id = id,
+        title = title,
+        type = type,
+        subTitle = artistsText,
+        thumbnailUrl = thumbnailUri.toString()
+    )
+val PlaylistEntity.asAlbum: Album
+    get() = Album(
+        id = id,
+        title = title,
+        thumbnailUri = thumbnailUrl?.toUri(),
+        artistsText = subTitle ?: "",
+        isLocal = true,
+        type = type
+    )
 val app.suhasdissa.vibeyou.backend.models.artists.Artist.asArtist: Artist
     get() = Artist(
         id = artistId,
