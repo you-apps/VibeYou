@@ -79,4 +79,5 @@
     <string name="api_url">Ссылка на API</string>
     <string name="image_proxy_url">Ссылка на прокси изображений</string>
     <string name="custom_instance">Свой сервер</string>
+    <string name="playlists">Плейлисты</string>
 </resources>
