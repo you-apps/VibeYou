@@ -79,4 +79,5 @@
     <string name="api_url">Dirección Url de la API</string>
     <string name="image_proxy_url">Dirección URL del proxy de la imagen</string>
     <string name="custom_instance">Ejemplo personalizado</string>
+    <string name="playlists">Listas de reproducción</string>
 </resources>
