@@ -81,4 +81,7 @@
     <string name="api_url">Api Url</string>
     <string name="image_proxy_url">Image proxy url</string>
     <string name="invalid_url">Invalid url</string>
+    <string name="delete_playlist">Delete Playlist</string>
+    <string name="delete_playlist_and_songs">Delete playlist and songs</string>
+    <string name="clear_playlist">Clear Playlist</string>
 </resources>

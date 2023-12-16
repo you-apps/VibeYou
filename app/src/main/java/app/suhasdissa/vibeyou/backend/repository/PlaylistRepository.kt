@@ -36,4 +36,17 @@ class PlaylistRepository(private val playlistDao: PlaylistDao, private val songs
 
     suspend fun getPlaylist(id: String): PlaylistWithSongs =
         withContext(Dispatchers.IO) { return@withContext playlistDao.getPlaylist(id) }
+
+    suspend fun deletePlaylist(album: Album) =
+        withContext(Dispatchers.IO) { playlistDao.removePlaylist(album.asPlaylistEntity) }
+
+    suspend fun clearPlaylist(album: Album) = withContext(Dispatchers.IO) {
+        playlistDao.clearPlaylist(album.id)
+    }
+
+    suspend fun deletePlaylistAndSongs(album: Album) = withContext(Dispatchers.IO) {
+        val songs = playlistDao.getPlaylist(album.id).songs
+        playlistDao.removePlaylist(album.asPlaylistEntity)
+        songsDao.removeSongs(songs)
+    }
 }

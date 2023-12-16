@@ -19,6 +19,9 @@ interface SongsDao {
     @Delete(entity = SongEntity::class)
     fun removeSong(song: SongEntity)
 
+    @Delete(entity = SongEntity::class)
+    fun removeSongs(song: List<SongEntity>)
+
     @Query("SELECT * from song WHERE id=:id")
     fun getSongById(id: String): SongEntity?
 

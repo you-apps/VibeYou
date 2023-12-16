@@ -13,8 +13,6 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
@@ -24,9 +22,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.Destination
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.viewmodel.PlaylistViewModel
-import app.suhasdissa.vibeyou.ui.components.AlbumList
+import app.suhasdissa.vibeyou.ui.screens.playlists.PlaylistsScreen
 import app.suhasdissa.vibeyou.ui.screens.songs.SongsScreen
-import app.suhasdissa.vibeyou.utils.asAlbum
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -87,14 +84,10 @@ fun MusicScreen(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { index ->
-            val albums by playlistViewModel.albums.collectAsState()
             when (index) {
                 0 -> SongsScreen(showFavourites = false)
                 1 -> SongsScreen(showFavourites = true)
-                2 -> AlbumList(items = albums.map { it.asAlbum }, onClickCard = {
-                    playlistViewModel.getPlaylistInfo(it)
-                    onNavigate(Destination.SavedPlaylists)
-                }, onLongPress = {})
+                2 -> PlaylistsScreen(onNavigate = onNavigate)
             }
         }
     }

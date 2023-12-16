@@ -52,6 +52,24 @@ class PlaylistViewModel(private val playlistRepository: PlaylistRepository) : Vi
         }
     }
 
+    fun deletePlaylist(album: Album) {
+        viewModelScope.launch {
+            playlistRepository.deletePlaylist(album)
+        }
+    }
+
+    fun clearPlaylist(album: Album) {
+        viewModelScope.launch {
+            playlistRepository.clearPlaylist(album)
+        }
+    }
+
+    fun deletePlaylistAndSongs(album: Album) {
+        viewModelScope.launch {
+            playlistRepository.deletePlaylistAndSongs(album)
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
