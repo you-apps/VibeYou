@@ -22,7 +22,7 @@
     <string name="close_queue">Fermer la file d\'attente</string>
     <string name="backup_description">Créer un fichier de sauvegarde</string>
     <string name="password">Mot de passe</string>
-    <string name="api_url">Url de l\'Api</string>
+    <string name="api_url">URL de l\'API</string>
     <string name="album_art">Pochette d\'album</string>
     <string name="network_settings">Réglages Réseaux</string>
     <string name="remove_item_from_queue">Retirer un élément de la file d\'attente</string>
@@ -69,4 +69,14 @@
     <string name="close_search">Fermer la recherche</string>
     <string name="search_songs">Rechercher des morceaux</string>
     <string name="play_next">Lire la suite</string>
+    <string name="music_cache_limit">Limite de la mémoire cache de la musique</string>
+    <string name="sort_order">Ordre de tri</string>
+    <string name="unlimited">Illimité</string>
+    <string name="playback_speed">Vitesse de lecture</string>
+    <string name="fallback_thumnail_accent">Retrait de la vignette de notification</string>
+    <string name="add_to_library">Ajouter à la librairie</string>
+    <string name="appearance_settings_description">Personnalisez l\'apparence pour qu\'elle corresponde à vos besoins.</string>
+    <string name="appearance_settings">Paramètres d\'apparence</string>
+    <string name="fallback_thumnail_accent_description">Revenir à l\'utilisation de la couleur d\'accentuation du système/thème comme vignette de notification s\'il n\'y en a pas.</string>
+    <string name="play_all">Jouer tout</string>
 </resources>
