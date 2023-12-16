@@ -14,9 +14,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Shuffle
-import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Shuffle
+import androidx.compose.material.icons.rounded.Sort
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -125,7 +125,7 @@ fun LocalMusicScreen(
                                 playerViewModel.playSongs(localSongViewModel.songs)
                             }) {
                                 Icon(
-                                    imageVector = Icons.Default.PlayArrow,
+                                    imageVector = Icons.Rounded.PlayArrow,
                                     contentDescription = stringResource(R.string.play_all)
                                 )
                             }
@@ -137,7 +137,7 @@ fun LocalMusicScreen(
                                 playerViewModel.playSongs(localSongViewModel.songs, shuffle = true)
                             }) {
                                 Icon(
-                                    imageVector = Icons.Default.Shuffle,
+                                    imageVector = Icons.Rounded.Shuffle,
                                     contentDescription = stringResource(R.string.shuffle)
                                 )
                             }
@@ -160,7 +160,7 @@ fun LocalMusicScreen(
                             ) {
                                 Text(text = stringResource(R.string.sort_order))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Icon(imageVector = Icons.Default.Sort, contentDescription = null)
+                                Icon(imageVector = Icons.Rounded.Sort, contentDescription = null)
                             }
                             SongListView(
                                 songs = localSongViewModel.songs,

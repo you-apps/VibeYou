@@ -15,18 +15,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.RepeatOn
-import androidx.compose.material.icons.filled.RepeatOneOn
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.QueueMusic
+import androidx.compose.material.icons.rounded.Repeat
+import androidx.compose.material.icons.rounded.RepeatOn
+import androidx.compose.material.icons.rounded.RepeatOneOn
+import androidx.compose.material.icons.rounded.SkipNext
+import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -175,7 +175,7 @@ fun FullScreenPlayer(
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 showQueueSheet = true
             }) {
-                Icon(Icons.Default.QueueMusic, stringResource(R.string.show_queue))
+                Icon(Icons.Rounded.QueueMusic, stringResource(R.string.show_queue))
             }
         }
     }
@@ -228,9 +228,9 @@ fun PlayerController(
                     favouriteState = !favouriteState
                 }, enabled = !isLocal) {
                     if (favouriteState) {
-                        Icon(Icons.Default.Favorite, contentDescription = null)
+                        Icon(Icons.Rounded.Favorite, contentDescription = null)
                     } else {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+                        Icon(Icons.Rounded.FavoriteBorder, contentDescription = null)
                     }
                 }
                 ElevatedCard(
@@ -243,7 +243,7 @@ fun PlayerController(
                         view.playSoundEffect(SoundEffectConstants.CLICK)
                         playerViewModel.seekPrevious()
                     }) {
-                        Icon(Icons.Default.SkipPrevious, contentDescription = null)
+                        Icon(Icons.Rounded.SkipPrevious, contentDescription = null)
                     }
                 }
                 ElevatedCard(
@@ -268,7 +268,7 @@ fun PlayerController(
 
                             PlayerState.Play -> {
                                 Icon(
-                                    Icons.Default.Pause,
+                                    Icons.Rounded.Pause,
                                     modifier = Modifier.size(36.dp),
                                     contentDescription = stringResource(R.string.pause)
                                 )
@@ -276,7 +276,7 @@ fun PlayerController(
 
                             PlayerState.Pause -> {
                                 Icon(
-                                    Icons.Default.PlayArrow,
+                                    Icons.Rounded.PlayArrow,
                                     modifier = Modifier.size(36.dp),
                                     contentDescription = stringResource(R.string.play)
                                 )
@@ -294,7 +294,7 @@ fun PlayerController(
                         view.playSoundEffect(SoundEffectConstants.CLICK)
                         playerViewModel.seekNext()
                     }) {
-                        Icon(Icons.Default.SkipNext, contentDescription = null)
+                        Icon(Icons.Rounded.SkipNext, contentDescription = null)
                     }
                 }
                 var repeatState by remember {
@@ -309,7 +309,7 @@ fun PlayerController(
                             controller.repeatMode = repeatState.mode
                         }) {
                             Icon(
-                                Icons.Default.Repeat,
+                                Icons.Rounded.Repeat,
                                 contentDescription = stringResource(R.string.repeat_off)
                             )
                         }
@@ -322,7 +322,7 @@ fun PlayerController(
                             controller.repeatMode = repeatState.mode
                         }) {
                             Icon(
-                                Icons.Default.RepeatOn,
+                                Icons.Rounded.RepeatOn,
                                 contentDescription = stringResource(R.string.repeat_all)
                             )
                         }
@@ -335,7 +335,7 @@ fun PlayerController(
                             controller.repeatMode = repeatState.mode
                         }) {
                             Icon(
-                                Icons.Default.RepeatOneOn,
+                                Icons.Rounded.RepeatOneOn,
                                 contentDescription = stringResource(R.string.repeat_one)
                             )
                         }

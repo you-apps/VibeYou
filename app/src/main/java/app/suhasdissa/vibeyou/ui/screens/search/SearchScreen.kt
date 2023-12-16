@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.History
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -94,7 +94,7 @@ fun SearchScreen(
                         if (isPopupOpen) {
                             IconButton(onClick = { isPopupOpen = false }) {
                                 Icon(
-                                    imageVector = Icons.Default.ArrowBack,
+                                    imageVector = Icons.Rounded.ArrowBack,
                                     contentDescription = stringResource(R.string.close_search)
                                 )
                             }
@@ -113,14 +113,14 @@ fun SearchScreen(
                                 pipedSearchViewModel.search = ""
                             }) {
                                 Icon(
-                                    Icons.Default.Clear,
+                                    Icons.Rounded.Clear,
                                     contentDescription = stringResource(R.string.clear_search)
                                 )
                             }
                         } else {
                             Icon(
                                 modifier = Modifier.padding(8.dp),
-                                imageVector = Icons.Default.Search,
+                                imageVector = Icons.Rounded.Search,
                                 contentDescription = null
                             )
                         }
@@ -142,7 +142,7 @@ fun SearchScreen(
                                     headlineContent = { Text(it) },
                                     leadingContent = {
                                         Icon(
-                                            imageVector = Icons.Default.Search,
+                                            imageVector = Icons.Rounded.Search,
                                             contentDescription = null
                                         )
                                     }
@@ -159,7 +159,7 @@ fun SearchScreen(
                                     headlineContent = { Text(it) },
                                     leadingContent = {
                                         Icon(
-                                            imageVector = Icons.Default.History,
+                                            imageVector = Icons.Rounded.History,
                                             contentDescription = null
                                         )
                                     }

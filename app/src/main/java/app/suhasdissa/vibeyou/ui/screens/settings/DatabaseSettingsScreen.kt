@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Backup
-import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.rounded.Backup
+import androidx.compose.material.icons.rounded.Restore
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
@@ -66,7 +66,7 @@ fun DatabaseSettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.backup),
                     description = stringResource(R.string.backup_description),
-                    icon = Icons.Default.Backup
+                    icon = Icons.Rounded.Backup
                 ) {
                     @SuppressLint("SimpleDateFormat")
                     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
@@ -86,7 +86,7 @@ fun DatabaseSettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.restore),
                     description = stringResource(R.string.restore_description),
-                    icon = Icons.Default.Restore
+                    icon = Icons.Rounded.Restore
                 ) {
                     try {
                         restoreLauncher.launch(

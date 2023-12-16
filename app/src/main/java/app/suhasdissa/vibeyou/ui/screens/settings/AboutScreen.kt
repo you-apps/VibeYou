@@ -3,10 +3,10 @@ package app.suhasdissa.vibeyou.ui.screens.settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContactSupport
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.rounded.ContactSupport
+import androidx.compose.material.icons.rounded.Description
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.NewReleases
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,7 +47,7 @@ fun AboutScreen(
                     title = stringResource(R.string.readme),
                     description = stringResource(R.string.check_repo_and_readme),
                     onClick = { openBrowser(context, githubRepo) },
-                    icon = Icons.Default.Description
+                    icon = Icons.Rounded.Description
                 )
             }
             item {
@@ -60,7 +60,7 @@ fun AboutScreen(
                             "$githubRepo/releases/latest"
                         )
                     },
-                    icon = Icons.Default.NewReleases
+                    icon = Icons.Rounded.NewReleases
                 )
             }
             item {
@@ -73,7 +73,7 @@ fun AboutScreen(
                             "$githubRepo/issues"
                         )
                     },
-                    icon = Icons.Default.ContactSupport
+                    icon = Icons.Rounded.ContactSupport
                 )
             }
             item {
@@ -81,7 +81,7 @@ fun AboutScreen(
                     title = stringResource(R.string.current_version),
                     description = "${updateViewModel.currentVersion}",
                     onClick = {},
-                    icon = Icons.Default.Info
+                    icon = Icons.Rounded.Info
                 )
             }
         }

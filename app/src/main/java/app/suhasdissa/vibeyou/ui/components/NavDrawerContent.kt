@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.MusicNote
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -83,7 +83,7 @@ fun NavDrawerContent(
         NavigationDrawerItem(
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Settings,
+                    imageVector = Icons.Rounded.Settings,
                     contentDescription = null
                 )
             },

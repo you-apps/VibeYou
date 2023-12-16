@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Landscape
-import androidx.compose.material.icons.filled.SettingsBackupRestore
-import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.Web
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.rounded.Landscape
+import androidx.compose.material.icons.rounded.SettingsBackupRestore
+import androidx.compose.material.icons.rounded.Storage
+import androidx.compose.material.icons.rounded.Web
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,7 +59,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.backup_restore),
                     description = stringResource(R.string.backup_restore_setting_description),
                     onClick = { onNavigate(Destination.DatabaseSettings.route) },
-                    icon = Icons.Default.SettingsBackupRestore
+                    icon = Icons.Rounded.SettingsBackupRestore
                 )
             }
             item {
@@ -67,7 +67,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.network_settings),
                     description = stringResource(R.string.network_settings_description),
                     onClick = { onNavigate(Destination.NetworkSettings.route) },
-                    icon = Icons.Default.Web
+                    icon = Icons.Rounded.Web
                 )
             }
             item {
@@ -75,7 +75,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.appearance_settings),
                     description = stringResource(R.string.appearance_settings_description),
                     onClick = { onNavigate(Destination.AppearanceSettings.route) },
-                    icon = Icons.Default.Landscape
+                    icon = Icons.Rounded.Landscape
                 )
             }
             item {
@@ -85,7 +85,7 @@ fun SettingsScreen(
                     onClick = {
                         showImageCacheDialog = true
                     },
-                    icon = Icons.Default.Storage
+                    icon = Icons.Rounded.Storage
                 )
             }
             /*
@@ -94,7 +94,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.login_to_piped),
                     description = stringResource(R.string.login_to_piped_description),
                     onClick = { showLoginDialog = true },
-                    icon = Icons.Default.AccountCircle
+                    icon = Icons.Rounded.AccountCircle
                 )
             }
              */

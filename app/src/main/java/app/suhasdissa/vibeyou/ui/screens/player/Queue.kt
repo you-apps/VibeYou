@@ -9,7 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -81,7 +81,7 @@ fun Queue(
                             queueItems = queueItems.toMutableList().apply { remove(queue) }
                         }) {
                             Icon(
-                                Icons.Default.Clear,
+                                Icons.Rounded.Clear,
                                 stringResource(R.string.remove_item_from_queue)
                             )
                         }

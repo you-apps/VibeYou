@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -37,7 +37,7 @@ fun SongsScreen(
             playerViewModel.playSongs(songs)
         }) {
             Icon(
-                imageVector = Icons.Default.Shuffle,
+                imageVector = Icons.Rounded.Shuffle,
                 contentDescription = stringResource(R.string.shuffle)
             )
         }

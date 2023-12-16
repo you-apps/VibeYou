@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -108,14 +108,14 @@ fun MiniPlayer(
 
                     PlayerState.Play -> {
                         Icon(
-                            Icons.Default.Pause,
+                            Icons.Rounded.Pause,
                             contentDescription = stringResource(R.string.pause)
                         )
                     }
 
                     PlayerState.Pause -> {
                         Icon(
-                            Icons.Default.PlayArrow,
+                            Icons.Rounded.PlayArrow,
                             contentDescription = stringResource(R.string.play)
                         )
                     }
@@ -126,7 +126,7 @@ fun MiniPlayer(
                 playerViewModel.seekNext()
             }) {
                 Icon(
-                    Icons.Default.SkipNext,
+                    Icons.Rounded.SkipNext,
                     contentDescription = stringResource(R.string.skip_next)
                 )
             }

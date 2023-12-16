@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -202,7 +202,7 @@ private fun SongCardCompactPreview() {
         artist = "Artist Name",
         TrailingContent = {
             IconButton(onClick = { /*TODO*/ }) {
-                Icons.Default.PlayArrow
+                Icons.Rounded.PlayArrow
             }
         },
         onClickVideoCard = {}

@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.filled.QueuePlayNext
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.QueueMusic
+import androidx.compose.material.icons.rounded.QueuePlayNext
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -114,9 +114,9 @@ fun SongSettingsSheet(
                         favouriteState = !favouriteState
                     }) {
                         if (favouriteState) {
-                            Icon(Icons.Default.Favorite, contentDescription = null)
+                            Icon(Icons.Rounded.Favorite, contentDescription = null)
                         } else {
-                            Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+                            Icon(Icons.Rounded.FavoriteBorder, contentDescription = null)
                         }
                     }
                 }
@@ -124,7 +124,7 @@ fun SongSettingsSheet(
         }
         Column(Modifier.padding(vertical = 16.dp)) {
             SheetSettingItem(
-                icon = Icons.Default.PlayArrow,
+                icon = Icons.Rounded.PlayArrow,
                 description = R.string.play_song,
                 onClick = {
                     playerViewModel.playSong(song)
@@ -132,7 +132,7 @@ fun SongSettingsSheet(
                 }
             )
             SheetSettingItem(
-                icon = Icons.Default.QueuePlayNext,
+                icon = Icons.Rounded.QueuePlayNext,
                 description = R.string.play_next,
                 onClick = {
                     playerViewModel.playNext(song)
@@ -140,7 +140,7 @@ fun SongSettingsSheet(
                 }
             )
             SheetSettingItem(
-                icon = Icons.Default.QueueMusic,
+                icon = Icons.Rounded.QueueMusic,
                 description = R.string.enqueue_song,
                 onClick = {
                     playerViewModel.enqueueSong(song)
@@ -149,7 +149,7 @@ fun SongSettingsSheet(
             )
             if (!song.isLocal) {
                 SheetSettingItem(
-                    icon = Icons.Default.Delete,
+                    icon = Icons.Rounded.Delete,
                     description = R.string.delete_song,
                     onClick = {
                         songViewModel.removeSong(song)
@@ -216,7 +216,7 @@ fun SongSettingsSheetSearchPage(
         }
         Column(Modifier.padding(vertical = 16.dp)) {
             SheetSettingItem(
-                icon = Icons.Default.PlayArrow,
+                icon = Icons.Rounded.PlayArrow,
                 description = R.string.play_song,
                 onClick = {
                     playerViewModel.playSong(song)
@@ -227,7 +227,7 @@ fun SongSettingsSheetSearchPage(
                 }
             )
             SheetSettingItem(
-                icon = Icons.Default.QueuePlayNext,
+                icon = Icons.Rounded.QueuePlayNext,
                 description = R.string.play_next,
                 onClick = {
                     playerViewModel.playNext(song)
@@ -238,7 +238,7 @@ fun SongSettingsSheetSearchPage(
                 }
             )
             SheetSettingItem(
-                icon = Icons.Default.QueueMusic,
+                icon = Icons.Rounded.QueueMusic,
                 description = R.string.enqueue_song,
                 onClick = {
                     playerViewModel.enqueueSong(song)
