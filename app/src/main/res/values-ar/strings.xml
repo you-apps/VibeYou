@@ -79,4 +79,5 @@
     <string name="api_url">عنوان بروتكول الخدمة</string>
     <string name="image_proxy_url">عنوان الوكيل الخاص بالصورة</string>
     <string name="custom_instance">مثيلات مخصصة</string>
+    <string name="playlists">قوائم التشغيل</string>
 </resources>

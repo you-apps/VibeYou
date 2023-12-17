@@ -75,4 +75,9 @@
     <string name="add_to_library">添加到曲库</string>
     <string name="added_all_the_songs_to_the_library">已将所有歌曲加入曲库</string>
     <string name="clear_queue">清除队列</string>
+    <string name="invalid_url">无效 URL</string>
+    <string name="api_url">API 地址</string>
+    <string name="image_proxy_url">图像代理地址</string>
+    <string name="custom_instance">自定义实例</string>
+    <string name="playlists">播放列表</string>
 </resources>

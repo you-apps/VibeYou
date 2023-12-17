@@ -79,4 +79,5 @@
     <string name="api_url">URL del API</string>
     <string name="image_proxy_url">URL del proxy de imagine</string>
     <string name="custom_instance">Instantia personalisate</string>
+    <string name="playlists">Listas de reproduction</string>
 </resources>

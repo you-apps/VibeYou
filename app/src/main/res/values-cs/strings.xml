@@ -79,4 +79,5 @@
     <string name="api_url">URL API</string>
     <string name="image_proxy_url">URL proxy obrázků</string>
     <string name="custom_instance">Vlastní instance</string>
+    <string name="playlists">Playlisty</string>
 </resources>

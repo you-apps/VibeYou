@@ -35,7 +35,7 @@
     <string name="piped_music">Piped Music</string>
     <string name="network_settings_description">Zmiana serwera w celu naprawienia problemów z odtwarzaniem</string>
     <string name="clear_search">Wyczyść Wyszukiwanie</string>
-    <string name="fallback_thumnail_accent_description">Powrót do używania koloru akcentu systemowego/tematycznego jako miniatury powiadomienia, jeśli go nie ma.</string>
+    <string name="fallback_thumnail_accent_description">Wróć do używania koloru akcentującego system/motyw jako miniatury powiadomienia, jeśli go nie ma.</string>
     <string name="settings">Ustawienia</string>
     <string name="play">Odtwórz</string>
     <string name="enqueue_song">Dodaj do Kolejki</string>
@@ -44,4 +44,12 @@
     <string name="backup_restore_setting_description">Utwórz kopię zapasową listy utworów lub przywróć starą kopię zapasową.</string>
     <string name="search_songs">Wyszukiwanie utworów</string>
     <string name="about_title">O aplikacji</string>
+    <string name="sort_order">Kolejność sortowania</string>
+    <string name="unlimited">Bez limitu</string>
+    <string name="playback_speed">Prędkość odtwarzania</string>
+    <string name="fallback_thumnail_accent">Zastępcza miniatura powiadomienia</string>
+    <string name="cancel">Anuluj</string>
+    <string name="appearance_settings_description">Dostosuj wygląd do swoich potrzeb.</string>
+    <string name="appearance_settings">Ustawienia Wyglądu</string>
+    <string name="play_all">Odtwórz wszystkie</string>
 </resources>
