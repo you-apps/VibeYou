@@ -80,4 +80,7 @@
     <string name="image_proxy_url">URL del proxy de imagine</string>
     <string name="custom_instance">Instantia personalisate</string>
     <string name="playlists">Listas de reproduction</string>
+    <string name="delete_playlist">Deler lista de reproduction</string>
+    <string name="delete_playlist_and_songs">Deler lista de reproduction e cantos</string>
+    <string name="clear_playlist">Rader lista de reproduction</string>
 </resources>
