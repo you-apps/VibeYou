@@ -79,4 +79,8 @@
     <string name="api_url">URL адреса API-ја</string>
     <string name="image_proxy_url">URL адреса проксија слике</string>
     <string name="custom_instance">Прилагођена инстанца</string>
+    <string name="delete_playlist">Избриши плејлисту</string>
+    <string name="playlists">Плејлисте</string>
+    <string name="delete_playlist_and_songs">Избриши плејлисту и песме</string>
+    <string name="clear_playlist">Очисти плејлисту</string>
 </resources>
