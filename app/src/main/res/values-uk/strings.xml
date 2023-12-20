@@ -52,7 +52,7 @@
     <string name="shuffle">Перемішати</string>
     <string name="check_repo_and_readme">Перевірте репозиторій та README</string>
     <string name="select_server">Оберіть сервер</string>
-    <string name="now_playing">Грає зараз</string>
+    <string name="now_playing">Зараз грає</string>
     <string name="songs">Пісні</string>
     <string name="appearance_settings">Налаштування вигляду</string>
     <string name="change_music_cache_size">Змінити розмір кешу музики</string>
@@ -75,4 +75,12 @@
     <string name="play_next">Відтворити наступним</string>
     <string name="play_all">Відтворити усе</string>
     <string name="clear_queue">Очистити чергу</string>
+    <string name="invalid_url">Недійсне посилання</string>
+    <string name="delete_playlist">Видалити список відтворення</string>
+    <string name="api_url">Посилання на Api</string>
+    <string name="playlists">Списки відтворення</string>
+    <string name="delete_playlist_and_songs">Видали список та всі пісні</string>
+    <string name="image_proxy_url">Посилання на проксі зображень</string>
+    <string name="custom_instance">Власний сервер</string>
+    <string name="clear_playlist">Очистити список відтворення</string>
 </resources>
