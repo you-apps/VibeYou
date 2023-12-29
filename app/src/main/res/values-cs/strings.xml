@@ -80,4 +80,7 @@
     <string name="image_proxy_url">URL proxy obrázků</string>
     <string name="custom_instance">Vlastní instance</string>
     <string name="playlists">Playlisty</string>
+    <string name="delete_playlist">Odstranit playlist</string>
+    <string name="delete_playlist_and_songs">Odstranit playlist a skladby</string>
+    <string name="clear_playlist">Vymazat playlist</string>
 </resources>

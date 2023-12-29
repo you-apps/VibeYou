@@ -80,4 +80,7 @@
     <string name="image_proxy_url">عنوان الوكيل الخاص بالصورة</string>
     <string name="custom_instance">مثيلات مخصصة</string>
     <string name="playlists">قوائم التشغيل</string>
+    <string name="delete_playlist">حذف قائمة التشغيل</string>
+    <string name="delete_playlist_and_songs">حذف قائمة التشغيل والأغاني</string>
+    <string name="clear_playlist">مسح قائمة التشغيل</string>
 </resources>

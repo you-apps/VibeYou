@@ -74,10 +74,13 @@
     <string name="add_all_songs_to_the_library">Добавить все песни в библиотеку</string>
     <string name="add_to_library">Добавить в библиотеку</string>
     <string name="added_all_the_songs_to_the_library">Все песни были добавлены в библиотеку</string>
-    <string name="clear_queue">Очистить очередь</string>
+    <string name="clear_queue">Опустошить очередь</string>
     <string name="invalid_url">Недействительная ссылка</string>
     <string name="api_url">Ссылка на API</string>
     <string name="image_proxy_url">Ссылка на прокси изображений</string>
     <string name="custom_instance">Свой сервер</string>
     <string name="playlists">Плейлисты</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_playlist_and_songs">Удалить плейлист и его содержимое</string>
+    <string name="clear_playlist">Опустошить плейлист</string>
 </resources>

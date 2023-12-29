@@ -79,4 +79,8 @@
     <string name="appearance_settings">Paramètres d\'apparence</string>
     <string name="fallback_thumnail_accent_description">Revenir à l\'utilisation de la couleur d\'accentuation du système/thème comme vignette de notification s\'il n\'y en a pas.</string>
     <string name="play_all">Jouer tout</string>
+    <string name="delete_playlist">Supprimer une liste de lecture</string>
+    <string name="pitch">Intensité</string>
+    <string name="delete_playlist_and_songs">Supprimer une liste de lecture et les chansons</string>
+    <string name="clear_playlist">Effacer la liste de lecture</string>
 </resources>

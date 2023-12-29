@@ -80,4 +80,7 @@
     <string name="image_proxy_url">图像代理地址</string>
     <string name="custom_instance">自定义实例</string>
     <string name="playlists">播放列表</string>
+    <string name="delete_playlist">删除播放列表</string>
+    <string name="delete_playlist_and_songs">删除播放列表与其中的歌曲</string>
+    <string name="clear_playlist">清空播放列表</string>
 </resources>
