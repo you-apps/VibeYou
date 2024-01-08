@@ -14,6 +14,7 @@ object Pref {
     const val latestSongsSortOrderKey = "LatestSongsSortOrderKey"
     const val latestReverseSongsPrefKey = "LatestReverseSongsPrefKey"
     const val customPipedInstanceKey = "CustomPipedInstanceKey"
+    const val disableSearchHistoryKey = "DisableSearchHistory"
 
     lateinit var sharedPreferences: SharedPreferences
 

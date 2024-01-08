@@ -1,6 +1,7 @@
 package app.suhasdissa.vibeyou.ui.screens.settings
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,14 +17,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.viewmodel.DatabaseViewModel
 import app.suhasdissa.vibeyou.ui.components.SettingItem
+import app.suhasdissa.vibeyou.utils.Pref
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -62,6 +68,20 @@ fun DatabaseSettingsScreen(
                 .padding(innerPadding)
                 .nestedScroll(topBarBehavior.nestedScrollConnection)
         ) {
+            item {
+                val scope = rememberCoroutineScope()
+
+                SwitchPref(
+                    prefKey = Pref.disableSearchHistoryKey,
+                    title = stringResource(R.string.disable_search_history)
+                ) { newValue ->
+                    if (newValue) scope.launch(Dispatchers.IO) {
+                        val app = ((context as Activity).application as MellowMusicApplication)
+                        app.container.database.searchDao().deleteAll()
+                    }
+                }
+            }
+
             item {
                 SettingItem(
                     title = stringResource(R.string.backup),
