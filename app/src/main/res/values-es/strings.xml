@@ -80,4 +80,7 @@
     <string name="image_proxy_url">Dirección URL del proxy de la imagen</string>
     <string name="custom_instance">Ejemplo personalizado</string>
     <string name="playlists">Listas de reproducción</string>
+    <string name="delete_playlist">Borrar lista de reproducción</string>
+    <string name="delete_playlist_and_songs">Borrar lista de reproducción y canciones</string>
+    <string name="clear_playlist">Borrar lista de reproducción</string>
 </resources>
