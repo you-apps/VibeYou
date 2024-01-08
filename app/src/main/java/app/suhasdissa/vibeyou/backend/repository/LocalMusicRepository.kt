@@ -13,6 +13,7 @@ import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.backend.database.dao.SearchDao
 import app.suhasdissa.vibeyou.backend.database.entities.SearchQuery
+import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -269,7 +270,11 @@ class LocalMusicRepository(
         return ContentUris.withAppendedId(sArtworkUri, albumId)
     }
 
-    fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    fun saveSearchQuery(query: String) {
+        if (Pref.sharedPreferences.getBoolean(Pref.disableSearchHistoryKey, false)) return
+
+        searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    }
     fun getSearchHistory() = searchDao.getSearchHistory()
 
     companion object {

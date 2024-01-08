@@ -13,6 +13,7 @@ import app.suhasdissa.vibeyou.backend.models.SearchFilter
 import app.suhasdissa.vibeyou.backend.models.artists.Channel
 import app.suhasdissa.vibeyou.backend.models.artists.ChannelTab
 import app.suhasdissa.vibeyou.backend.models.playlists.PlaylistInfo
+import app.suhasdissa.vibeyou.utils.Pref
 import app.suhasdissa.vibeyou.utils.RetrofitHelper
 import app.suhasdissa.vibeyou.utils.asAlbum
 import app.suhasdissa.vibeyou.utils.asArtist
@@ -111,6 +112,10 @@ class PipedMusicRepository(
     fun searchLocalSong(query: String): List<Song> =
         songsDao.search(query).map { it.asSong }
 
-    fun saveSearchQuery(query: String) = searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    fun saveSearchQuery(query: String) {
+        if (Pref.sharedPreferences.getBoolean(Pref.disableSearchHistoryKey, false)) return
+
+        searchDao.addSearchQuery(SearchQuery(id = 0, query))
+    }
     fun getSearchHistory() = searchDao.getSearchHistory()
 }
