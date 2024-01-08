@@ -128,7 +128,11 @@ fun LocalSearchScreen(
                         localSearchViewModel.setSearchHistory()
                     }
                     val scroll = rememberScrollState()
-                    Column(Modifier.verticalScroll(scroll).padding(horizontal = 8.dp)) {
+                    Column(
+                        Modifier
+                            .verticalScroll(scroll)
+                            .padding(horizontal = 8.dp)
+                    ) {
                         if (localSearchViewModel.songSearchSuggestion.isNotEmpty()) {
                             Text(
                                 text = stringResource(R.string.songs),
@@ -180,7 +184,7 @@ fun LocalSearchScreen(
 
                     is SearchState.Error -> {
                         IllustratedMessageScreen(
-                            image = R.drawable.sad_mellow,
+                            image = R.drawable.ic_launcher_monochrome,
                             message = R.string.something_went_wrong
                         )
                     }

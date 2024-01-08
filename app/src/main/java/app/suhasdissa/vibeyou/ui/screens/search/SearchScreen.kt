@@ -130,7 +130,11 @@ fun SearchScreen(
                         pipedSearchViewModel.setSearchHistory()
                     }
                     val scroll = rememberScrollState()
-                    Column(Modifier.verticalScroll(scroll).padding(horizontal = 8.dp)) {
+                    Column(
+                        Modifier
+                            .verticalScroll(scroll)
+                            .padding(horizontal = 8.dp)
+                    ) {
                         if (pipedSearchViewModel.suggestions.isNotEmpty()) {
                             pipedSearchViewModel.suggestions.forEach {
                                 ListItem(
@@ -201,7 +205,7 @@ fun SearchScreen(
 
                     is SearchState.Error -> {
                         IllustratedMessageScreen(
-                            image = R.drawable.sad_mellow,
+                            image = R.drawable.ic_launcher_monochrome,
                             message = R.string.something_went_wrong,
                             action = {
                                 TextButton(

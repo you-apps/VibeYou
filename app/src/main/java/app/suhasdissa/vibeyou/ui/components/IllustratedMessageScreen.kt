@@ -55,13 +55,13 @@ fun IllustratedMessageScreen(
                 modifier = Modifier.size(350.dp),
                 painter = painterResource(id = R.drawable.blob),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.errorContainer)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondaryContainer)
             )
             Image(
                 modifier = Modifier.size(250.dp),
                 painter = painterResource(id = image),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onErrorContainer)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer)
             )
         }
         action()
@@ -72,7 +72,7 @@ fun IllustratedMessageScreen(
 @Preview(showBackground = true)
 private fun IllustratedMsgScreenPreview() {
     IllustratedMessageScreen(
-        image = R.drawable.sad_mellow,
+        image = R.drawable.ic_launcher_monochrome,
         message = R.string.something_went_wrong
     )
 }

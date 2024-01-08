@@ -36,7 +36,7 @@ fun ArtistScreen(
     }) {
         when (state) {
             ArtistInfoState.Error -> IllustratedMessageScreen(
-                image = R.drawable.sad_mellow,
+                image = R.drawable.ic_launcher_monochrome,
                 message = R.string.something_went_wrong
             )
 

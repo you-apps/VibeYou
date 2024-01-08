@@ -58,7 +58,7 @@ fun AlbumScreen(
     MiniPlayerScaffold {
         when (state) {
             AlbumInfoState.Error -> IllustratedMessageScreen(
-                image = R.drawable.sad_mellow,
+                image = R.drawable.ic_launcher_monochrome,
                 message = R.string.something_went_wrong
             )
 
@@ -74,7 +74,10 @@ fun AlbumScreen(
                 ) {
                     item {
                         Column(
-                            Modifier.fillMaxWidth().padding(8.dp).padding(bottom = 8.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .padding(bottom = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -89,7 +92,11 @@ fun AlbumScreen(
                                 contentScale = ContentScale.Crop,
                                 error = painterResource(id = R.drawable.music_placeholder)
                             )
-                            Column(Modifier.fillMaxWidth().padding(8.dp)) {
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                            ) {
                                 Text(
                                     text = state.album.title,
                                     style = MaterialTheme.typography.titleLarge

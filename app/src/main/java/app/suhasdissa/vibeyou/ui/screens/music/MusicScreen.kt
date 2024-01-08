@@ -18,10 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.Destination
 import app.suhasdissa.vibeyou.R
-import app.suhasdissa.vibeyou.backend.viewmodel.PlaylistViewModel
 import app.suhasdissa.vibeyou.ui.screens.playlists.PlaylistsScreen
 import app.suhasdissa.vibeyou.ui.screens.songs.SongsScreen
 import kotlinx.coroutines.launch
@@ -29,8 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicScreen(
-    onNavigate: (Destination) -> Unit,
-    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory)
+    onNavigate: (Destination) -> Unit
 ) {
     val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
