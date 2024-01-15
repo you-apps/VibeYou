@@ -83,4 +83,5 @@
     <string name="delete_playlist">删除播放列表</string>
     <string name="delete_playlist_and_songs">删除播放列表与其中的歌曲</string>
     <string name="clear_playlist">清空播放列表</string>
+    <string name="disable_search_history">禁用搜索历史</string>
 </resources>
