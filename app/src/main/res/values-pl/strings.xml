@@ -83,4 +83,5 @@
     <string name="reversed">Odwróć kolejność</string>
     <string name="clear_queue">Wyczyść kolejkę</string>
     <string name="api_url">Adres URL API</string>
+    <string name="disable_search_history">Wyłącz historię wyszukiwania</string>
 </resources>
