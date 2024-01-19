@@ -275,6 +275,7 @@ class LocalMusicRepository(
 
         searchDao.addSearchQuery(SearchQuery(id = 0, query))
     }
+    fun deleteQuery(query: String) = searchDao.deleteQuery(query)
     fun getSearchHistory() = searchDao.getSearchHistory()
 
     companion object {
