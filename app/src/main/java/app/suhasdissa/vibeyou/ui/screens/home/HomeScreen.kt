@@ -89,7 +89,9 @@ fun HomeScreen(
         }
     ) {
         MiniPlayerScaffold(topBar = {
-            CenterAlignedTopAppBar(navigationIcon = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
                     scope.launch {
@@ -101,10 +103,11 @@ fun HomeScreen(
                         contentDescription = "Open Navigation Drawer"
                     )
                 }
-            }, title = {
                 Card(
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
+                        .padding(end = 8.dp)
                         .clickable {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
                             if (currentDestination == Destination.PipedMusic) {
@@ -113,11 +116,13 @@ fun HomeScreen(
                                 onNavigate(Destination.LocalSearch)
                             }
                         },
-                    shape = RoundedCornerShape(50)
+                    shape = RoundedCornerShape(40)
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(vertical = 2.dp)
+                            .padding(end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
@@ -125,10 +130,7 @@ fun HomeScreen(
                             painter = painterResource(id = R.drawable.ic_launcher_foreground),
                             contentDescription = null
                         )
-                        Text(
-                            stringResource(id = R.string.app_name),
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        Text(stringResource(R.string.search_songs))
                         Spacer(Modifier.weight(1f))
                         Icon(
                             modifier = Modifier.padding(8.dp),
@@ -137,7 +139,7 @@ fun HomeScreen(
                         )
                     }
                 }
-            })
+            }
         }) {
             val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
             NavHost(
