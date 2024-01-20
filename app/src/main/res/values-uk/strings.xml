@@ -83,4 +83,5 @@
     <string name="image_proxy_url">Посилання на проксі зображень</string>
     <string name="custom_instance">Власний сервер</string>
     <string name="clear_playlist">Очистити список відтворення</string>
+    <string name="disable_search_history">Вимкнути історію пошуку</string>
 </resources>
