@@ -126,6 +126,12 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
         }
     }
 
+    fun deleteFromHistory(query: String) {
+        musicRepository.deleteQuery(query)
+
+        history = history.minus(query)
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
