@@ -41,7 +41,7 @@
     <string name="search_for_a_song">Procure uma música</string>
     <string name="albums">Álbuns</string>
     <string name="backup">Banco de dados de backup</string>
-    <string name="fallback_thumnail_accent">Notificação de miniaturas</string>
+    <string name="fallback_thumnail_accent">Miniatura de notificação</string>
     <string name="artist">Artista</string>
     <string name="player_queue">Tocar fila</string>
     <string name="song_options">Opções da música</string>
@@ -56,18 +56,18 @@
     <string name="now_playing">Tocando agora</string>
     <string name="songs">Músicas</string>
     <string name="appearance_settings">Configurações de aparência</string>
-    <string name="change_music_cache_size">Alterar tamanho de cache de música</string>
+    <string name="change_music_cache_size">Alterar o tamanho do cache de música</string>
     <string name="login">Entrar</string>
     <string name="piped_music">Música canalizada</string>
     <string name="network_settings_description">Alterar servidor para corrigir problemas de reprodução</string>
     <string name="clear_search">Limpar Pesquisa</string>
-    <string name="fallback_thumnail_accent_description">Volte a usar a cor de destaque do sistema/tema como uma miniatura de notificação se não houver nenhuma.</string>
+    <string name="fallback_thumnail_accent_description">Volte a usar a cor de destaque do sistema/tema como uma miniatura de notificação, se não houver nenhuma.</string>
     <string name="settings">Configurações</string>
     <string name="play">Tocar</string>
     <string name="repeat_off">Repetir desativado</string>
     <string name="local_music">Música local</string>
     <string name="enqueue_song">Adicionar à fila</string>
-    <string name="github_issue">GitHub Issue</string>
+    <string name="github_issue">Relatar problemas no GitHub</string>
     <string name="added_all_the_songs_to_the_library">Adicionadas todas as músicas à biblioteca</string>
     <string name="backup_restore_setting_description">Faça backup da sua lista de músicas ou restaure um backup antigo.</string>
     <string name="close_search">Fechar pesquisa</string>
@@ -75,4 +75,13 @@
     <string name="about_title">Sobre</string>
     <string name="play_next">Tocar a próxima</string>
     <string name="play_all">Tocar tudo</string>
+    <string name="playlists">Listas de reprodução</string>
+    <string name="custom_instance">Instância personalizada</string>
+    <string name="api_url">Url da Api</string>
+    <string name="image_proxy_url">Url do proxy de imagem</string>
+    <string name="clear_playlist">Limpar lista de reprodução</string>
+    <string name="invalid_url">Url inválida</string>
+    <string name="disable_search_history">Desativar histórico de pesquisa</string>
+    <string name="delete_playlist">Excluir lista de reprodução</string>
+    <string name="delete_playlist_and_songs">Excluir lista de reprodução e músicas</string>
 </resources>

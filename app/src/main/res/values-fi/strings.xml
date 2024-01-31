@@ -52,4 +52,18 @@
     <string name="about_title">Tietoja</string>
     <string name="play_next">Toista seuraava</string>
     <string name="sort_order">Lajittelujärjestys</string>
+    <string name="playlists">Soittolistat</string>
+    <string name="delete_playlist_and_songs">Poista soittolista ja kappaleet</string>
+    <string name="clear_playlist">Tyhjennä soittolista</string>
+    <string name="delete_playlist">Poista soittolista</string>
+    <string name="play_all">Toista kaikki</string>
+    <string name="reversed">Käänteinen</string>
+    <string name="cancel">Peruuta</string>
+    <string name="appearance_settings">Ulkoasun asetukset</string>
+    <string name="appearance_settings_description">Mukauta ulkoasua vastaamaan tarpeitasi.</string>
+    <string name="disable_search_history">Poista hakuhistoria käytöstä</string>
+    <string name="add_to_library">Lisää kirjastoon</string>
+    <string name="added_all_the_songs_to_the_library">Kaikki kappaleet lisättiin kirjastoon</string>
+    <string name="add_all_songs_to_the_library">Lisää kaikki kappaleet kirjastoon</string>
+    <string name="clear_queue">Tyhjennä jono</string>
 </resources>
