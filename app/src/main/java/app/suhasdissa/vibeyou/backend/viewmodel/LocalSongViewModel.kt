@@ -32,6 +32,7 @@ class LocalSongViewModel(private val musicRepository: LocalMusicRepository) : Vi
         viewModelScope.launch {
             try {
                 songs = musicRepository.getAllSongs()
+                updateSongsSortOrder()
             } catch (e: Exception) {
                 Log.e("Get All Songs", e.message, e)
             }
