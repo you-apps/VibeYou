@@ -82,4 +82,6 @@
     <string name="api_url">URL delle API</string>
     <string name="image_proxy_url">URL proxy delle immagini</string>
     <string name="delete_playlist">Rimuovi playlist</string>
+    <string name="pitch">Tono</string>
+    <string name="fallback_thumnail_accent_description">Torna all\'utilizzo del colore di accento del sistema/tema come miniatura di notifica se non ce n\'è uno.</string>
 </resources>
