@@ -83,4 +83,5 @@
     <string name="pitch">Intensité</string>
     <string name="delete_playlist_and_songs">Supprimer une liste de lecture et les chansons</string>
     <string name="clear_playlist">Effacer la liste de lecture</string>
+    <string name="disable_search_history">Désactiver l\'historique de recherche</string>
 </resources>
