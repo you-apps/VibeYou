@@ -47,7 +47,8 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID,
             MediaStore.Audio.Media.DATE_MODIFIED,
-            MediaStore.Audio.Media.DATE_ADDED
+            MediaStore.Audio.Media.DATE_ADDED,
+            MediaStore.Audio.Media.CD_TRACK_NUMBER
         )
 
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
@@ -73,6 +74,7 @@ class LocalMusicRepository(
                 MediaStore.Audio.Media.DATE_MODIFIED
             )
             val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
+            val trackNumberColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.CD_TRACK_NUMBER)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -108,7 +110,8 @@ class LocalMusicRepository(
                         artistId = cursor.getLong(artistIdColumn),
                         isLocal = true,
                         creationDate = cursor.getLong(creationDateColumn),
-                        dateAdded = cursor.getLong(dateAddedColumn)
+                        dateAdded = cursor.getLong(dateAddedColumn),
+                        trackNumber = cursor.getLong(trackNumberColumn)
                     )
                 )
             }
@@ -258,6 +261,7 @@ class LocalMusicRepository(
     suspend fun getAlbumInfo(albumId: Long): List<Song> {
         return getAllSongs()
             .filter { it.albumId == albumId }
+            .sortedBy { it.trackNumber }
     }
 
     suspend fun getArtistInfo(artistText: String): List<Album> {

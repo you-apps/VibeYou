@@ -13,7 +13,8 @@ data class Song(
     val artistId: Long? = null,
     val isLocal: Boolean = false,
     val creationDate: Long? = null,
-    val dateAdded: Long? = null
+    val dateAdded: Long? = null,
+    val trackNumber: Long? = null
 ) {
     fun toggleLike(): Song {
         return copy(
