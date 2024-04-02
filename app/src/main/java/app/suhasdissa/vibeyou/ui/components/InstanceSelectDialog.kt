@@ -64,13 +64,13 @@ fun InstanceSelectDialog(
                         Row(
                             Modifier
                                 .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
                                 .clickable(onClick = {
                                     view.playSoundEffect(SoundEffectConstants.CLICK)
                                     selectedInstance = item
                                     onSelectionChange(item)
                                     onDismissRequest.invoke()
                                 })
-                                .clip(RoundedCornerShape(20.dp))
                                 .padding(horizontal = 6.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
