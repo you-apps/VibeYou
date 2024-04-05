@@ -67,6 +67,14 @@ fun NetworkSettingsScreen() {
                     currentServer = it
                 }
             }
+
+            item {
+                TextFieldPref(
+                    key = Pref.hyperpipeApiUrlKey,
+                    defaultValue = "https://hyperpipeapi.onrender.com",
+                    title = stringResource(id = R.string.hyperpipe_api_url)
+                )
+            }
         }
     }
     if (showDialog) {

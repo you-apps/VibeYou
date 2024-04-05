@@ -10,6 +10,7 @@ import android.graphics.Rect
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
 import android.os.Handler
+import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.AudioAttributes
@@ -41,6 +42,7 @@ import androidx.media3.session.MediaSessionService
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.utils.DynamicDataSource
 import app.suhasdissa.vibeyou.utils.Pref
+import app.suhasdissa.vibeyou.utils.enqueue
 import coil.ImageLoader
 import coil.request.ErrorResult
 import coil.request.ImageRequest
@@ -52,6 +54,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
     private var mediaSession: MediaSession? = null
@@ -218,12 +221,27 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 val url = runBlocking {
                     container.pipedMusicRepository.getAudioSource(videoId)
                 }
+                appendToQueue(videoId)
                 url?.let {
                     dataSpec.withUri(it).subrange(dataSpec.uriPositionOffset, chunkLength)
                 } ?: error("Stream not found")
             }
         }
         return DynamicDataSource.Companion.Factory(resolvingDataSource, defaultDataSource)
+    }
+
+    private fun appendToQueue(videoId: String) = CoroutineScope(Dispatchers.Main).launch {
+        // enough other videos left in the queue
+        if (player.mediaItemCount - player.currentMediaItemIndex > 5) return@launch
+
+        try {
+            val nextSongs = withContext(Dispatchers.IO) {
+                container.pipedMusicRepository.getRecommendedSongs(videoId)
+            }
+            player.addMediaItems(nextSongs.take(3))
+        } catch (e: Exception) {
+            Log.e("hyperpipe: error fetching next", e.stackTrace.contentToString())
+        }
     }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)

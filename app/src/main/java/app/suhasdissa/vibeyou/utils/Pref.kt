@@ -15,6 +15,7 @@ object Pref {
     const val latestReverseSongsPrefKey = "LatestReverseSongsPrefKey"
     const val customPipedInstanceKey = "CustomPipedInstanceKey"
     const val disableSearchHistoryKey = "DisableSearchHistory"
+    const val hyperpipeApiUrlKey = "HyperpipeApiUrl"
 
     lateinit var sharedPreferences: SharedPreferences
 

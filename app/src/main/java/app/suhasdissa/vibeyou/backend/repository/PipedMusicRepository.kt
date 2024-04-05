@@ -3,6 +3,7 @@ package app.suhasdissa.vibeyou.backend.repository
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
+import androidx.media3.common.MediaItem
 import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
@@ -17,6 +18,7 @@ import app.suhasdissa.vibeyou.utils.Pref
 import app.suhasdissa.vibeyou.utils.RetrofitHelper
 import app.suhasdissa.vibeyou.utils.asAlbum
 import app.suhasdissa.vibeyou.utils.asArtist
+import app.suhasdissa.vibeyou.utils.asMediaItem
 import app.suhasdissa.vibeyou.utils.asSong
 import app.suhasdissa.vibeyou.utils.asSongEntity
 
@@ -25,6 +27,7 @@ class PipedMusicRepository(
     private val searchDao: SearchDao
 ) {
     var pipedApi = RetrofitHelper.createPipedApi()
+    private val hyperApi = RetrofitHelper.createHyperpipeApi()
 
     suspend fun getAudioSource(id: String): Uri? {
         return runCatching { pipedApi.getStreams(vidId = id) }
@@ -34,15 +37,12 @@ class PipedMusicRepository(
             ?.url
             ?.toUri()
     }
-//
-//    suspend fun getRecommendedSongs(id: String): List<MediaItem> {
-//        val relatedSongs =
-//            pipedApi.getStreams(vidId = id).relatedStreams.slice(0..1).map {
-//                it.asSong
-//            }
-//        songsDao.addSongs(relatedSongs)
-//        return relatedSongs.map { it.asMediaItem }
-//    }
+
+    suspend fun getRecommendedSongs(id: String): List<MediaItem> {
+        val relatedSongs = hyperApi.getNext(videoId = id).songs
+        songsDao.addSongs(relatedSongs.map { it.asSongEntity })
+        return relatedSongs.map { it.asSong.asMediaItem }
+    }
 
     suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo =
         pipedApi.getPlaylistInfo(playlistId = playlistId)
