@@ -37,10 +37,11 @@ fun Player.forcePlay(mediaItem: MediaItem) {
 fun Player.playGracefully(mediaItem: MediaItem) {
     if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {
         forcePlay(mediaItem)
+    } else {
+        val newIndex = currentPeriodIndex + 1
+        addMediaItem(newIndex, mediaItem)
+        seekTo(newIndex, C.TIME_UNSET)
     }
-    val newIndex = currentPeriodIndex + 1
-    addMediaItem(newIndex, mediaItem)
-    seekTo(newIndex, C.TIME_UNSET)
 }
 
 fun Player.enqueue(mediaItem: MediaItem) {
