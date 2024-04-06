@@ -21,41 +21,42 @@ object Pref {
     val pipedInstances = listOf(
         PipedInstance(
             "kavin.rocks",
-            "https://pipedapi.kavin.rocks/"
+            "https://pipedapi.kavin.rocks"
         ),
         PipedInstance(
             "lunar.icu",
-            "https://piped-api.lunar.icu/"
+            "https://piped-api.lunar.icu"
         ),
         PipedInstance(
             "whatever.social",
-            "https://watchapi.whatever.social/"
+            "https://watchapi.whatever.social"
         ),
         PipedInstance(
             "tokhmi.xyz",
-            "https://pipedapi.tokhmi.xyz/"
+            "https://pipedapi.tokhmi.xyz"
         ),
         PipedInstance(
             "mha.fi",
-            "https://api-piped.mha.fi/"
+            "https://api-piped.mha.fi"
         ),
         PipedInstance(
             "garudalinux.org",
-            "https://piped-api.garudalinux.org/"
+            "https://piped-api.garudalinux.org"
         ),
         PipedInstance(
             "piped.yt",
-            "https://api.piped.yt/"
+            "https://api.piped.yt"
         )
     )
 
-    val currentInstance get() = run {
-        runCatching {
-            val instanceJsonStr = sharedPreferences.getString(pipedInstanceKey, "").orEmpty()
-            return@run json.decodeFromString<PipedInstance>(instanceJsonStr)
+    val currentInstance
+        get() = run {
+            runCatching {
+                val instanceJsonStr = sharedPreferences.getString(pipedInstanceKey, "").orEmpty()
+                return@run json.decodeFromString<PipedInstance>(instanceJsonStr)
+            }
+            pipedInstances.first()
         }
-        pipedInstances.first()
-    }
 
     private val json = Json { ignoreUnknownKeys = true }
 
