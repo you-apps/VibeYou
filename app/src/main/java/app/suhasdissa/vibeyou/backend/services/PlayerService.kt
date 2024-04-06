@@ -10,6 +10,7 @@ import android.graphics.Rect
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
 import android.os.Handler
+import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.AudioAttributes
@@ -39,8 +40,11 @@ import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import app.suhasdissa.vibeyou.MellowMusicApplication
+import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.utils.DynamicDataSource
+import app.suhasdissa.vibeyou.utils.IS_LOCAL_KEY
 import app.suhasdissa.vibeyou.utils.Pref
+import app.suhasdissa.vibeyou.utils.asMediaItem
 import coil.ImageLoader
 import coil.request.ErrorResult
 import coil.request.ImageRequest
@@ -52,6 +56,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
     private var mediaSession: MediaSession? = null
@@ -224,6 +229,35 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
             }
         }
         return DynamicDataSource.Companion.Factory(resolvingDataSource, defaultDataSource)
+    }
+
+    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        val isLocal = mediaItem?.mediaMetadata?.extras?.getBoolean(IS_LOCAL_KEY) ?: false
+        if (isLocal) return
+        val mediaId = mediaItem?.mediaId ?: return
+        CoroutineScope(Dispatchers.Main).launch {
+            appendToQueue(mediaId)
+        }
+        super.onMediaItemTransition(mediaItem, reason)
+    }
+
+    private suspend fun appendToQueue(videoId: String) {
+        // enough other videos left in the queue
+        if (player.mediaItemCount - player.currentMediaItemIndex > 5) return
+
+        val nextSongs = try {
+            withContext(Dispatchers.IO) {
+                container.pipedMusicRepository.getRecommendedSongs(videoId)
+            }
+        } catch (e: Exception) {
+            Log.e("hyperpipe: error fetching next", e.message, e)
+            emptyList()
+        }
+
+        player.addMediaItems(
+            player.currentMediaItemIndex + 1,
+            nextSongs.map(Song::asMediaItem)
+        )
     }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)

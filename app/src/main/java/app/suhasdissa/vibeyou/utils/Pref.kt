@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import app.suhasdissa.vibeyou.backend.models.PipedInstance
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 object Pref {
     private const val pipedInstanceKey = "SelectedPipedInstanceKey"
@@ -15,8 +16,11 @@ object Pref {
     const val latestReverseSongsPrefKey = "LatestReverseSongsPrefKey"
     const val customPipedInstanceKey = "CustomPipedInstanceKey"
     const val disableSearchHistoryKey = "DisableSearchHistory"
+    const val hyperpipeApiUrlKey = "HyperpipeApiUrl"
 
     lateinit var sharedPreferences: SharedPreferences
+
+    val defaultHyperInstance = "https://hyperpipeapi.onrender.com"
 
     val pipedInstances = listOf(
         PipedInstance(
@@ -60,6 +64,13 @@ object Pref {
                 return@run json.decodeFromString<PipedInstance>(instanceJsonStr)
             }
             pipedInstances.first()
+        }
+
+    val hyperInstance: String?
+        get() {
+            val url = sharedPreferences.getString(hyperpipeApiUrlKey, defaultHyperInstance)
+                ?: defaultHyperInstance
+            return url.toHttpUrlOrNull()?.host
         }
 
     private val json = Json { ignoreUnknownKeys = true }

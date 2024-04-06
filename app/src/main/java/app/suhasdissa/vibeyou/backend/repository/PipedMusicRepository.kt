@@ -25,6 +25,7 @@ class PipedMusicRepository(
     private val searchDao: SearchDao
 ) {
     var pipedApi = RetrofitHelper.createPipedApi()
+    private val hyperApi = RetrofitHelper.createHyperpipeApi()
 
     suspend fun getAudioSource(id: String): Uri? {
         return runCatching { pipedApi.getStreams(vidId = id) }
@@ -34,15 +35,13 @@ class PipedMusicRepository(
             ?.url
             ?.toUri()
     }
-//
-//    suspend fun getRecommendedSongs(id: String): List<MediaItem> {
-//        val relatedSongs =
-//            pipedApi.getStreams(vidId = id).relatedStreams.slice(0..1).map {
-//                it.asSong
-//            }
-//        songsDao.addSongs(relatedSongs)
-//        return relatedSongs.map { it.asMediaItem }
-//    }
+
+    suspend fun getRecommendedSongs(id: String, limit: Int = 3): List<Song> {
+        val instance = Pref.hyperInstance ?: return emptyList()
+        val relatedSongs = hyperApi.getNext(instance, videoId = id).songs.subList(1, limit + 1)
+        songsDao.addSongs(relatedSongs.map { it.asSongEntity })
+        return relatedSongs.map { it.asSong }
+    }
 
     suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo =
         pipedApi.getPlaylistInfo(playlistId = playlistId)
@@ -117,6 +116,7 @@ class PipedMusicRepository(
 
         searchDao.addSearchQuery(SearchQuery(id = 0, query))
     }
+
     fun deleteQuery(query: String) = searchDao.deleteQuery(query)
     fun getSearchHistory() = searchDao.getSearchHistory()
 }

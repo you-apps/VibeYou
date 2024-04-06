@@ -67,6 +67,14 @@ fun NetworkSettingsScreen() {
                     currentServer = it
                 }
             }
+
+            item {
+                TextFieldPref(
+                    key = Pref.hyperpipeApiUrlKey,
+                    defaultValue = Pref.defaultHyperInstance,
+                    title = stringResource(id = R.string.hyperpipe_api_url)
+                )
+            }
         }
     }
     if (showDialog) {
