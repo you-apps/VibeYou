@@ -20,6 +20,10 @@ object Pref {
 
     val pipedInstances = listOf(
         PipedInstance(
+            "kavin.rocks Libre",
+            "https://pipedapi-libre.kavin.rocks"
+        ),
+        PipedInstance(
             "kavin.rocks",
             "https://pipedapi.kavin.rocks"
         ),
