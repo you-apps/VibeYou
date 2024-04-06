@@ -71,7 +71,7 @@ fun NetworkSettingsScreen() {
             item {
                 TextFieldPref(
                     key = Pref.hyperpipeApiUrlKey,
-                    defaultValue = "https://hyperpipeapi.onrender.com",
+                    defaultValue = Pref.defaultHyperInstance,
                     title = stringResource(id = R.string.hyperpipe_api_url)
                 )
             }

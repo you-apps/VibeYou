@@ -100,6 +100,7 @@ val Song.asMediaItem: MediaItem
                 )
                 .build()
         )
+        .setUri(id)
         .setMediaId(id)
         .setCustomCacheKey(id)
         .build()

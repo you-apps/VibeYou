@@ -3,7 +3,6 @@ package app.suhasdissa.vibeyou.backend.repository
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
 import app.suhasdissa.vibeyou.backend.data.Album
 import app.suhasdissa.vibeyou.backend.data.Artist
 import app.suhasdissa.vibeyou.backend.data.Song
@@ -18,7 +17,6 @@ import app.suhasdissa.vibeyou.utils.Pref
 import app.suhasdissa.vibeyou.utils.RetrofitHelper
 import app.suhasdissa.vibeyou.utils.asAlbum
 import app.suhasdissa.vibeyou.utils.asArtist
-import app.suhasdissa.vibeyou.utils.asMediaItem
 import app.suhasdissa.vibeyou.utils.asSong
 import app.suhasdissa.vibeyou.utils.asSongEntity
 
@@ -38,10 +36,11 @@ class PipedMusicRepository(
             ?.toUri()
     }
 
-    suspend fun getRecommendedSongs(id: String): List<MediaItem> {
-        val relatedSongs = hyperApi.getNext(videoId = id).songs
+    suspend fun getRecommendedSongs(id: String, limit: Int = 3): List<Song> {
+        val instance = Pref.hyperInstance ?: return emptyList()
+        val relatedSongs = hyperApi.getNext(instance, videoId = id).songs.subList(1, limit + 1)
         songsDao.addSongs(relatedSongs.map { it.asSongEntity })
-        return relatedSongs.map { it.asSong.asMediaItem }
+        return relatedSongs.map { it.asSong }
     }
 
     suspend fun getPlaylistInfo(playlistId: String): PlaylistInfo =
@@ -117,6 +116,7 @@ class PipedMusicRepository(
 
         searchDao.addSearchQuery(SearchQuery(id = 0, query))
     }
+
     fun deleteQuery(query: String) = searchDao.deleteQuery(query)
     fun getSearchHistory() = searchDao.getSearchHistory()
 }
