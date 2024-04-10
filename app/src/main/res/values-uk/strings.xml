@@ -84,4 +84,5 @@
     <string name="custom_instance">Власний сервер</string>
     <string name="clear_playlist">Очистити список відтворення</string>
     <string name="disable_search_history">Вимкнути історію пошуку</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL</string>
 </resources>
