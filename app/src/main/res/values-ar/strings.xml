@@ -84,4 +84,5 @@
     <string name="delete_playlist_and_songs">حذف قائمة التشغيل والأغاني</string>
     <string name="clear_playlist">مسح قائمة التشغيل</string>
     <string name="disable_search_history">تعطيل سجل البحث</string>
+    <string name="hyperpipe_api_url">عنوان URL لواجهة برمجة تطبيقات Hyperpipe</string>
 </resources>
