@@ -84,4 +84,5 @@
     <string name="delete_playlist_and_songs">Удалить плейлист и его содержимое</string>
     <string name="clear_playlist">Опустошить плейлист</string>
     <string name="disable_search_history">Выключить историю поиска</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL</string>
 </resources>
