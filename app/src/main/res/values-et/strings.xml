@@ -84,4 +84,5 @@
     <string name="image_proxy_url">Pildipuhvri url</string>
     <string name="delete_playlist">Kustuta esitusloend</string>
     <string name="disable_search_history">Ära salvesta otsinguajalugu</string>
+    <string name="hyperpipe_api_url">Hyperpipe\'i API URL</string>
 </resources>
