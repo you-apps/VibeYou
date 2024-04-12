@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
@@ -23,10 +24,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
+import app.suhasdissa.vibeyou.backend.viewmodel.SettingsModel
 import app.suhasdissa.vibeyou.ui.components.NavDrawerContent
-import app.suhasdissa.vibeyou.ui.theme.LibreMusicTheme
+import app.suhasdissa.vibeyou.ui.theme.VibeYouTheme
+import app.suhasdissa.vibeyou.utils.ThemeUtil
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +39,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LibreMusicTheme {
+            val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
+
+            val darkTheme = when (settingsModel.themeMode) {
+                SettingsModel.Theme.SYSTEM -> isSystemInDarkTheme()
+                SettingsModel.Theme.DARK, SettingsModel.Theme.AMOLED -> true
+                else -> false
+            }
+            VibeYouTheme(
+                darkTheme = darkTheme,
+                customColorScheme = ThemeUtil.getSchemeFromSeed(
+                    settingsModel.customColor,
+                    darkTheme
+                ),
+                dynamicColor = settingsModel.colorTheme == SettingsModel.ColorTheme.SYSTEM,
+                amoledDark = settingsModel.themeMode == SettingsModel.Theme.AMOLED
+            ) {
                 val navHostController = rememberNavController()
                 val primaryColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f).toArgb()
 

@@ -86,4 +86,11 @@
     <string name="clear_playlist">Clear Playlist</string>
     <string name="disable_search_history">Disable search history</string>
     <string name="hyperpipe_api_url">Hyperpipe API URL</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="amoled">AMOLED</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="color_scheme">Color Scheme</string>
+    <string name="theme">Theme</string>
 </resources>

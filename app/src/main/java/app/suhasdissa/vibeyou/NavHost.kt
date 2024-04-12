@@ -75,7 +75,9 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable(route = Destination.AppearanceSettings.route) {
-            AppearanceSettingsScreen()
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                AppearanceSettingsScreen()
+            }
         }
 
         composable(Destination.Playlists.route) {

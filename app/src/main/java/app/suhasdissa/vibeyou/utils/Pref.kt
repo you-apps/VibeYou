@@ -17,6 +17,9 @@ object Pref {
     const val customPipedInstanceKey = "CustomPipedInstanceKey"
     const val disableSearchHistoryKey = "DisableSearchHistory"
     const val hyperpipeApiUrlKey = "HyperpipeApiUrl"
+    const val customColorKey = "customColor"
+    const val themeKey = "theme"
+    const val colorThemeKey = "colorTheme"
 
     lateinit var sharedPreferences: SharedPreferences
 
