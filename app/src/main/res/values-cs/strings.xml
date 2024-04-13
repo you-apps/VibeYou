@@ -85,4 +85,11 @@
     <string name="clear_playlist">Vymazat playlist</string>
     <string name="disable_search_history">Vypnout historii vyhledávání</string>
     <string name="hyperpipe_api_url">URL API Hyperpipe</string>
+    <string name="amoled">AMOLED</string>
+    <string name="color_scheme">Barevné schéma</string>
+    <string name="theme">Motiv</string>
+    <string name="dark">Tmavý</string>
+    <string name="light">Světlý</string>
+    <string name="system">Systémový</string>
+    <string name="catppuccin">Catppuccin</string>
 </resources>
