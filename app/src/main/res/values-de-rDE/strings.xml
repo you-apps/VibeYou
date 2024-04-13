@@ -80,4 +80,13 @@
     <string name="unlimited">Unbegrenzt</string>
     <string name="added_all_the_songs_to_the_library">Alle Titel wurden zur Bibliothek hinzugefügt</string>
     <string name="clear_queue">Wiedergabeliste leeren</string>
+    <string name="playlists">Wiedergabelisten</string>
+    <string name="api_url">API-URL</string>
+    <string name="image_proxy_url">URL des ­Bildproxys</string>
+    <string name="delete_playlist">Wiedergabeliste löschen</string>
+    <string name="delete_playlist_and_songs">Wiedergabeliste und Titel löschen</string>
+    <string name="clear_playlist">Wiedergabeliste leeren</string>
+    <string name="appearance_settings_description">Passen Sie das Aussehen an Ihre Bedürfnisse an.</string>
+    <string name="hyperpipe_api_url">Hyperpipe API-URL</string>
+    <string name="piped_music">Piped-Musik</string>
 </resources>
