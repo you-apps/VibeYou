@@ -85,4 +85,11 @@
     <string name="music_cache_limit">संगीत कैशे सीमा</string>
     <string name="playback_speed">प्लेबैक गति</string>
     <string name="hyperpipe_api_url">हाइपरपाइप API की URL</string>
+    <string name="system">सिस्टम</string>
+    <string name="light">हल्की</string>
+    <string name="amoled">AMOLED</string>
+    <string name="dark">गहरी</string>
+    <string name="catppuccin">कैटपुचिन</string>
+    <string name="color_scheme">रंग योजना</string>
+    <string name="theme">थीम</string>
 </resources>
