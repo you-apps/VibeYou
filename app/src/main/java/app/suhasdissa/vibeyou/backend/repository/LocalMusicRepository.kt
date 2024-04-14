@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.net.Uri
 import android.os.Build
+import android.os.Environment.getExternalStorageDirectory
 import android.provider.MediaStore
 import android.text.format.DateUtils
 import androidx.core.net.toUri
@@ -16,6 +17,7 @@ import app.suhasdissa.vibeyou.backend.database.entities.SearchQuery
 import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class LocalMusicRepository(
     private val contentResolver: ContentResolver,
@@ -26,6 +28,7 @@ class LocalMusicRepository(
     private var artistCache = listOf<Artist>()
 
     suspend fun getAllSongs(): List<Song> = withContext(Dispatchers.IO) {
+
         if (songsCache.isNotEmpty()) return@withContext songsCache
 
         val songs = mutableListOf<Song>()
@@ -74,7 +77,8 @@ class LocalMusicRepository(
                 MediaStore.Audio.Media.DATE_MODIFIED
             )
             val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
-            val trackNumberColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.CD_TRACK_NUMBER)
+            val trackNumberColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.CD_TRACK_NUMBER)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
@@ -120,6 +124,136 @@ class LocalMusicRepository(
         this@LocalMusicRepository.songsCache = songs
 
         songs
+    }
+
+    suspend fun getSongFromUri(uri: Uri): Song? = withContext(Dispatchers.IO) {
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
+
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST_ID,
+            MediaStore.Audio.Media.DATE_MODIFIED,
+            MediaStore.Audio.Media.DATE_ADDED,
+            MediaStore.Audio.Media.CD_TRACK_NUMBER
+        )
+
+        val selection = "${MediaStore.Audio.Media.DATA} = ?"
+
+        val path = getPathFromContentUri(uri)
+        val selectionArgs = arrayOf(path)
+
+        val query = contentResolver.query(
+            collection,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        query?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+            val titleColumn =
+                cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+            val durationColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+            val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+            val artistIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
+            val creationDateColumn = cursor.getColumnIndexOrThrow(
+                MediaStore.Audio.Media.DATE_MODIFIED
+            )
+            val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
+            val trackNumberColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.CD_TRACK_NUMBER)
+
+            if (cursor.moveToFirst()) {
+                val id = cursor.getLong(idColumn)
+                val name =
+                    if (cursor.isNull(titleColumn)) {
+                        cursor.getString(nameColumn)
+                    } else {
+                        cursor.getString(
+                            titleColumn
+                        )
+                    }
+                val albumId = cursor.getLong(albumColumn)
+
+                val contentUri: Uri = ContentUris.withAppendedId(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    id
+                )
+
+                val duration = cursor.getLong(durationColumn) / 1000
+                if (duration == 0L) return@withContext null
+
+                return@withContext Song(
+                    id = contentUri.toString(),
+                    title = name,
+                    durationText = DateUtils.formatElapsedTime(duration),
+                    thumbnailUri = getAlbumArt(albumId),
+                    artistsText = cursor.getString(artistColumn),
+                    albumId = albumId,
+                    artistId = cursor.getLong(artistIdColumn),
+                    isLocal = true,
+                    creationDate = cursor.getLong(creationDateColumn),
+                    dateAdded = cursor.getLong(dateAddedColumn),
+                    trackNumber = cursor.getLong(trackNumberColumn)
+                )
+            }
+        }
+        return@withContext null
+    }
+
+    private fun getPathFromContentUri(uri: Uri): String? {
+        var songFile: File? = null
+        if (uri.authority == "com.android.externalstorage.documents") {
+            val path = uri.path?.split(":".toRegex(), 2)?.get(1)
+            if (path != null) {
+                songFile = File(getExternalStorageDirectory(), path)
+            }
+        }
+        if (songFile == null) {
+            val path = getFilePathFromUri(uri)
+            if (path != null)
+                songFile = File(path)
+        }
+        if (songFile == null && uri.path != null) {
+            songFile = File(uri.path!!)
+        }
+        if (songFile != null) {
+            return songFile.absolutePath
+        }
+        return null
+    }
+
+    private fun getFilePathFromUri(uri: Uri): String? {
+        val column = MediaStore.Audio.Media.DATA
+        val projection = arrayOf(column)
+        val query = contentResolver.query(uri, projection, null, null, null)
+
+        query?.use { cursor ->
+            try {
+                if (cursor.moveToFirst()) {
+                    val columnIndex = cursor.getColumnIndexOrThrow(column)
+                    return cursor.getString(columnIndex)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return null
     }
 
     suspend fun getAllAlbums(): List<Album> = withContext(Dispatchers.IO) {
@@ -279,6 +413,7 @@ class LocalMusicRepository(
 
         searchDao.addSearchQuery(SearchQuery(id = 0, query))
     }
+
     fun deleteQuery(query: String) = searchDao.deleteQuery(query)
     fun getSearchHistory() = searchDao.getSearchHistory()
 

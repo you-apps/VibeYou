@@ -104,8 +104,11 @@ class MainActivity : ComponentActivity() {
     private fun handleIntent(intent: Intent) {
         when (intent.action) {
             Intent.ACTION_VIEW -> {
-                val uri = intent.data
-                uri?.let {
+                val uri = intent.data ?: return
+                // Check if uri points to a device file
+                if (uri.scheme == "file" || uri.scheme == "content") {
+                    playerViewModel.tryToPlayUri(uri)
+                } else {
                     processLink(uri)
                 }
             }

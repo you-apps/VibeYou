@@ -1,5 +1,6 @@
 package app.suhasdissa.vibeyou.backend.viewmodel
 
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -17,6 +18,7 @@ import androidx.media3.common.PlaybackParameters
 import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.data.Song
+import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
 import app.suhasdissa.vibeyou.utils.addNext
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val songDatabaseRepository: SongDatabaseRepository,
     private val musicRepository: PipedMusicRepository,
+    private val localMusicRepository: LocalMusicRepository,
     private val controllerFuture: ListenableFuture<MediaController>
 ) :
     ViewModel() {
@@ -148,6 +151,19 @@ class PlayerViewModel(
         }
     }
 
+    fun tryToPlayUri(uri: Uri) {
+        viewModelScope.launch {
+            val song: Song? = localMusicRepository.getSongFromUri(uri)
+            song?.let {
+                if (controller == null) {
+                    toBePlayed = song.asMediaItem
+                } else {
+                    controller?.forcePlay(song.asMediaItem)
+                }
+            }
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -155,6 +171,7 @@ class PlayerViewModel(
                 PlayerViewModel(
                     application.container.songDatabaseRepository,
                     application.container.pipedMusicRepository,
+                    application.container.localMusicRepository,
                     application.container.controllerFuture
                 )
             }
