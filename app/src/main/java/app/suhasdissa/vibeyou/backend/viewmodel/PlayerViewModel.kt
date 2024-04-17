@@ -1,12 +1,14 @@
 package app.suhasdissa.vibeyou.backend.viewmodel
 
 import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,11 +18,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.session.MediaController
+import androidx.media3.session.SessionCommand
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
+import app.suhasdissa.vibeyou.backend.services.PlayerService
 import app.suhasdissa.vibeyou.utils.addNext
 import app.suhasdissa.vibeyou.utils.asMediaItem
 import app.suhasdissa.vibeyou.utils.enqueue
@@ -130,6 +134,12 @@ class PlayerViewModel(
                 songDatabaseRepository.addSong(it.toggleLike())
             }
         }
+    }
+
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    fun updateEqualizerSettings() {
+        val command = SessionCommand(PlayerService.COMMAND_UPDATE_EQUALIZER, Bundle.EMPTY)
+        controller!!.sendCustomCommand(command, Bundle.EMPTY)
     }
 
     suspend fun isFavourite(id: String): Boolean {

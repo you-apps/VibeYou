@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.media.audiofx.Equalizer
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.annotation.ColorInt
@@ -17,6 +19,7 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
@@ -39,7 +42,11 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionResult
 import app.suhasdissa.vibeyou.MellowMusicApplication
+import app.suhasdissa.vibeyou.backend.data.EqualizerBand
+import app.suhasdissa.vibeyou.backend.data.EqualizerData
 import app.suhasdissa.vibeyou.backend.data.Song
 import app.suhasdissa.vibeyou.utils.DynamicDataSource
 import app.suhasdissa.vibeyou.utils.IS_LOCAL_KEY
@@ -58,15 +65,45 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+@UnstableApi
 class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
     private var mediaSession: MediaSession? = null
     private lateinit var cache: SimpleCache
     private lateinit var player: ExoPlayer
+    private lateinit var equalizer: Equalizer
 
     private var loudnessEnhancer: LoudnessEnhancer? = null
 
     val appInstance get() = application as MellowMusicApplication
     val container get() = appInstance.container
+
+    private val mediaSessionCallback = object : MediaSession.Callback {
+        override fun onConnect(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo
+        ): MediaSession.ConnectionResult {
+            val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+                .add(SessionCommand(COMMAND_UPDATE_EQUALIZER, Bundle.EMPTY))
+                .build()
+
+            return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+                .setAvailableSessionCommands(sessionCommands)
+                .build()
+        }
+
+        override fun onCustomCommand(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            customCommand: SessionCommand,
+            args: Bundle
+        ): ListenableFuture<SessionResult> {
+            if (customCommand.customAction == COMMAND_UPDATE_EQUALIZER) {
+                updateEqualizerSettings()
+            }
+
+            return super.onCustomCommand(session, controller, customCommand, args)
+        }
+    }
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate() {
@@ -86,6 +123,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         cache = SimpleCache(directory, cacheEvictor, StandaloneDatabaseProvider(this))
 
         player = createPlayer()
+        setupEqualizer()
 
         player.repeatMode = Player.REPEAT_MODE_OFF
         player.playWhenReady = true
@@ -93,6 +131,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
         mediaSession = MediaSession.Builder(this, player).setCallback(this)
             .setBitmapLoader(CustomBitmapLoader(this))
+            .setCallback(mediaSessionCallback)
             .build()
     }
 
@@ -303,5 +342,56 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 )
             )
         }
+    }
+
+    private fun setupEqualizer() {
+        equalizer = Equalizer(Integer.MAX_VALUE, player.audioSessionId)
+        appInstance.supportedEqualizerData = EqualizerData(
+            presets = (0 until equalizer.numberOfPresets).map {
+                equalizer.getPresetName(it.toShort())
+            },
+            bands = (0 until equalizer.numberOfBands).map { id ->
+                val freqRange = equalizer.bandLevelRange
+                EqualizerBand(
+                    equalizer.getCenterFreq(id.toShort()),
+                    freqRange.first(),
+                    freqRange.last()
+                )
+            }
+        )
+
+        updateEqualizerSettings()
+    }
+
+/*    private fun useSystemEqualizer() {
+        val intent = Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
+        intent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, player.audioSessionId);
+        intent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, packageName);
+        sendBroadcast(intent);
+    }*/
+
+    private fun updateEqualizerSettings() {
+        if (!::equalizer.isInitialized) return
+
+        equalizer.enabled = Pref.sharedPreferences.getBoolean(Pref.equalizerKey, false)
+        if (!equalizer.enabled) return
+
+        val preset = Pref.sharedPreferences.getInt(Pref.equalizerPresetKey, -1)
+        if (preset != -1) {
+            equalizer.usePreset(preset.toShort())
+            return
+        }
+
+        val bandPrefs = Pref.sharedPreferences.getString(Pref.equalizerBandsKey, "")
+        if (bandPrefs.isNullOrEmpty()) return
+
+        val bandLevels = bandPrefs.split(",").map(String::toShort)
+        for (i in bandLevels.indices) {
+            equalizer.setBandLevel(i.toShort(), bandLevels[i])
+        }
+    }
+
+    companion object {
+        const val COMMAND_UPDATE_EQUALIZER = "update_equalizer"
     }
 }

@@ -93,4 +93,9 @@
     <string name="catppuccin">Catppuccin</string>
     <string name="color_scheme">Color Scheme</string>
     <string name="theme">Theme</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="equalizer_preset">Equalizer Preset</string>
+    <string name="enabled">Enabled</string>
+    <string name="none">None</string>
+    <string name="reset_equalizer">Reset equalizer</string>
 </resources>
