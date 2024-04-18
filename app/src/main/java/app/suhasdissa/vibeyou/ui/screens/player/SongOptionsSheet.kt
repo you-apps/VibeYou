@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -24,16 +25,19 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
 import kotlinx.coroutines.launch
@@ -49,6 +53,12 @@ fun SongOptionsSheet(
     )
     val scope = rememberCoroutineScope()
     val view = LocalView.current
+    val app = LocalContext.current.applicationContext as MellowMusicApplication
+
+    var showEqualizerSheet by remember {
+        mutableStateOf(false)
+    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = playerSheetState,
@@ -66,8 +76,7 @@ fun SongOptionsSheet(
                 }
             }) {
                 Icon(
-                    Icons.Rounded.ExpandMore,
-                    contentDescription = null
+                    Icons.Rounded.ExpandMore, contentDescription = null
                 )
             }
         }, title = { Text(stringResource(R.string.song_options)) })
@@ -85,6 +94,7 @@ fun SongOptionsSheet(
             var pitch by remember {
                 mutableFloatStateOf(playerViewModel.getPlaybackParams().pitch)
             }
+
             fun updatePlaybackParams() = playerViewModel.setPlaybackParams(speed, pitch)
 
             Text(text = stringResource(R.string.playback_speed), fontSize = 16.sp)
@@ -110,6 +120,19 @@ fun SongOptionsSheet(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        if (app.supportedEqualizerData != null) {
+            Button(modifier = Modifier.padding(start = 10.dp), onClick = {
+                showEqualizerSheet = true
+            }) {
+                Text(text = stringResource(id = R.string.equalizer))
+            }
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+    }
+
+    if (showEqualizerSheet) {
+        EqualizerSheet(equalizerData = app.supportedEqualizerData!!,
+            onDismissRequest = { showEqualizerSheet = false })
     }
 }

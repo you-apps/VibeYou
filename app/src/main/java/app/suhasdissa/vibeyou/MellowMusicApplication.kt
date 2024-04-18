@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.graphics.Color
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import app.suhasdissa.vibeyou.backend.data.EqualizerData
 import app.suhasdissa.vibeyou.backend.database.SongDatabase
 import app.suhasdissa.vibeyou.backend.services.PlayerService
 import app.suhasdissa.vibeyou.utils.Pref
@@ -19,6 +20,11 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
     private val database by lazy { SongDatabase.getDatabase(this) }
     lateinit var container: AppContainer
     var accentColor: Int = Color.TRANSPARENT
+
+    /**
+     * Data stored here with the details of the equalizer
+     */
+    var supportedEqualizerData: EqualizerData? = null
 
     override fun onCreate() {
         super.onCreate()

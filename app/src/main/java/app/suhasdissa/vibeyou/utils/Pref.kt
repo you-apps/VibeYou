@@ -20,6 +20,9 @@ object Pref {
     const val customColorKey = "customColor"
     const val themeKey = "theme"
     const val colorThemeKey = "colorTheme"
+    const val equalizerKey = "equalizer"
+    const val equalizerPresetKey = "equalizerPreset"
+    const val equalizerBandsKey = "equalizerBands"
 
     lateinit var sharedPreferences: SharedPreferences
 
