@@ -92,4 +92,9 @@
     <string name="dark">مظلم</string>
     <string name="catppuccin">كاتبوتشين</string>
     <string name="theme">السمة</string>
+    <string name="equalizer">المعادل</string>
+    <string name="equalizer_preset">الضبط المسبق للمعادل</string>
+    <string name="enabled">مفعل</string>
+    <string name="none">لاشيء</string>
+    <string name="reset_equalizer">اعادة تعيين المعادل</string>
 </resources>
