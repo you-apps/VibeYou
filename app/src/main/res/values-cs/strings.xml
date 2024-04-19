@@ -92,4 +92,9 @@
     <string name="light">Světlý</string>
     <string name="system">Systémový</string>
     <string name="catppuccin">Catppuccin</string>
+    <string name="equalizer">Ekvalizér</string>
+    <string name="equalizer_preset">Předvolba ekvalizéru</string>
+    <string name="enabled">Povolen</string>
+    <string name="none">Žádný</string>
+    <string name="reset_equalizer">Resetovat ekvalizér</string>
 </resources>
