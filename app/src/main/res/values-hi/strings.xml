@@ -92,4 +92,9 @@
     <string name="catppuccin">कैटपुचिन</string>
     <string name="color_scheme">रंग योजना</string>
     <string name="theme">थीम</string>
+    <string name="equalizer_preset">तुल्यकारक प्रीसेट</string>
+    <string name="enabled">सक्रिय</string>
+    <string name="none">कोई नहीं</string>
+    <string name="equalizer">तुल्यकारक</string>
+    <string name="reset_equalizer">तुल्यकारक रीसेट करें</string>
 </resources>
