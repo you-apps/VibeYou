@@ -89,4 +89,8 @@
     <string name="appearance_settings_description">Passen Sie das Aussehen an Ihre Bedürfnisse an.</string>
     <string name="hyperpipe_api_url">Hyperpipe API-URL</string>
     <string name="piped_music">Piped-Musik</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="reset_equalizer">Equalizer zurücksetzen</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="equalizer_preset">Equalizer Voreinstellung</string>
 </resources>
