@@ -92,4 +92,9 @@
     <string name="catppuccin">Catppuccin</string>
     <string name="color_scheme">Värviteema</string>
     <string name="theme">Teema</string>
+    <string name="equalizer">Ekvalaiser</string>
+    <string name="equalizer_preset">Ekvalaiseri eelseadistused</string>
+    <string name="enabled">Kasutusel</string>
+    <string name="none">Pole kasutusel</string>
+    <string name="reset_equalizer">Lähtesta ekvalaiser</string>
 </resources>
