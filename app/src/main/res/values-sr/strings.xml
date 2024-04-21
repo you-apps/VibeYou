@@ -92,4 +92,9 @@
     <string name="amoled">AMOLED</string>
     <string name="catppuccin">Catppuccin</string>
     <string name="system">Системски</string>
+    <string name="equalizer">Еквилајзер</string>
+    <string name="enabled">Омогућено</string>
+    <string name="equalizer_preset">Унапред подешен еквилајзер</string>
+    <string name="none">Ниједно</string>
+    <string name="reset_equalizer">Ресетуј еквилајзер</string>
 </resources>
