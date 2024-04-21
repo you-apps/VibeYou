@@ -92,4 +92,9 @@
     <string name="color_scheme">Цветовая схема</string>
     <string name="theme">Тема</string>
     <string name="catppuccin">Catppuccin</string>
+    <string name="equalizer">Эквалайзер</string>
+    <string name="equalizer_preset">Предустановка</string>
+    <string name="enabled">Включен</string>
+    <string name="none">Нет</string>
+    <string name="reset_equalizer">Сбросить настройку</string>
 </resources>
