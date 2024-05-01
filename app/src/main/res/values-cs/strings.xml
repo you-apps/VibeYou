@@ -84,4 +84,17 @@
     <string name="delete_playlist_and_songs">Odstranit playlist a skladby</string>
     <string name="clear_playlist">Vymazat playlist</string>
     <string name="disable_search_history">Vypnout historii vyhledávání</string>
+    <string name="hyperpipe_api_url">URL API Hyperpipe</string>
+    <string name="amoled">AMOLED</string>
+    <string name="color_scheme">Barevné schéma</string>
+    <string name="theme">Motiv</string>
+    <string name="dark">Tmavý</string>
+    <string name="light">Světlý</string>
+    <string name="system">Systémový</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="equalizer">Ekvalizér</string>
+    <string name="equalizer_preset">Předvolba ekvalizéru</string>
+    <string name="enabled">Povolen</string>
+    <string name="none">Žádný</string>
+    <string name="reset_equalizer">Resetovat ekvalizér</string>
 </resources>

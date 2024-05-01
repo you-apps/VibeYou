@@ -84,4 +84,17 @@
     <string name="piped_music">Piped Music</string>
     <string name="custom_instance">Özel örnek</string>
     <string name="disable_search_history">Arama geçmişini devre dışı bırak</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL\'si</string>
+    <string name="system">Sistem</string>
+    <string name="light">Açık</string>
+    <string name="amoled">AMOLED</string>
+    <string name="dark">Koyu</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="color_scheme">Renk Düzeni</string>
+    <string name="theme">Tema</string>
+    <string name="enabled">Etkin</string>
+    <string name="none">Hiçbiri</string>
+    <string name="reset_equalizer">Dengeleyiciyi sıfırla</string>
+    <string name="equalizer">Dengeleyici</string>
+    <string name="equalizer_preset">Dengeleyici Ön Ayarı</string>
 </resources>

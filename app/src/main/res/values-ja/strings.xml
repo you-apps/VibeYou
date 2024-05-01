@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">設定</string>
+    <string name="latest_release">最新リリース</string>
+    <string name="current_version">現在のバージョン</string>
+    <string name="github_issue">GitHub Issue</string>
+    <string name="favourite_songs">お気に入り</string>
+    <string name="enqueue_song">キューに追加</string>
+    <string name="play_song">曲を再生</string>
+    <string name="delete_song">曲を削除</string>
+    <string name="repeat_all">全てリピート</string>
+    <string name="now_playing">再生中</string>
+    <string name="about_title">詳細</string>
+    <string name="check_repo_and_readme">リポジトリとREADMEを確認</string>
+    <string name="github_issue_description">バグ報告や機能リクエストを送信</string>
+    <string name="about_setting_description">バージョン、連絡先</string>
+    <string name="readme">README</string>
+    <string name="play_next">次に再生</string>
+    <string name="search_songs">曲を検索</string>
+    <string name="search_for_a_song">曲を検索</string>
+    <string name="settings">設定</string>
+    <string name="repeat_off">繰り返しオフ</string>
+</resources>

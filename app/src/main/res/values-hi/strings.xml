@@ -84,4 +84,17 @@
     <string name="about_setting_description">संस्करण, संपर्क करें</string>
     <string name="music_cache_limit">संगीत कैशे सीमा</string>
     <string name="playback_speed">प्लेबैक गति</string>
+    <string name="hyperpipe_api_url">हाइपरपाइप API की URL</string>
+    <string name="system">सिस्टम</string>
+    <string name="light">हल्की</string>
+    <string name="amoled">AMOLED</string>
+    <string name="dark">गहरी</string>
+    <string name="catppuccin">कैटपुचिन</string>
+    <string name="color_scheme">रंग योजना</string>
+    <string name="theme">थीम</string>
+    <string name="equalizer_preset">तुल्यकारक प्रीसेट</string>
+    <string name="enabled">सक्रिय</string>
+    <string name="none">कोई नहीं</string>
+    <string name="equalizer">तुल्यकारक</string>
+    <string name="reset_equalizer">तुल्यकारक रीसेट करें</string>
 </resources>

@@ -84,4 +84,17 @@
     <string name="custom_instance">Власний сервер</string>
     <string name="clear_playlist">Очистити список відтворення</string>
     <string name="disable_search_history">Вимкнути історію пошуку</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL</string>
+    <string name="equalizer">Еквалайзер</string>
+    <string name="equalizer_preset">Передустановка еквалайзера</string>
+    <string name="enabled">Ввімкнено</string>
+    <string name="none">Нічого</string>
+    <string name="reset_equalizer">Скинути еквалайзер</string>
+    <string name="system">Системна</string>
+    <string name="light">Світла</string>
+    <string name="dark">Темна</string>
+    <string name="amoled">Чорна</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="color_scheme">Колірна гамма</string>
+    <string name="theme">Тема</string>
 </resources>

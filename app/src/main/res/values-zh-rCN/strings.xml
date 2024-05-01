@@ -84,4 +84,17 @@
     <string name="delete_playlist_and_songs">删除播放列表与其中的歌曲</string>
     <string name="clear_playlist">清空播放列表</string>
     <string name="disable_search_history">禁用搜索历史</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL</string>
+    <string name="system">系统</string>
+    <string name="light">浅色</string>
+    <string name="dark">暗色</string>
+    <string name="amoled">AMOLED 纯黑</string>
+    <string name="catppuccin">Catppuccin 配色</string>
+    <string name="color_scheme">颜色主题</string>
+    <string name="theme">主题</string>
+    <string name="equalizer">均衡器</string>
+    <string name="equalizer_preset">均衡器预设</string>
+    <string name="enabled">已启用</string>
+    <string name="none">无</string>
+    <string name="reset_equalizer">重设均衡器</string>
 </resources>

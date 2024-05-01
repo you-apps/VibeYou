@@ -84,4 +84,17 @@
     <string name="delete_playlist_and_songs">حذف قائمة التشغيل والأغاني</string>
     <string name="clear_playlist">مسح قائمة التشغيل</string>
     <string name="disable_search_history">تعطيل سجل البحث</string>
+    <string name="hyperpipe_api_url">عنوان URL لواجهة برمجة تطبيقات Hyperpipe</string>
+    <string name="system">النظام</string>
+    <string name="amoled">شديد السواد</string>
+    <string name="color_scheme">نظام الألوان</string>
+    <string name="light">فاتح</string>
+    <string name="dark">مظلم</string>
+    <string name="catppuccin">كاتبوتشين</string>
+    <string name="theme">السمة</string>
+    <string name="equalizer">المعادل</string>
+    <string name="equalizer_preset">الضبط المسبق للمعادل</string>
+    <string name="enabled">مفعل</string>
+    <string name="none">لاشيء</string>
+    <string name="reset_equalizer">اعادة تعيين المعادل</string>
 </resources>

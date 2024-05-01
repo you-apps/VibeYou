@@ -2,13 +2,13 @@
 <resources>
     <string name="favourite_songs">Омиљено</string>
     <string name="close_player">Затвори плејер</string>
-    <string name="close_queue">Затвори ред</string>
+    <string name="close_queue">Затвори редослед</string>
     <string name="backup_description">Направите фајл резервне копије</string>
     <string name="latest_release">Најновије издање</string>
     <string name="password">Лозинка</string>
     <string name="album_art">Омот албума</string>
     <string name="network_settings">Подешавања мреже</string>
-    <string name="remove_item_from_queue">Уклони предмет из реда</string>
+    <string name="remove_item_from_queue">Уклони предмет из редоследа</string>
     <string name="recent_songs">Недавне песме</string>
     <string name="repeat_all">Понављај све</string>
     <string name="github_issue_description">Пошаљите извештаје о грешкама и захтеве за функције</string>
@@ -36,9 +36,9 @@
     <string name="albums">Албуми</string>
     <string name="backup">База података резервне копије</string>
     <string name="artist">Извођач</string>
-    <string name="player_queue">Ред плејера</string>
+    <string name="player_queue">Редослед плејера</string>
     <string name="song_options">Опције песме</string>
-    <string name="show_queue">Прикажи ред</string>
+    <string name="show_queue">Прикажи редослед</string>
     <string name="artist_avatar">Аватар извођача</string>
     <string name="shuffle">Мешање</string>
     <string name="check_repo_and_readme">Проверите репозиторијум и README</string>
@@ -54,7 +54,7 @@
     <string name="play">Пусти</string>
     <string name="repeat_off">Понављање искључено</string>
     <string name="local_music">Локална музика</string>
-    <string name="enqueue_song">Додај у ред</string>
+    <string name="enqueue_song">Додај у редослед</string>
     <string name="github_issue">GitHub пријава проблема</string>
     <string name="backup_restore_setting_description">Направите резервну копију плејлиста или вратите стару резервну копију.</string>
     <string name="close_search">Затвори претрагу</string>
@@ -74,7 +74,7 @@
     <string name="add_all_songs_to_the_library">Додај све песме у библиотеку</string>
     <string name="add_to_library">Додај у библиотеку</string>
     <string name="added_all_the_songs_to_the_library">Додате све песме у библиотеку</string>
-    <string name="clear_queue">Очисти ред</string>
+    <string name="clear_queue">Очисти редослед</string>
     <string name="invalid_url">Неважећа URL адреса</string>
     <string name="api_url">URL адреса API-ја</string>
     <string name="image_proxy_url">URL адреса проксија слике</string>
@@ -84,4 +84,17 @@
     <string name="delete_playlist_and_songs">Избриши плејлисту и песме</string>
     <string name="clear_playlist">Очисти плејлисту</string>
     <string name="disable_search_history">Онемогући историју претраге</string>
+    <string name="hyperpipe_api_url">Hyperpipe URL API-ја</string>
+    <string name="light">Светла</string>
+    <string name="color_scheme">Шема боја</string>
+    <string name="theme">Тема</string>
+    <string name="dark">Тамна</string>
+    <string name="amoled">AMOLED</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="system">Системски</string>
+    <string name="equalizer">Еквилајзер</string>
+    <string name="enabled">Омогућено</string>
+    <string name="equalizer_preset">Унапред подешен еквилајзер</string>
+    <string name="none">Ниједно</string>
+    <string name="reset_equalizer">Ресетуј еквилајзер</string>
 </resources>

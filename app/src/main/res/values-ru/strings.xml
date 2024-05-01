@@ -84,4 +84,17 @@
     <string name="delete_playlist_and_songs">Удалить плейлист и его содержимое</string>
     <string name="clear_playlist">Опустошить плейлист</string>
     <string name="disable_search_history">Выключить историю поиска</string>
+    <string name="hyperpipe_api_url">Hyperpipe API URL</string>
+    <string name="amoled">Чёрная</string>
+    <string name="system">Как в системе</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Тёмная</string>
+    <string name="color_scheme">Цветовая схема</string>
+    <string name="theme">Тема</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="equalizer">Эквалайзер</string>
+    <string name="equalizer_preset">Предустановка</string>
+    <string name="enabled">Включен</string>
+    <string name="none">Нет</string>
+    <string name="reset_equalizer">Сбросить настройку</string>
 </resources>

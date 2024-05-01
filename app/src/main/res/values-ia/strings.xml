@@ -84,4 +84,12 @@
     <string name="delete_playlist_and_songs">Deler lista de reproduction e cantos</string>
     <string name="clear_playlist">Rader lista de reproduction</string>
     <string name="disable_search_history">Disactivar le chronologia de recerca</string>
+    <string name="hyperpipe_api_url">URL del API Hyperpipe</string>
+    <string name="theme">Thema</string>
+    <string name="system">Systema</string>
+    <string name="light">Clar</string>
+    <string name="dark">Obscur</string>
+    <string name="amoled">AMOLED</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="color_scheme">Schema de colores</string>
 </resources>

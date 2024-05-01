@@ -84,4 +84,17 @@
     <string name="image_proxy_url">Pildipuhvri url</string>
     <string name="delete_playlist">Kustuta esitusloend</string>
     <string name="disable_search_history">Ära salvesta otsinguajalugu</string>
+    <string name="hyperpipe_api_url">Hyperpipe\'i API URL</string>
+    <string name="system">Süsteemi kujundus</string>
+    <string name="light">Hele kujundus</string>
+    <string name="dark">Tume kujundus</string>
+    <string name="amoled">AMOLED värvid</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="color_scheme">Värviteema</string>
+    <string name="theme">Teema</string>
+    <string name="equalizer">Ekvalaiser</string>
+    <string name="equalizer_preset">Ekvalaiseri eelseadistused</string>
+    <string name="enabled">Kasutusel</string>
+    <string name="none">Pole kasutusel</string>
+    <string name="reset_equalizer">Lähtesta ekvalaiser</string>
 </resources>
