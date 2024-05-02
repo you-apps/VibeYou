@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.presentation.screens.settings.components.ButtonGroupPref
 import app.suhasdissa.vibeyou.presentation.screens.settings.components.ColorPref
@@ -29,9 +28,8 @@ import app.suhasdissa.vibeyou.utils.Pref
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun AppearanceSettingsScreen() {
+fun AppearanceSettingsScreen(settingsModel: SettingsModel) {
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         LargeTopAppBar(

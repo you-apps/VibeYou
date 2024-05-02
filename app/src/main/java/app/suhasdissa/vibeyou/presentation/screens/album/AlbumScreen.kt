@@ -44,16 +44,16 @@ import app.suhasdissa.vibeyou.presentation.components.LoadingScreen
 import app.suhasdissa.vibeyou.presentation.components.MiniPlayerScaffold
 import app.suhasdissa.vibeyou.presentation.components.SongCard
 import app.suhasdissa.vibeyou.presentation.components.SongSettingsSheetSearchPage
+import app.suhasdissa.vibeyou.presentation.screens.album.model.NewPlaylistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.AlbumInfoState
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
-import app.suhasdissa.vibeyou.presentation.screens.playlists.model.PlaylistViewModel
 import coil.compose.AsyncImage
 
 @Composable
 fun AlbumScreen(
     state: AlbumInfoState,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
-    playlistViewModel: PlaylistViewModel = viewModel(factory = PlaylistViewModel.Factory)
+    playlistViewModel: NewPlaylistViewModel = viewModel(factory = NewPlaylistViewModel.Factory)
 ) {
     MiniPlayerScaffold {
         when (state) {

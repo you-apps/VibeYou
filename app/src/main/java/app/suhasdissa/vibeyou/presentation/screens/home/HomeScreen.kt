@@ -38,7 +38,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,11 +45,9 @@ import app.suhasdissa.vibeyou.MainActivity
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.navigation.Destination
-import app.suhasdissa.vibeyou.navigation.navigateTo
 import app.suhasdissa.vibeyou.presentation.components.MiniPlayerScaffold
 import app.suhasdissa.vibeyou.presentation.components.NavDrawerContent
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.LocalMusicScreen
-import app.suhasdissa.vibeyou.presentation.screens.localsearch.model.LocalSearchViewModel
 import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.MusicScreen
 import app.suhasdissa.vibeyou.utils.PermissionHelper
 import kotlinx.coroutines.launch
@@ -58,8 +55,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigate: (Destination) -> Unit,
-    localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory)
+    onNavigate: (Destination) -> Unit
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -77,10 +73,10 @@ fun HomeScreen(
                 scope.launch {
                     drawerState.close()
                 }
-                if (it == Destination.Settings) {
+                if (it is Destination.Settings) {
                     onNavigate(it)
                 } else {
-                    navController.navigateTo(it.route)
+                    navController.navigate(it)
                     currentDestination = it
                 }
             })
@@ -142,13 +138,13 @@ fun HomeScreen(
             val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
             NavHost(
                 navController,
-                startDestination = Destination.LocalMusic.route,
+                startDestination = Destination.LocalMusic,
                 Modifier
                     .fillMaxSize(),
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                composable(Destination.PipedMusic.route) {
+                composable<Destination.PipedMusic> {
                     CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                         MusicScreen(onNavigate)
                         LaunchedEffect(Unit) {
@@ -156,7 +152,7 @@ fun HomeScreen(
                         }
                     }
                 }
-                composable(Destination.LocalMusic.route) {
+                composable<Destination.LocalMusic> {
                     LaunchedEffect(Unit) {
                         currentDestination = Destination.LocalMusic
                         PermissionHelper.checkPermissions(
@@ -164,7 +160,7 @@ fun HomeScreen(
                             LocalMusicRepository.permissions
                         )
                     }
-                    LocalMusicScreen(onNavigate, localSearchViewModel)
+                    LocalMusicScreen(onNavigate)
                 }
             }
         }

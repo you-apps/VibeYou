@@ -1,18 +1,50 @@
 package app.suhasdissa.vibeyou.navigation
 
-sealed class Destination(val route: String) {
-    object PipedMusic : Destination("piped_music")
-    object LocalMusic : Destination("local_music")
-    object OnlineSearch : Destination("online_search")
-    object LocalSearch : Destination("local_search")
-    object Settings : Destination("settings")
-    object About : Destination("about")
-    object NetworkSettings : Destination("net_settings")
-    object DatabaseSettings : Destination("database_settings")
-    object AppearanceSettings : Destination("appearance_settings")
-    object Playlists : Destination("playlist_screen")
-    object LocalPlaylists : Destination("local_playlist_screen")
-    object SavedPlaylists : Destination("saved_playlist_screen")
-    object Artist : Destination("artist")
-    object LocalArtist : Destination("local_artist")
+import app.suhasdissa.vibeyou.domain.models.primary.Album
+import app.suhasdissa.vibeyou.domain.models.primary.Artist
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class Destination {
+    @Serializable
+    object PipedMusic : Destination()
+
+    @Serializable
+    object LocalMusic : Destination()
+
+    @Serializable
+    object OnlineSearch : Destination()
+
+    @Serializable
+    object LocalSearch : Destination()
+
+    @Serializable
+    object Settings : Destination()
+
+    @Serializable
+    object About : Destination()
+
+    @Serializable
+    object NetworkSettings : Destination()
+
+    @Serializable
+    object DatabaseSettings : Destination()
+
+    @Serializable
+    object AppearanceSettings : Destination()
+
+    @Serializable
+    data class Playlists(val album: Album) : Destination()
+
+    @Serializable
+    data class LocalPlaylists(val album: Album) : Destination()
+
+    @Serializable
+    data class SavedPlaylists(val album: Album) : Destination()
+
+    @Serializable
+    data class OnlineArtist(val artist: Artist) : Destination()
+
+    @Serializable
+    data class LocalArtist(val artist: Artist) : Destination()
 }

@@ -41,7 +41,7 @@ import app.suhasdissa.vibeyou.presentation.screens.settings.components.SettingIt
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    onNavigate: (route: String) -> Unit
+    onNavigate: (Destination) -> Unit
 ) {
     var showLoginDialog by remember { mutableStateOf(false) }
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
@@ -65,7 +65,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.backup_restore),
                     description = stringResource(R.string.backup_restore_setting_description),
-                    onClick = { onNavigate(Destination.DatabaseSettings.route) },
+                    onClick = { onNavigate(Destination.DatabaseSettings) },
                     icon = Icons.Rounded.SettingsBackupRestore
                 )
             }
@@ -73,7 +73,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.network_settings),
                     description = stringResource(R.string.network_settings_description),
-                    onClick = { onNavigate(Destination.NetworkSettings.route) },
+                    onClick = { onNavigate(Destination.NetworkSettings) },
                     icon = Icons.Rounded.Web
                 )
             }
@@ -81,7 +81,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.appearance_settings),
                     description = stringResource(R.string.appearance_settings_description),
-                    onClick = { onNavigate(Destination.AppearanceSettings.route) },
+                    onClick = { onNavigate(Destination.AppearanceSettings) },
                     icon = Icons.Rounded.Landscape
                 )
             }
@@ -109,7 +109,7 @@ fun SettingsScreen(
                 SettingItem(
                     title = stringResource(R.string.about_title),
                     description = stringResource(R.string.about_setting_description),
-                    onClick = { onNavigate(Destination.About.route) },
+                    onClick = { onNavigate(Destination.About) },
                     icon = Icons.Outlined.Info
                 )
             }

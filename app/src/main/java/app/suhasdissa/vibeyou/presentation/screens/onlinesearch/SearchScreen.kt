@@ -57,7 +57,7 @@ import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 @Composable
 fun SearchScreen(
     onNavigate: (Destination) -> Unit,
-    pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
+    pipedSearchViewModel: PipedSearchViewModel,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var isPopupOpen by remember {
@@ -229,8 +229,7 @@ fun SearchScreen(
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        pipedSearchViewModel.getPlaylistInfo(it)
-                                        onNavigate(Destination.Playlists)
+                                        onNavigate(Destination.Playlists(it))
                                     },
                                     onLongPress = {
                                     }
@@ -257,8 +256,7 @@ fun SearchScreen(
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        pipedSearchViewModel.getChannelInfo(it)
-                                        onNavigate(Destination.Artist)
+                                        onNavigate(Destination.OnlineArtist(it))
                                     },
                                     onLongPress = {
                                     }

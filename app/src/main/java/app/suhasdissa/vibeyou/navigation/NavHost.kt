@@ -7,128 +7,138 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import app.suhasdissa.vibeyou.domain.models.primary.Album
+import app.suhasdissa.vibeyou.domain.models.primary.Artist
 import app.suhasdissa.vibeyou.presentation.screens.album.AlbumScreen
+import app.suhasdissa.vibeyou.presentation.screens.album.model.LocalPlaylistViewModel
+import app.suhasdissa.vibeyou.presentation.screens.album.model.OnlinePlaylistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.artist.ArtistScreen
+import app.suhasdissa.vibeyou.presentation.screens.artist.model.LocalArtistViewModel
+import app.suhasdissa.vibeyou.presentation.screens.artist.model.OnlineArtistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.home.HomeScreen
-import app.suhasdissa.vibeyou.presentation.screens.localmusic.model.LocalSongViewModel
 import app.suhasdissa.vibeyou.presentation.screens.localsearch.LocalSearchScreen
 import app.suhasdissa.vibeyou.presentation.screens.localsearch.model.LocalSearchViewModel
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.SearchScreen
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.PipedSearchViewModel
-import app.suhasdissa.vibeyou.presentation.screens.playlists.model.PlaylistViewModel
+import app.suhasdissa.vibeyou.presentation.screens.playlists.model.PlaylistInfoViewModel
 import app.suhasdissa.vibeyou.presentation.screens.settings.AboutScreen
 import app.suhasdissa.vibeyou.presentation.screens.settings.AppearanceSettingsScreen
 import app.suhasdissa.vibeyou.presentation.screens.settings.DatabaseSettingsScreen
 import app.suhasdissa.vibeyou.presentation.screens.settings.NetworkSettingsScreen
 import app.suhasdissa.vibeyou.presentation.screens.settings.SettingsScreen
+import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
+import kotlin.reflect.typeOf
 
 @Composable
 fun AppNavHost(navHostController: NavHostController) {
     val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
+
+    val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
     NavHost(
         navController = navHostController,
-        startDestination = Destination.PipedMusic.route
+        startDestination = Destination.PipedMusic
     ) {
-        composable(route = Destination.PipedMusic.route) {
+        composable<Destination.PipedMusic> {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
-                    navHostController.navigateTo(destination.route)
+                    navHostController.navigate(destination)
                 })
             }
         }
 
-        composable(
-            route = Destination.OnlineSearch.route
-        ) {
+        composable<Destination.OnlineSearch> {
+            val pipedSearchViewModel: PipedSearchViewModel =
+                viewModel(factory = PipedSearchViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 SearchScreen(onNavigate = {
-                    navHostController.navigateTo(it.route)
-                })
+                    navHostController.navigate(it)
+                }, pipedSearchViewModel)
             }
         }
-        composable(
-            route = Destination.LocalSearch.route
-        ) {
+        composable<Destination.LocalSearch> {
+            val localSearchViewModel: LocalSearchViewModel =
+                viewModel(factory = LocalSearchViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 LocalSearchScreen(onNavigate = {
-                    navHostController.navigateTo(it.route)
-                })
+                    navHostController.navigate(it)
+                }, localSearchViewModel)
             }
         }
 
-        composable(route = Destination.Settings.route) {
+        composable<Destination.Settings> {
             SettingsScreen(onNavigate = { route ->
-                navHostController.navigateTo(route)
+                navHostController.navigate(route)
             })
         }
 
-        composable(route = Destination.About.route) {
+        composable<Destination.About> {
             AboutScreen()
         }
 
-        composable(route = Destination.NetworkSettings.route) {
+        composable<Destination.NetworkSettings> {
             NetworkSettingsScreen()
         }
 
-        composable(route = Destination.DatabaseSettings.route) {
+        composable<Destination.DatabaseSettings> {
             DatabaseSettingsScreen()
         }
 
-        composable(route = Destination.AppearanceSettings.route) {
+        composable<Destination.AppearanceSettings> {
+            AppearanceSettingsScreen(settingsModel)
+        }
+
+        composable<Destination.Playlists>(
+            typeMap = mapOf(typeOf<Album>() to AlbumType)
+        ) {
+            val onlinePlaylistViewModel: OnlinePlaylistViewModel =
+                viewModel(factory = OnlinePlaylistViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                AppearanceSettingsScreen()
+                AlbumScreen(onlinePlaylistViewModel.albumInfoState)
             }
         }
 
-        composable(Destination.Playlists.route) {
+        composable<Destination.LocalPlaylists>(
+            typeMap = mapOf(typeOf<Album>() to AlbumType)
+        ) {
+            val localPlaylistViewModel: LocalPlaylistViewModel =
+                viewModel(factory = LocalPlaylistViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val searchViewModel: PipedSearchViewModel =
-                    viewModel(factory = PipedSearchViewModel.Factory)
-                AlbumScreen(searchViewModel.albumInfoState)
+                AlbumScreen(localPlaylistViewModel.albumInfoState)
             }
         }
 
-        composable(Destination.LocalPlaylists.route) {
+        composable<Destination.SavedPlaylists>(
+            typeMap = mapOf(typeOf<Album>() to AlbumType)
+        ) {
+            val playlistInfoViewModel: PlaylistInfoViewModel =
+                viewModel(factory = PlaylistInfoViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val searchViewModel: LocalSearchViewModel =
-                    viewModel(factory = LocalSongViewModel.Factory)
-                AlbumScreen(searchViewModel.albumInfoState)
+                AlbumScreen(playlistInfoViewModel.albumInfoState)
             }
         }
 
-        composable(Destination.SavedPlaylists.route) {
+        composable<Destination.OnlineArtist>(
+            typeMap = mapOf(typeOf<Artist>() to ArtistType)
+        ) {
+            val onlineArtistViewModel: OnlineArtistViewModel =
+                viewModel(factory = OnlineArtistViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val searchViewModel: PlaylistViewModel =
-                    viewModel(factory = PlaylistViewModel.Factory)
-                AlbumScreen(searchViewModel.albumInfoState)
-            }
-        }
-
-        composable(route = Destination.Artist.route) {
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val searchViewModel: PipedSearchViewModel =
-                    viewModel(factory = PipedSearchViewModel.Factory)
                 ArtistScreen(onClickAlbum = {
-                    searchViewModel.getPlaylistInfo(it)
-                    navHostController.navigateTo(Destination.Playlists.route)
-                }, searchViewModel.artistInfoState)
+                    navHostController.navigate(Destination.Playlists(it))
+                }, onlineArtistViewModel.artistInfoState)
             }
         }
 
-        composable(route = Destination.LocalArtist.route) {
+        composable<Destination.LocalArtist>(
+            typeMap = mapOf(typeOf<Artist>() to ArtistType)
+        ) {
+            val localArtistViewModel: LocalArtistViewModel =
+                viewModel(factory = LocalArtistViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                val searchViewModel: LocalSearchViewModel =
-                    viewModel(factory = LocalSearchViewModel.Factory)
                 ArtistScreen(onClickAlbum = {
-                    searchViewModel.getAlbumInfo(it)
-                    navHostController.navigateTo(Destination.LocalPlaylists.route)
-                }, searchViewModel.artistInfoState)
+                    navHostController.navigate(Destination.LocalPlaylists(it))
+                }, localArtistViewModel.artistInfoState)
             }
         }
     }
-}
-
-fun NavHostController.navigateTo(route: String) = this.navigate(route) {
-    launchSingleTop = true
-    restoreState = true
 }

@@ -28,7 +28,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.vibeyou.navigation.AppNavHost
 import app.suhasdissa.vibeyou.navigation.Destination
-import app.suhasdissa.vibeyou.navigation.navigateTo
 import app.suhasdissa.vibeyou.presentation.components.NavDrawerContent
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
@@ -84,7 +83,7 @@ class MainActivity : ComponentActivity() {
                                     scope.launch {
                                         drawerState.close()
                                     }
-                                    navHostController.navigateTo(it.route)
+                                    navHostController.navigate(it)
                                     currentDestination = it
                                 }
                             )

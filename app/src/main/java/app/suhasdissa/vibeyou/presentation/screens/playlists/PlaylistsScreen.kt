@@ -24,8 +24,7 @@ fun PlaylistsScreen(
     val albums by playlistViewModel.albums.collectAsState()
     var selectedAlbum: Album? by remember { mutableStateOf(null) }
     AlbumList(items = albums.map { it.asAlbum }, onClickCard = {
-        playlistViewModel.getPlaylistInfo(it)
-        onNavigate(Destination.SavedPlaylists)
+        onNavigate(Destination.SavedPlaylists(it))
     }, onLongPress = {
         selectedAlbum = it
     })

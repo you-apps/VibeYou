@@ -45,7 +45,6 @@ import app.suhasdissa.vibeyou.presentation.screens.album.components.AlbumList
 import app.suhasdissa.vibeyou.presentation.screens.artist.components.ArtistList
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.components.SortOrderDialog
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.model.LocalSongViewModel
-import app.suhasdissa.vibeyou.presentation.screens.localsearch.model.LocalSearchViewModel
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.launch
@@ -54,7 +53,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun LocalMusicScreen(
     onNavigate: (Destination) -> Unit,
-    localSearchViewModel: LocalSearchViewModel,
     localSongViewModel: LocalSongViewModel = viewModel(factory = LocalSongViewModel.Factory),
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
@@ -174,15 +172,13 @@ fun LocalMusicScreen(
                 }
 
                 1 -> AlbumList(items = localSongViewModel.albums, onClickCard = {
-                    localSearchViewModel.getAlbumInfo(it)
-                    onNavigate(Destination.LocalPlaylists)
+                    onNavigate(Destination.LocalPlaylists(it))
                 }, onLongPress = {})
 
                 2 -> ArtistList(
                     items = localSongViewModel.artists,
                     onClickCard = {
-                        localSearchViewModel.getArtistInfo(it)
-                        onNavigate(Destination.LocalArtist)
+                        onNavigate(Destination.LocalArtist(it))
                     },
                     onLongPress = {}
                 )

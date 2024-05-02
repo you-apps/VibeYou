@@ -57,7 +57,7 @@ import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 @Composable
 fun LocalSearchScreen(
     onNavigate: (Destination) -> Unit,
-    localSearchViewModel: LocalSearchViewModel = viewModel(factory = LocalSearchViewModel.Factory),
+    localSearchViewModel: LocalSearchViewModel,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     var isPopupOpen by remember {
@@ -209,8 +209,7 @@ fun LocalSearchScreen(
                                 AlbumList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        localSearchViewModel.getAlbumInfo(it)
-                                        onNavigate(Destination.LocalPlaylists)
+                                        onNavigate(Destination.LocalPlaylists(it))
                                     },
                                     onLongPress = {
                                     }
@@ -234,8 +233,7 @@ fun LocalSearchScreen(
                                 ArtistList(
                                     items = searchState.items,
                                     onClickCard = {
-                                        localSearchViewModel.getArtistInfo(it)
-                                        onNavigate(Destination.LocalArtist)
+                                        onNavigate(Destination.LocalArtist(it))
                                     },
                                     onLongPress = {
                                     }

@@ -15,11 +15,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.models.LocalSearchFilter
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
-import app.suhasdissa.vibeyou.domain.models.primary.Album
-import app.suhasdissa.vibeyou.domain.models.primary.Artist
 import app.suhasdissa.vibeyou.domain.models.primary.Song
-import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.AlbumInfoState
-import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.ArtistInfoState
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.SearchState
 import kotlinx.coroutines.launch
 
@@ -30,10 +26,6 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
     var searchFilter = LocalSearchFilter.Songs
     var search by mutableStateOf("")
     var songSearchSuggestion: List<Song> by mutableStateOf(listOf())
-    var albumInfoState: AlbumInfoState by mutableStateOf(AlbumInfoState.Loading)
-        private set
-    var artistInfoState: ArtistInfoState by mutableStateOf(ArtistInfoState.Loading)
-        private set
 
     fun getSuggestions() {
         if (search.length < 3) return
@@ -55,36 +47,6 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
     fun setSearchHistory() {
         viewModelScope.launch {
             history = musicRepository.getSearchHistory().takeLast(6).reversed().map { it.query }
-        }
-    }
-
-    fun getAlbumInfo(album: Album) {
-        viewModelScope.launch {
-            albumInfoState = AlbumInfoState.Loading
-            albumInfoState = try {
-                AlbumInfoState.Success(
-                    album,
-                    musicRepository.getAlbumInfo(album.id.toLong())
-                )
-            } catch (e: Exception) {
-                Log.e("Playlist Info", e.toString())
-                AlbumInfoState.Error
-            }
-        }
-    }
-
-    fun getArtistInfo(artist: Artist) {
-        viewModelScope.launch {
-            artistInfoState = ArtistInfoState.Loading
-            artistInfoState = try {
-                ArtistInfoState.Success(
-                    artist,
-                    musicRepository.getArtistInfo(artist.artistsText)
-                )
-            } catch (e: Exception) {
-                Log.e("Artist Info", e.toString())
-                ArtistInfoState.Error
-            }
         }
     }
 
@@ -143,3 +105,4 @@ class LocalSearchViewModel(private val musicRepository: LocalMusicRepository) : 
         }
     }
 }
+
