@@ -26,9 +26,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import app.suhasdissa.vibeyou.backend.viewmodel.PlayerViewModel
-import app.suhasdissa.vibeyou.backend.viewmodel.SettingsModel
-import app.suhasdissa.vibeyou.ui.components.NavDrawerContent
+import app.suhasdissa.vibeyou.navigation.AppNavHost
+import app.suhasdissa.vibeyou.navigation.Destination
+import app.suhasdissa.vibeyou.navigation.navigateTo
+import app.suhasdissa.vibeyou.presentation.components.NavDrawerContent
+import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
+import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
 import app.suhasdissa.vibeyou.ui.theme.VibeYouTheme
 import app.suhasdissa.vibeyou.utils.ThemeUtil
 import kotlinx.coroutines.launch

@@ -1,0 +1,17 @@
+package app.suhasdissa.vibeyou.domain.models.primary
+
+import android.net.Uri
+
+data class Album(
+    val id: String,
+    val title: String,
+    val thumbnailUri: Uri? = null,
+    val artistsText: String,
+    val numberOfSongs: Int? = null,
+    val isLocal: Boolean = false,
+    val type: Type = Type.ALBUM
+) {
+    enum class Type {
+        PLAYLIST, ALBUM
+    }
+}

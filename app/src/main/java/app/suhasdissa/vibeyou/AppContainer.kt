@@ -2,7 +2,6 @@ package app.suhasdissa.vibeyou
 
 import android.content.ContentResolver
 import androidx.media3.session.MediaController
-import app.suhasdissa.vibeyou.backend.database.SongDatabase
 import app.suhasdissa.vibeyou.backend.repository.AuthRepository
 import app.suhasdissa.vibeyou.backend.repository.AuthRepositoryImpl
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
@@ -10,6 +9,7 @@ import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PlaylistRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepositoryImpl
+import app.suhasdissa.vibeyou.data.database.SongDatabase
 import com.google.common.util.concurrent.ListenableFuture
 
 interface AppContainer {

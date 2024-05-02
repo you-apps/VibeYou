@@ -1,7 +1,7 @@
 package app.suhasdissa.vibeyou.utils
 
-import app.suhasdissa.vibeyou.backend.api.HyperpipeApi
-import app.suhasdissa.vibeyou.backend.api.PipedApi
+import app.suhasdissa.vibeyou.data.api.HyperpipeApi
+import app.suhasdissa.vibeyou.data.api.PipedApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

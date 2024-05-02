@@ -6,14 +6,14 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import app.suhasdissa.vibeyou.backend.data.Album
-import app.suhasdissa.vibeyou.backend.data.Artist
-import app.suhasdissa.vibeyou.backend.data.Song
-import app.suhasdissa.vibeyou.backend.database.entities.PlaylistEntity
-import app.suhasdissa.vibeyou.backend.database.entities.SongEntity
 import app.suhasdissa.vibeyou.backend.models.PipedSongResponse
 import app.suhasdissa.vibeyou.backend.models.playlists.Playlist
 import app.suhasdissa.vibeyou.backend.models.songs.SongItem
+import app.suhasdissa.vibeyou.data.database.entities.PlaylistEntity
+import app.suhasdissa.vibeyou.data.database.entities.SongEntity
+import app.suhasdissa.vibeyou.domain.models.primary.Album
+import app.suhasdissa.vibeyou.domain.models.primary.Artist
+import app.suhasdissa.vibeyou.domain.models.primary.Song
 
 val SongItem.asSong: Song
     get() = Song(
