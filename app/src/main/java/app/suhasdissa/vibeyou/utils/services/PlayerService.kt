@@ -297,7 +297,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                         PlaybackException.ERROR_CODE_IO_INVALID_HTTP_CONTENT_TYPE
                     )
                 }
-                dataSpec.withUri(url).subrange(dataSpec.uriPositionOffset, chunkLength)
+                dataSpec.withUri(url)
             }
         }
         return DynamicDataSource.Companion.Factory(resolvingDataSource, defaultDataSource)
