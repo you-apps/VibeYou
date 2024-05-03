@@ -51,7 +51,7 @@ import coil.compose.AsyncImage
 @Composable
 fun AlbumScreen(
     state: AlbumInfoState,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    playerViewModel: PlayerViewModel,
     playlistViewModel: NewPlaylistViewModel = viewModel(factory = NewPlaylistViewModel.Factory)
 ) {
     when (state) {
@@ -182,7 +182,8 @@ fun AlbumScreen(
                 selectedSong?.let {
                     SongSettingsSheetSearchPage(
                         onDismissRequest = { showSongSettings = false },
-                        song = it
+                        song = it,
+                        playerViewModel
                     )
                 }
             }

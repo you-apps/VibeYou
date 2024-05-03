@@ -56,8 +56,8 @@ import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 @Composable
 fun SearchScreen(
     onNavigate: (Destination) -> Unit,
-    pipedSearchViewModel: PipedSearchViewModel,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel,
+    pipedSearchViewModel: PipedSearchViewModel = viewModel(factory = PipedSearchViewModel.Factory),
 ) {
     var isPopupOpen by remember {
         mutableStateOf(pipedSearchViewModel.state !is SearchState.Success)
@@ -277,7 +277,8 @@ fun SearchScreen(
         selectedSong?.let {
             SongSettingsSheetSearchPage(
                 onDismissRequest = { showSongSettings = false },
-                song = selectedSong!!
+                song = selectedSong!!,
+                playerViewModel
             )
         }
     }

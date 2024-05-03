@@ -29,7 +29,7 @@ import app.suhasdissa.vibeyou.utils.asSong
 @Composable
 fun SongsScreen(
     showFavourites: Boolean,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    playerViewModel: PlayerViewModel,
     songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory)
 ) {
     val view = LocalView.current
@@ -67,7 +67,7 @@ fun SongsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            SongListView(songs)
+            SongListView(songs, playerViewModel)
         }
     }
 }

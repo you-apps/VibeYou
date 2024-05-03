@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import kotlinx.coroutines.launch
@@ -35,7 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QueueSheet(
     onDismissRequest: () -> Unit,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel
 ) {
     val playerSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true

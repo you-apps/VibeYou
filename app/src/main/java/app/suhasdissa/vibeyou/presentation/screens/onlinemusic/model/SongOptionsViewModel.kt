@@ -7,32 +7,36 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import app.suhasdissa.vibeyou.domain.models.primary.Song
+import kotlinx.coroutines.launch
 
-class SongViewModel(private val songDatabaseRepository: SongDatabaseRepository) : ViewModel() {
-    val songs = songDatabaseRepository.getAllSongsStream().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000L),
-        initialValue = listOf()
-    )
+class SongOptionsViewModel(private val songDatabaseRepository: SongDatabaseRepository) :
+    ViewModel() {
+    fun removeSong(song: Song) {
+        viewModelScope.launch {
+            songDatabaseRepository.removeSong(song)
+        }
+    }
 
-    val favSongs = songDatabaseRepository.getFavSongsStream().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000L),
-        initialValue = listOf()
-    )
+    fun toggleFavourite(id: String) {
+        viewModelScope.launch {
+            val song = songDatabaseRepository.getSongById(id)
+            song ?: return@launch
+            song.let {
+                songDatabaseRepository.addSong(it.toggleLike())
+            }
+        }
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MellowMusicApplication)
-                SongViewModel(
+                SongOptionsViewModel(
                     application.container.songDatabaseRepository
                 )
             }
         }
     }
 }
-

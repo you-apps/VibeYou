@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.components.SortOrder
@@ -34,8 +33,8 @@ import app.suhasdissa.vibeyou.utils.TimeUtil
 @Composable
 fun SongListView(
     songs: List<Song>,
-    sortOrder: SortOrder = SortOrder.Alphabetic,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel,
+    sortOrder: SortOrder = SortOrder.Alphabetic
 ) {
     var showSongSettings by remember { mutableStateOf(false) }
     var selectedSong by remember { mutableStateOf<Song?>(null) }
@@ -112,7 +111,8 @@ fun SongListView(
         selectedSong?.let {
             SongSettingsSheet(
                 onDismissRequest = { showSongSettings = false },
-                song = selectedSong!!
+                song = selectedSong!!,
+                playerViewModel
             )
         }
     }

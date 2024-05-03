@@ -53,8 +53,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LocalMusicScreen(
     onNavigate: (Destination) -> Unit,
+    playerViewModel: PlayerViewModel,
     localSongViewModel: LocalSongViewModel = viewModel(factory = LocalSongViewModel.Factory),
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
 ) {
     val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
@@ -165,7 +165,8 @@ fun LocalMusicScreen(
                             }
                             SongListView(
                                 songs = localSongViewModel.songs,
-                                sortOrder = localSongViewModel.songsSortOrder
+                                sortOrder = localSongViewModel.songsSortOrder,
+                                playerViewModel = playerViewModel
                             )
                         }
                     }

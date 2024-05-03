@@ -76,7 +76,7 @@ import coil.compose.SubcomposeAsyncImageContent
 fun FullScreenPlayer(
     controller: MediaController,
     onCollapse: () -> Unit,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel
 ) {
     var showQueueSheet by remember { mutableStateOf(false) }
     var showSongOptions by remember { mutableStateOf(false) }
@@ -181,8 +181,11 @@ fun FullScreenPlayer(
             }
         }
     }
-    if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false })
-    if (showSongOptions) SongOptionsSheet(onDismissRequest = { showSongOptions = false })
+    if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false }, playerViewModel)
+    if (showSongOptions) SongOptionsSheet(
+        onDismissRequest = { showSongOptions = false },
+        playerViewModel
+    )
 }
 
 @Composable

@@ -20,7 +20,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +33,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -47,13 +45,15 @@ import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.navigation.HomeDestination
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.LocalMusicScreen
 import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.MusicScreen
+import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.utils.PermissionHelper
 
 @Composable
 fun HomeScreen(
     onNavigate: (Destination) -> Unit,
     onDrawerOpen: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    playerViewModel: PlayerViewModel
 ) {
     val view = LocalView.current
     val mainActivity = (LocalContext.current as MainActivity)
@@ -129,7 +129,6 @@ fun HomeScreen(
             }
         }
     }) { pV ->
-        val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
         NavHost(
             navController,
             startDestination = HomeDestination.LocalMusic,
@@ -140,9 +139,7 @@ fun HomeScreen(
             exitTransition = { ExitTransition.None }
         ) {
             composable<HomeDestination.OnlineMusic> {
-                CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                    MusicScreen(onNavigate)
-                }
+                MusicScreen(onNavigate, playerViewModel)
             }
             composable<HomeDestination.LocalMusic> {
                 LaunchedEffect(Unit) {
@@ -151,7 +148,7 @@ fun HomeScreen(
                         LocalMusicRepository.permissions
                     )
                 }
-                LocalMusicScreen(onNavigate)
+                LocalMusicScreen(onNavigate, playerViewModel)
             }
         }
     }

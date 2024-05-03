@@ -1,7 +1,6 @@
 package app.suhasdissa.vibeyou.presentation.screens.onlinemusic
 
 import android.view.SoundEffectConstants
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,13 +20,14 @@ import androidx.compose.ui.unit.dp
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.components.SongsScreen
+import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.playlists.PlaylistsScreen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicScreen(
-    onNavigate: (Destination) -> Unit
+    onNavigate: (Destination) -> Unit,
+    playerViewModel: PlayerViewModel
 ) {
     val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
@@ -82,8 +82,8 @@ fun MusicScreen(
             modifier = Modifier.fillMaxSize()
         ) { index ->
             when (index) {
-                0 -> SongsScreen(showFavourites = false)
-                1 -> SongsScreen(showFavourites = true)
+                0 -> SongsScreen(showFavourites = false, playerViewModel)
+                1 -> SongsScreen(showFavourites = true, playerViewModel)
                 2 -> PlaylistsScreen(onNavigate = onNavigate)
             }
         }

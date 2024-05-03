@@ -38,7 +38,6 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.EqualizerData
 import app.suhasdissa.vibeyou.presentation.components.VerticalSlider
@@ -50,7 +49,7 @@ import app.suhasdissa.vibeyou.utils.rememberPreference
 @Composable
 fun EqualizerSheet(
     equalizerData: EqualizerData,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
+    playerViewModel: PlayerViewModel,
     onDismissRequest: () -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {

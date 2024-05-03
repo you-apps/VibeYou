@@ -6,9 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -24,9 +22,8 @@ import app.suhasdissa.vibeyou.presentation.screens.artist.model.LocalArtistViewM
 import app.suhasdissa.vibeyou.presentation.screens.artist.model.OnlineArtistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.home.HomeScreen
 import app.suhasdissa.vibeyou.presentation.screens.localsearch.LocalSearchScreen
-import app.suhasdissa.vibeyou.presentation.screens.localsearch.model.LocalSearchViewModel
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.SearchScreen
-import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.PipedSearchViewModel
+import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.playlists.model.PlaylistInfoViewModel
 import app.suhasdissa.vibeyou.presentation.screens.settings.AboutScreen
 import app.suhasdissa.vibeyou.presentation.screens.settings.AppearanceSettingsScreen
@@ -41,11 +38,10 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     homeNavHostController: NavHostController,
-    onDrawerOpen: () -> Unit
+    onDrawerOpen: () -> Unit,
+    playerViewModel: PlayerViewModel,
+    settingsModel: SettingsModel
 ) {
-    val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
-
-    val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
     NavHost(
         modifier = modifier,
         navController = navHostController,
@@ -65,11 +61,9 @@ fun AppNavHost(
                 }
             }
         ) {
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                HomeScreen(onNavigate = { destination ->
-                    navHostController.navigate(destination)
-                }, onDrawerOpen = onDrawerOpen, homeNavHostController)
-            }
+            HomeScreen(onNavigate = { destination ->
+                navHostController.navigate(destination)
+            }, onDrawerOpen = onDrawerOpen, homeNavHostController, playerViewModel)
         }
 
         composable<Destination.OnlineSearch>(
@@ -82,13 +76,9 @@ fun AppNavHost(
                     targetOffset = { it }) + fadeOut()
             }
         ) {
-            val pipedSearchViewModel: PipedSearchViewModel =
-                viewModel(factory = PipedSearchViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                SearchScreen(onNavigate = {
-                    navHostController.navigate(it)
-                }, pipedSearchViewModel)
-            }
+            SearchScreen(onNavigate = {
+                navHostController.navigate(it)
+            }, playerViewModel)
         }
         composable<Destination.LocalSearch>(
             enterTransition = {
@@ -100,13 +90,9 @@ fun AppNavHost(
                     targetOffset = { it }) + fadeOut()
             }
         ) {
-            val localSearchViewModel: LocalSearchViewModel =
-                viewModel(factory = LocalSearchViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                LocalSearchScreen(onNavigate = {
-                    navHostController.navigate(it)
-                }, localSearchViewModel)
-            }
+            LocalSearchScreen(onNavigate = {
+                navHostController.navigate(it)
+            }, playerViewModel)
         }
 
         composable<Destination.Settings>(
@@ -225,9 +211,7 @@ fun AppNavHost(
         ) {
             val onlinePlaylistViewModel: OnlinePlaylistViewModel =
                 viewModel(factory = OnlinePlaylistViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                AlbumScreen(onlinePlaylistViewModel.albumInfoState)
-            }
+            AlbumScreen(onlinePlaylistViewModel.albumInfoState, playerViewModel)
         }
 
         composable<Destination.LocalPlaylists>(
@@ -245,9 +229,7 @@ fun AppNavHost(
         ) {
             val localPlaylistViewModel: LocalPlaylistViewModel =
                 viewModel(factory = LocalPlaylistViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                AlbumScreen(localPlaylistViewModel.albumInfoState)
-            }
+            AlbumScreen(localPlaylistViewModel.albumInfoState, playerViewModel)
         }
 
         composable<Destination.SavedPlaylists>(
@@ -265,9 +247,7 @@ fun AppNavHost(
         ) {
             val playlistInfoViewModel: PlaylistInfoViewModel =
                 viewModel(factory = PlaylistInfoViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                AlbumScreen(playlistInfoViewModel.albumInfoState)
-            }
+            AlbumScreen(playlistInfoViewModel.albumInfoState, playerViewModel)
         }
 
         composable<Destination.OnlineArtist>(
@@ -285,11 +265,9 @@ fun AppNavHost(
         ) {
             val onlineArtistViewModel: OnlineArtistViewModel =
                 viewModel(factory = OnlineArtistViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                ArtistScreen(onClickAlbum = {
-                    navHostController.navigate(Destination.Playlists(it))
-                }, onlineArtistViewModel.artistInfoState)
-            }
+            ArtistScreen(onClickAlbum = {
+                navHostController.navigate(Destination.Playlists(it))
+            }, onlineArtistViewModel.artistInfoState)
         }
 
         composable<Destination.LocalArtist>(
@@ -307,11 +285,9 @@ fun AppNavHost(
         ) {
             val localArtistViewModel: LocalArtistViewModel =
                 viewModel(factory = LocalArtistViewModel.Factory)
-            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-                ArtistScreen(onClickAlbum = {
-                    navHostController.navigate(Destination.LocalPlaylists(it))
-                }, localArtistViewModel.artistInfoState)
-            }
+            ArtistScreen(onClickAlbum = {
+                navHostController.navigate(Destination.LocalPlaylists(it))
+            }, localArtistViewModel.artistInfoState)
         }
     }
 }

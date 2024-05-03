@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
-import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.model.SongViewModel
+import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.model.SongOptionsViewModel
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import coil.compose.AsyncImage
 
@@ -53,8 +53,8 @@ import coil.compose.AsyncImage
 fun SongSettingsSheet(
     onDismissRequest: () -> Unit,
     song: Song,
-    songViewModel: SongViewModel = viewModel(factory = SongViewModel.Factory),
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel,
+    songViewModel: SongOptionsViewModel = viewModel(factory = SongOptionsViewModel.Factory),
 ) {
     val songSettingsSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -166,7 +166,7 @@ fun SongSettingsSheet(
 fun SongSettingsSheetSearchPage(
     onDismissRequest: () -> Unit,
     song: Song,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel
 ) {
     val songSettingsSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true

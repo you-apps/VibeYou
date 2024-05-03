@@ -36,7 +36,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
@@ -46,7 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SongOptionsSheet(
     onDismissRequest: () -> Unit,
-    playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory)
+    playerViewModel: PlayerViewModel
 ) {
     val playerSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -132,7 +131,9 @@ fun SongOptionsSheet(
     }
 
     if (showEqualizerSheet) {
-        EqualizerSheet(equalizerData = app.supportedEqualizerData!!,
-            onDismissRequest = { showEqualizerSheet = false })
+        EqualizerSheet(
+            equalizerData = app.supportedEqualizerData!!,
+            onDismissRequest = { showEqualizerSheet = false }, playerViewModel = playerViewModel
+        )
     }
 }

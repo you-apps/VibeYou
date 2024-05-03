@@ -48,6 +48,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
+            val playerViewModel: PlayerViewModel =
+                viewModel(factory = PlayerViewModel.Factory)
 
             val darkTheme = when (settingsModel.themeMode) {
                 SettingsModel.Theme.SYSTEM -> isSystemInDarkTheme()
@@ -68,7 +70,9 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(Unit) {
                     (application as MellowMusicApplication).accentColor = primaryColor
                 }
-                MainAppContent()
+                MainAppContent(
+                    playerViewModel, settingsModel
+                )
             }
         }
 
@@ -131,7 +135,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MainAppContent() {
+private fun MainAppContent(
+    playerViewModel: PlayerViewModel,
+    settingsModel: SettingsModel
+) {
     val navHostController = rememberNavController()
     val homeNavHostController = rememberNavController()
 
@@ -163,9 +170,6 @@ private fun MainAppContent() {
             )
         }
     ) {
-
-        val playerViewModel: PlayerViewModel =
-            viewModel(factory = PlayerViewModel.Factory)
         MiniPlayerScaffold(playerViewModel) { pV ->
             AppNavHost(
                 modifier = Modifier
@@ -178,7 +182,9 @@ private fun MainAppContent() {
                     scope.launch {
                         drawerState.open()
                     }
-                }
+                },
+                playerViewModel,
+                settingsModel
             )
         }
 

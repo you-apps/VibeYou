@@ -50,7 +50,8 @@ fun MiniPlayerScaffold(
                                 isPlayerSheetVisible = false
                             }
                         }
-                    }
+                    },
+                    playerViewModel
                 )
             }
         }
