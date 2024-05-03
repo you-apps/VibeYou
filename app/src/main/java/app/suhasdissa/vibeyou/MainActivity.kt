@@ -7,14 +7,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +31,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.vibeyou.navigation.AppNavHost
 import app.suhasdissa.vibeyou.navigation.Destination
+import app.suhasdissa.vibeyou.navigation.HomeDestination
+import app.suhasdissa.vibeyou.presentation.components.MiniPlayerScaffold
 import app.suhasdissa.vibeyou.presentation.components.NavDrawerContent
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
@@ -40,6 +45,7 @@ class MainActivity : ComponentActivity() {
     private val playerViewModel: PlayerViewModel by viewModels { PlayerViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
 
@@ -57,41 +63,12 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = settingsModel.colorTheme == SettingsModel.ColorTheme.SYSTEM,
                 amoledDark = settingsModel.themeMode == SettingsModel.Theme.AMOLED
             ) {
-                val navHostController = rememberNavController()
                 val primaryColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f).toArgb()
 
                 LaunchedEffect(Unit) {
                     (application as MellowMusicApplication).accentColor = primaryColor
                 }
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surface
-                ) {
-                    val drawerState = rememberDrawerState(DrawerValue.Closed)
-                    val scope = rememberCoroutineScope()
-                    var currentDestination by remember {
-                        mutableStateOf<Destination>(Destination.Home)
-                    }
-                    ModalNavigationDrawer(
-                        drawerState = drawerState,
-                        gesturesEnabled = drawerState.isOpen,
-                        drawerContent = {
-                            NavDrawerContent(
-                                currentDestination = currentDestination,
-                                onDestinationSelected = {
-                                    scope.launch {
-                                        drawerState.close()
-                                    }
-                                    navHostController.navigate(it)
-                                    currentDestination = it
-                                }
-                            )
-                        }
-                    ) {
-                        AppNavHost(navHostController = navHostController)
-                    }
-                }
+                MainAppContent()
             }
         }
 
@@ -150,5 +127,60 @@ class MainActivity : ComponentActivity() {
         }
         Toast.makeText(this, vidId, Toast.LENGTH_SHORT).show()
         playerViewModel.tryToPlayId(vidId)
+    }
+}
+
+@Composable
+private fun MainAppContent() {
+    val navHostController = rememberNavController()
+    val homeNavHostController = rememberNavController()
+
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    var currentDestination by remember {
+        mutableStateOf<HomeDestination>(HomeDestination.LocalMusic)
+    }
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen,
+        drawerContent = {
+            NavDrawerContent(
+                currentDestination = currentDestination,
+                onDestinationSelected = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    when (it) {
+                        is Destination -> navHostController.navigate(it)
+                        is HomeDestination -> {
+                            currentDestination = it
+                            homeNavHostController.popBackStack()
+                            homeNavHostController.navigate(it)
+                        }
+                    }
+                }
+            )
+        }
+    ) {
+
+        val playerViewModel: PlayerViewModel =
+            viewModel(factory = PlayerViewModel.Factory)
+        MiniPlayerScaffold(playerViewModel) { pV ->
+            AppNavHost(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .consumeWindowInsets(pV)
+                    .padding(pV),
+                navHostController = navHostController,
+                homeNavHostController = homeNavHostController,
+                onDrawerOpen = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }
+            )
+        }
+
     }
 }

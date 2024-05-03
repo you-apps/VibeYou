@@ -41,7 +41,6 @@ import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.presentation.components.LoadingScreen
-import app.suhasdissa.vibeyou.presentation.components.MiniPlayerScaffold
 import app.suhasdissa.vibeyou.presentation.components.SongCard
 import app.suhasdissa.vibeyou.presentation.components.SongSettingsSheetSearchPage
 import app.suhasdissa.vibeyou.presentation.screens.album.model.NewPlaylistViewModel
@@ -55,138 +54,136 @@ fun AlbumScreen(
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     playlistViewModel: NewPlaylistViewModel = viewModel(factory = NewPlaylistViewModel.Factory)
 ) {
-    MiniPlayerScaffold {
-        when (state) {
-            AlbumInfoState.Error -> IllustratedMessageScreen(
-                image = R.drawable.ic_launcher_monochrome,
-                message = R.string.something_went_wrong
-            )
+    when (state) {
+        AlbumInfoState.Error -> IllustratedMessageScreen(
+            image = R.drawable.ic_launcher_monochrome,
+            message = R.string.something_went_wrong
+        )
 
-            AlbumInfoState.Loading -> LoadingScreen()
-            is AlbumInfoState.Success -> {
-                var showSongSettings by remember { mutableStateOf(false) }
-                var selectedSong by remember { mutableStateOf<Song?>(null) }
-                LazyColumn(
-                    Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
-                ) {
-                    item {
+        AlbumInfoState.Loading -> LoadingScreen()
+        is AlbumInfoState.Success -> {
+            var showSongSettings by remember { mutableStateOf(false) }
+            var selectedSong by remember { mutableStateOf<Song?>(null) }
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                item {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .padding(bottom = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 40.dp, vertical = 20.dp)
+                                .aspectRatio(1f)
+                                .clip(RoundedCornerShape(16.dp)),
+                            model = state.album.thumbnailUri,
+                            contentDescription = stringResource(id = R.string.album_art),
+                            contentScale = ContentScale.Crop,
+                            error = painterResource(id = R.drawable.music_placeholder)
+                        )
                         Column(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp)
-                                .padding(bottom = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            AsyncImage(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 40.dp, vertical = 20.dp)
-                                    .aspectRatio(1f)
-                                    .clip(RoundedCornerShape(16.dp)),
-                                model = state.album.thumbnailUri,
-                                contentDescription = stringResource(id = R.string.album_art),
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(id = R.drawable.music_placeholder)
+                            Text(
+                                text = state.album.title,
+                                style = MaterialTheme.typography.titleLarge
                             )
-                            Column(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
-                            ) {
+                            Text(
+                                text = state.album.artistsText,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            state.album.numberOfSongs?.let {
                                 Text(
-                                    text = state.album.title,
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                                Text(
-                                    text = state.album.artistsText,
+                                    text = "$it ${stringResource(id = R.string.songs)}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
-                                state.album.numberOfSongs?.let {
-                                    Text(
-                                        text = "$it ${stringResource(id = R.string.songs)}",
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
                             }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                OutlinedButton(modifier = Modifier.weight(1f), onClick = {
-                                    playerViewModel.playSongs(state.songs, shuffle = false)
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.PlayArrow,
-                                        contentDescription = null
-                                    )
-                                    Text(text = stringResource(id = R.string.play_all))
-                                }
-                                Button(modifier = Modifier.weight(1f), onClick = {
-                                    playerViewModel.playSongs(state.songs, shuffle = true)
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Shuffle,
-                                        contentDescription = null
-                                    )
-                                    Text(text = stringResource(id = R.string.shuffle))
-                                }
-                            }
-                            if (!state.album.isLocal) {
-                                val context = LocalContext.current
-                                FilledTonalButton(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onClick = {
-                                        playlistViewModel.newPlaylistWithSongs(
-                                            state.album,
-                                            state.songs
-                                        )
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(
-                                                R.string.added_all_the_songs_to_the_library
-                                            ),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.LibraryAdd,
-                                        contentDescription = null
-                                    )
-                                    Text(text = stringResource(R.string.add_to_library))
-                                }
-                            }
-                            HorizontalDivider()
                         }
-                    }
-                    items(items = state.songs) { item ->
-                        SongCard(
-                            song = item,
-                            onClickCard = {
-                                playerViewModel.playSong(item)
-                                if (!item.isLocal) {
-                                    playerViewModel.saveSong(item)
-                                }
-                            },
-                            onLongPress = {
-                                selectedSong = item
-                                showSongSettings = true
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(modifier = Modifier.weight(1f), onClick = {
+                                playerViewModel.playSongs(state.songs, shuffle = false)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.PlayArrow,
+                                    contentDescription = null
+                                )
+                                Text(text = stringResource(id = R.string.play_all))
                             }
-                        )
+                            Button(modifier = Modifier.weight(1f), onClick = {
+                                playerViewModel.playSongs(state.songs, shuffle = true)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Shuffle,
+                                    contentDescription = null
+                                )
+                                Text(text = stringResource(id = R.string.shuffle))
+                            }
+                        }
+                        if (!state.album.isLocal) {
+                            val context = LocalContext.current
+                            FilledTonalButton(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    playlistViewModel.newPlaylistWithSongs(
+                                        state.album,
+                                        state.songs
+                                    )
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(
+                                            R.string.added_all_the_songs_to_the_library
+                                        ),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.LibraryAdd,
+                                    contentDescription = null
+                                )
+                                Text(text = stringResource(R.string.add_to_library))
+                            }
+                        }
+                        HorizontalDivider()
                     }
                 }
+                items(items = state.songs) { item ->
+                    SongCard(
+                        song = item,
+                        onClickCard = {
+                            playerViewModel.playSong(item)
+                            if (!item.isLocal) {
+                                playerViewModel.saveSong(item)
+                            }
+                        },
+                        onLongPress = {
+                            selectedSong = item
+                            showSongSettings = true
+                        }
+                    )
+                }
+            }
 
-                if (showSongSettings) {
-                    selectedSong?.let {
-                        SongSettingsSheetSearchPage(
-                            onDismissRequest = { showSongSettings = false },
-                            song = it
-                        )
-                    }
+            if (showSongSettings) {
+                selectedSong?.let {
+                    SongSettingsSheetSearchPage(
+                        onDismissRequest = { showSongSettings = false },
+                        song = it
+                    )
                 }
             }
         }

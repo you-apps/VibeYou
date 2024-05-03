@@ -24,11 +24,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.navigation.Destination
+import app.suhasdissa.vibeyou.navigation.HomeDestination
 
 @Composable
 fun NavDrawerContent(
-    currentDestination: Destination,
-    onDestinationSelected: (Destination) -> Unit
+    currentDestination: HomeDestination,
+    onDestinationSelected: (Any) -> Unit,
 ) {
     val view = LocalView.current
     ModalDrawerSheet(modifier = Modifier.width(250.dp)) {
@@ -58,10 +59,10 @@ fun NavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.local_music)) },
-            selected = currentDestination == Destination.LocalMusic,
+            selected = currentDestination is HomeDestination.LocalMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(Destination.LocalMusic)
+                onDestinationSelected(HomeDestination.LocalMusic)
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -73,10 +74,10 @@ fun NavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.piped_music)) },
-            selected = currentDestination == Destination.Home,
+            selected = currentDestination is HomeDestination.OnlineMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(Destination.Home)
+                onDestinationSelected(HomeDestination.OnlineMusic)
             }
         )
         Spacer(Modifier.height(16.dp))

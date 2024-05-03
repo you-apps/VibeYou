@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -36,11 +37,17 @@ import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
 import kotlin.reflect.typeOf
 
 @Composable
-fun AppNavHost(navHostController: NavHostController) {
+fun AppNavHost(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    homeNavHostController: NavHostController,
+    onDrawerOpen: () -> Unit
+) {
     val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
 
     val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
     NavHost(
+        modifier = modifier,
         navController = navHostController,
         startDestination = Destination.Home
     ) {
@@ -61,7 +68,7 @@ fun AppNavHost(navHostController: NavHostController) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
                     navHostController.navigate(destination)
-                })
+                }, onDrawerOpen = onDrawerOpen, homeNavHostController)
             }
         }
 

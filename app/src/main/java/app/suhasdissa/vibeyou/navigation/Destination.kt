@@ -10,9 +10,6 @@ sealed class Destination {
     object Home : Destination()
 
     @Serializable
-    object LocalMusic : Destination()
-
-    @Serializable
     object OnlineSearch : Destination()
 
     @Serializable
@@ -47,4 +44,13 @@ sealed class Destination {
 
     @Serializable
     data class LocalArtist(val artist: Artist) : Destination()
+}
+
+@Serializable
+sealed class HomeDestination {
+    @Serializable
+    object LocalMusic : HomeDestination()
+
+    @Serializable
+    object OnlineMusic : HomeDestination()
 }
