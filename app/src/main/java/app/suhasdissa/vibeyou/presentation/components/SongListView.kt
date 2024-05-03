@@ -29,7 +29,6 @@ import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.screens.localmusic.components.SortOrder
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.utils.TimeUtil
-import my.nanihadesuka.compose.LazyColumnScrollbar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -61,53 +60,53 @@ fun SongListView(
             }
         }
         val state = rememberLazyListState()
-        LazyColumnScrollbar(
-            listState = state,
-            thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-            thumbSelectedColor = MaterialTheme.colorScheme.primary,
-            thickness = 8.dp
+//        LazyColumnScrollbar(
+//            listState = state,
+//            thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+//            thumbSelectedColor = MaterialTheme.colorScheme.primary,
+//            thickness = 8.dp
+//        ) {
+        LazyColumn(
+            Modifier.fillMaxSize(),
+            state = state,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
         ) {
-            LazyColumn(
-                Modifier.fillMaxSize(),
-                state = state,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                groups.forEach { group ->
-                    stickyHeader {
-                        Row(
-                            Modifier
+            groups.forEach { group ->
+                stickyHeader {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.background)
+                    ) {
+                        Text(
+                            text = group.key,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.background)
-                        ) {
-                            Text(
-                                text = group.key,
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(50))
-                                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                                    .padding(vertical = 8.dp, horizontal = 16.dp)
-                            )
-                        }
-                    }
-                    items(items = group.value) { item ->
-                        SongCard(
-                            song = item,
-                            onClickCard = {
-                                playerViewModel.playSong(item)
-                            },
-                            onLongPress = {
-                                selectedSong = item
-                                showSongSettings = true
-                            }
+                                .clip(RoundedCornerShape(50))
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
                         )
                     }
                 }
+                items(items = group.value) { item ->
+                    SongCard(
+                        song = item,
+                        onClickCard = {
+                            playerViewModel.playSong(item)
+                        },
+                        onLongPress = {
+                            selectedSong = item
+                            showSongSettings = true
+                        }
+                    )
+                }
             }
         }
+        //}
     }
     if (showSongSettings) {
         selectedSong?.let {
