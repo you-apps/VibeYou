@@ -27,13 +27,14 @@ class PipedMusicRepository(
     var pipedApi = RetrofitHelper.createPipedApi()
     private val hyperApi = RetrofitHelper.createHyperpipeApi()
 
-    suspend fun getAudioSource(id: String): Uri? {
-        return runCatching { pipedApi.getStreams(vidId = id) }
-            .getOrNull()
-            ?.audioStreams
-            ?.get(1)
-            ?.url
-            ?.toUri()
+    suspend fun getAudioSource(id: String): Result<Uri?> {
+        return kotlin.runCatching {
+            pipedApi.getStreams(vidId = id)
+                .audioStreams
+                .getOrNull(1)
+                ?.url
+                ?.toUri()
+        }
     }
 
     suspend fun getRecommendedSongs(id: String, limit: Int = 3): List<Song> {

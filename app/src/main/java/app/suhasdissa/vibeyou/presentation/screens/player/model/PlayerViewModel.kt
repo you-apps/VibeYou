@@ -30,6 +30,8 @@ import app.suhasdissa.vibeyou.utils.forcePlay
 import app.suhasdissa.vibeyou.utils.forcePlayFromBeginning
 import app.suhasdissa.vibeyou.utils.playGracefully
 import app.suhasdissa.vibeyou.utils.playPause
+import app.suhasdissa.vibeyou.utils.seek
+import app.suhasdissa.vibeyou.utils.seekNext
 import app.suhasdissa.vibeyou.utils.services.PlayerService
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
@@ -63,11 +65,11 @@ class PlayerViewModel(
     }
 
     fun seekNext() {
-        controller!!.seekToNext()
+        controller!!.seekNext()
     }
 
     fun seekTo(ms: Long) {
-        controller!!.seekTo(ms)
+        controller!!.seek(ms)
     }
 
     fun playPause() {

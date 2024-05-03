@@ -18,6 +18,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.StandaloneDatabaseProvider
@@ -64,6 +65,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 @UnstableApi
 class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Listener {
@@ -259,12 +263,41 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
             if (cache.isCached(videoId, dataSpec.position, chunkLength)) {
                 dataSpec
             } else {
-                val url = runBlocking {
+                val url = runBlocking(Dispatchers.IO) {
                     container.pipedMusicRepository.getAudioSource(videoId)
+                }.getOrElse { throwable ->
+                    when (throwable) {
+                        is ConnectException, is UnknownHostException -> {
+                            throw PlaybackException(
+                                "Connection failed",
+                                throwable,
+                                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+                            )
+                        }
+
+                        is SocketTimeoutException -> {
+                            throw PlaybackException(
+                                "Timeout",
+                                throwable,
+                                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT
+                            )
+                        }
+
+                        else -> throw PlaybackException(
+                            "Unknown error",
+                            throwable,
+                            PlaybackException.ERROR_CODE_REMOTE_ERROR
+                        )
+                    }
                 }
-                url?.let {
-                    dataSpec.withUri(it).subrange(dataSpec.uriPositionOffset, chunkLength)
-                } ?: error("Stream not found")
+                if (url == null) {
+                    throw PlaybackException(
+                        "Media not found",
+                        error("Media not found"),
+                        PlaybackException.ERROR_CODE_IO_INVALID_HTTP_CONTENT_TYPE
+                    )
+                }
+                dataSpec.withUri(url).subrange(dataSpec.uriPositionOffset, chunkLength)
             }
         }
         return DynamicDataSource.Companion.Factory(resolvingDataSource, defaultDataSource)
