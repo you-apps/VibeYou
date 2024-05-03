@@ -104,7 +104,7 @@ fun HomeScreen(
                         .padding(end = 8.dp)
                         .clickable {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
-                            if (currentDestination == Destination.PipedMusic) {
+                            if (currentDestination == Destination.Home) {
                                 onNavigate(Destination.OnlineSearch)
                             } else {
                                 onNavigate(Destination.LocalSearch)
@@ -144,11 +144,11 @@ fun HomeScreen(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                composable<Destination.PipedMusic> {
+                composable<Destination.Home> {
                     CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                         MusicScreen(onNavigate)
                         LaunchedEffect(Unit) {
-                            currentDestination = Destination.PipedMusic
+                            currentDestination = Destination.Home
                         }
                     }
                 }

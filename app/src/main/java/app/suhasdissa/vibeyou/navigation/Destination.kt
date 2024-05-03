@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Destination {
     @Serializable
-    object PipedMusic : Destination()
+    object Home : Destination()
 
     @Serializable
     object LocalMusic : Destination()

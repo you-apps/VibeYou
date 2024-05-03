@@ -1,9 +1,15 @@
 package app.suhasdissa.vibeyou.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,9 +42,22 @@ fun AppNavHost(navHostController: NavHostController) {
     val settingsModel: SettingsModel = viewModel(factory = SettingsModel.Factory)
     NavHost(
         navController = navHostController,
-        startDestination = Destination.PipedMusic
+        startDestination = Destination.Home
     ) {
-        composable<Destination.PipedMusic> {
+        composable<Destination.Home>(
+            enterTransition = {
+                scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                if (listOf(Destination.OnlineSearch::class, Destination.LocalSearch::class)
+                        .any { targetState.destination.hasRoute(it) }
+                ) {
+                    fadeOut()
+                } else {
+                    scaleOut(targetScale = 0f) + fadeOut()
+                }
+            }
+        ) {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
                 HomeScreen(onNavigate = { destination ->
                     navHostController.navigate(destination)
@@ -46,7 +65,16 @@ fun AppNavHost(navHostController: NavHostController) {
             }
         }
 
-        composable<Destination.OnlineSearch> {
+        composable<Destination.OnlineSearch>(
+            enterTransition = {
+                fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             val pipedSearchViewModel: PipedSearchViewModel =
                 viewModel(factory = PipedSearchViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
@@ -55,7 +83,16 @@ fun AppNavHost(navHostController: NavHostController) {
                 }, pipedSearchViewModel)
             }
         }
-        composable<Destination.LocalSearch> {
+        composable<Destination.LocalSearch>(
+            enterTransition = {
+                fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             val localSearchViewModel: LocalSearchViewModel =
                 viewModel(factory = LocalSearchViewModel.Factory)
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
@@ -65,30 +102,119 @@ fun AppNavHost(navHostController: NavHostController) {
             }
         }
 
-        composable<Destination.Settings> {
+        composable<Destination.Settings>(
+            enterTransition = {
+                if (listOf(
+                        Destination.About::class,
+                        Destination.NetworkSettings::class,
+                        Destination.DatabaseSettings::class,
+                        Destination.AppearanceSettings::class
+                    )
+                        .any { initialState.destination.hasRoute(it) }
+                ) {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        initialOffset = { it }) + fadeIn()
+                } else {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+                }
+            },
+            exitTransition = {
+                if (listOf(
+                        Destination.About::class,
+                        Destination.NetworkSettings::class,
+                        Destination.DatabaseSettings::class,
+                        Destination.AppearanceSettings::class
+                    )
+                        .any { targetState.destination.hasRoute(it) }
+                ) {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left,
+                        targetOffset = { it / 4 }) + fadeOut()
+                } else {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+                }
+            }) {
             SettingsScreen(onNavigate = { route ->
                 navHostController.navigate(route)
             })
         }
 
-        composable<Destination.About> {
+        composable<Destination.About>(
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    initialOffset = { it }) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             AboutScreen()
         }
 
-        composable<Destination.NetworkSettings> {
+        composable<Destination.NetworkSettings>(
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    initialOffset = { it }) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             NetworkSettingsScreen()
         }
 
-        composable<Destination.DatabaseSettings> {
+        composable<Destination.DatabaseSettings>(
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    initialOffset = { it }) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             DatabaseSettingsScreen()
         }
 
-        composable<Destination.AppearanceSettings> {
+        composable<Destination.AppearanceSettings>(
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    initialOffset = { it }) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    targetOffset = { it }) + fadeOut()
+            }
+        ) {
             AppearanceSettingsScreen(settingsModel)
         }
 
         composable<Destination.Playlists>(
-            typeMap = mapOf(typeOf<Album>() to AlbumType)
+            typeMap = mapOf(typeOf<Album>() to AlbumType),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+            }
         ) {
             val onlinePlaylistViewModel: OnlinePlaylistViewModel =
                 viewModel(factory = OnlinePlaylistViewModel.Factory)
@@ -98,7 +224,17 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable<Destination.LocalPlaylists>(
-            typeMap = mapOf(typeOf<Album>() to AlbumType)
+            typeMap = mapOf(typeOf<Album>() to AlbumType),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+            }
         ) {
             val localPlaylistViewModel: LocalPlaylistViewModel =
                 viewModel(factory = LocalPlaylistViewModel.Factory)
@@ -108,7 +244,17 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable<Destination.SavedPlaylists>(
-            typeMap = mapOf(typeOf<Album>() to AlbumType)
+            typeMap = mapOf(typeOf<Album>() to AlbumType),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+            }
         ) {
             val playlistInfoViewModel: PlaylistInfoViewModel =
                 viewModel(factory = PlaylistInfoViewModel.Factory)
@@ -118,7 +264,17 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable<Destination.OnlineArtist>(
-            typeMap = mapOf(typeOf<Artist>() to ArtistType)
+            typeMap = mapOf(typeOf<Artist>() to ArtistType),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+            }
         ) {
             val onlineArtistViewModel: OnlineArtistViewModel =
                 viewModel(factory = OnlineArtistViewModel.Factory)
@@ -130,7 +286,17 @@ fun AppNavHost(navHostController: NavHostController) {
         }
 
         composable<Destination.LocalArtist>(
-            typeMap = mapOf(typeOf<Artist>() to ArtistType)
+            typeMap = mapOf(typeOf<Artist>() to ArtistType),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    initialOffset = { it / 4 }) + scaleIn(initialScale = 3f / 4) + fadeIn()
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    targetOffset = { it / 4 }) + scaleOut(targetScale = 3f / 4) + fadeOut()
+            }
         ) {
             val localArtistViewModel: LocalArtistViewModel =
                 viewModel(factory = LocalArtistViewModel.Factory)

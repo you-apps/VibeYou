@@ -73,10 +73,10 @@ fun NavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.piped_music)) },
-            selected = currentDestination == Destination.PipedMusic,
+            selected = currentDestination == Destination.Home,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(Destination.PipedMusic)
+                onDestinationSelected(Destination.Home)
             }
         )
         Spacer(Modifier.height(16.dp))

@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     var currentDestination by remember {
-                        mutableStateOf<Destination>(Destination.PipedMusic)
+                        mutableStateOf<Destination>(Destination.Home)
                     }
                     ModalNavigationDrawer(
                         drawerState = drawerState,
