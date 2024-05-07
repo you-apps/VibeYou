@@ -6,10 +6,12 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
@@ -51,7 +53,7 @@ import app.suhasdissa.vibeyou.utils.PermissionHelper
 @Composable
 fun HomeScreen(
     onNavigate: (Destination) -> Unit,
-    onDrawerOpen: () -> Unit,
+    onDrawerOpen: (() -> Unit)?,
     navController: NavHostController,
     playerViewModel: PlayerViewModel
 ) {
@@ -82,14 +84,18 @@ fun HomeScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = {
-                view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDrawerOpen()
-            }) {
-                Icon(
-                    imageVector = Icons.Rounded.Menu,
-                    contentDescription = "Open Navigation Drawer"
-                )
+            if (onDrawerOpen != null) {
+                IconButton(onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    onDrawerOpen()
+                }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Menu,
+                        contentDescription = "Open Navigation Drawer"
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.width(8.dp))
             }
             Card(
                 modifier = Modifier
@@ -134,6 +140,7 @@ fun HomeScreen(
             startDestination = HomeDestination.LocalMusic,
             Modifier
                 .fillMaxSize()
+                .consumeWindowInsets(pV)
                 .padding(pV),
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }

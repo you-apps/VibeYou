@@ -38,7 +38,7 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     homeNavHostController: NavHostController,
-    onDrawerOpen: () -> Unit,
+    onDrawerOpen: (() -> Unit)?,
     playerViewModel: PlayerViewModel,
     settingsModel: SettingsModel
 ) {

@@ -78,6 +78,7 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.compose.material3.adaptive:adaptive-android:1.0.0-alpha12")
 
     val media3Version = "1.1.1"
 
@@ -99,6 +100,7 @@ dependencies {
 
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
     implementation("com.github.nanihadesuka:LazyColumnScrollbar:1.8.0")
+    implementation("androidx.window:window:1.2.0")
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")

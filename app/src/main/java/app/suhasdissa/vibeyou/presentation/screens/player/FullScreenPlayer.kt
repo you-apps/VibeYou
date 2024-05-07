@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -75,7 +76,7 @@ import coil.compose.SubcomposeAsyncImageContent
 @Composable
 fun FullScreenPlayer(
     controller: MediaController,
-    onCollapse: () -> Unit,
+    onCollapse: (() -> Unit)?,
     playerViewModel: PlayerViewModel
 ) {
     var showQueueSheet by remember { mutableStateOf(false) }
@@ -83,14 +84,16 @@ fun FullScreenPlayer(
 
     val view = LocalView.current
     CenterAlignedTopAppBar(navigationIcon = {
-        IconButton({
-            view.playSoundEffect(SoundEffectConstants.CLICK)
-            onCollapse.invoke()
-        }) {
-            Icon(
-                Icons.Rounded.ExpandMore,
-                contentDescription = stringResource(R.string.close_player)
-            )
+        onCollapse?.let { onCollapse ->
+            IconButton({
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onCollapse.invoke()
+            }) {
+                Icon(
+                    Icons.Rounded.ExpandMore,
+                    contentDescription = stringResource(R.string.close_player)
+                )
+            }
         }
     }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
         IconButton(onClick = { showSongOptions = true }) {
@@ -189,7 +192,115 @@ fun FullScreenPlayer(
 }
 
 @Composable
+fun FullScreenPlayerHorizontal(
+    controller: MediaController,
+    onCollapse: (() -> Unit)?,
+    playerViewModel: PlayerViewModel
+) {
+    var showQueueSheet by remember { mutableStateOf(false) }
+    var showSongOptions by remember { mutableStateOf(false) }
+
+    val view = LocalView.current
+    Row(
+        Modifier
+            .fillMaxSize(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val mediaItem by controller.mediaItemState()
+        val isFavourite = remember {
+            mutableStateOf(false)
+        }
+        var isLocal by remember {
+            mutableStateOf(false)
+        }
+        mediaItem?.let {
+            LaunchedEffect(mediaItem) {
+                isLocal = mediaItem!!.mediaMetadata.extras?.getBoolean(IS_LOCAL_KEY) ?: false
+                if (!isLocal) {
+                    isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
+                }
+            }
+            var thumbnailUrl by remember {
+                mutableStateOf(it.maxResThumbnail)
+            }
+
+            SubcomposeAsyncImage(
+                modifier = Modifier
+                    .size(250.dp)
+                    .padding(16.dp)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(16.dp)),
+                model = it.maxResThumbnail.ifEmpty { it.mediaMetadata.artworkUri },
+                contentDescription = stringResource(id = R.string.album_art),
+                contentScale = ContentScale.Crop,
+                onError = { _ ->
+                    if (thumbnailUrl != it.mediaMetadata.artworkUri.toString()) {
+                        thumbnailUrl = it.mediaMetadata.artworkUri.toString()
+                    }
+                },
+                error = {
+                    SubcomposeAsyncImageContent(
+                        painter = painterResource(id = R.drawable.music_placeholder),
+                        contentScale = contentScale
+                    )
+                }
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                val title = it.mediaMetadata.title.toString()
+                val artist = it.mediaMetadata.artist.toString()
+
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        title,
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        artist,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                PlayerController(
+                    isfavourite = isFavourite,
+                    isLocal = isLocal,
+                    onToggleFavourite = { playerViewModel.toggleFavourite(it.mediaId) }
+                )
+                Row(
+                    Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        showQueueSheet = true
+                    }) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.QueueMusic,
+                            stringResource(R.string.show_queue)
+                        )
+                    }
+                }
+            }
+
+        }
+    }
+    if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false }, playerViewModel)
+    if (showSongOptions) SongOptionsSheet(
+        onDismissRequest = { showSongOptions = false },
+        playerViewModel
+    )
+}
+
+@Composable
 fun PlayerController(
+    modifier: Modifier = Modifier,
     playerViewModel: PlayerViewModel = viewModel(factory = PlayerViewModel.Factory),
     isfavourite: MutableState<Boolean>,
     isLocal: Boolean,
@@ -197,7 +308,7 @@ fun PlayerController(
 ) {
     val view = LocalView.current
     playerViewModel.controller?.let { controller ->
-        Column(Modifier.padding(32.dp)) {
+        Column(modifier.padding(32.dp)) {
             val positionAndDuration by controller.positionAndDurationState()
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(DateUtils.formatElapsedTime(positionAndDuration.first / 1000))

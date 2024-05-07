@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,7 @@ import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.navigation.HomeDestination
 
 @Composable
-fun NavDrawerContent(
+fun ModalNavDrawerContent(
     currentDestination: HomeDestination,
     onDestinationSelected: (Any) -> Unit,
 ) {
@@ -90,6 +91,78 @@ fun NavDrawerContent(
             },
             label = { Text(text = stringResource(id = R.string.settings_title)) },
             selected = false,
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onDestinationSelected(Destination.Settings)
+            }
+        )
+    }
+}
+
+@Composable
+fun PermanentNavDrawerContent(
+    currentDestination: Any,
+    onDestinationSelected: (Any) -> Unit,
+) {
+    val view = LocalView.current
+    PermanentDrawerSheet(modifier = Modifier.width(250.dp), drawerTonalElevation = 2.dp) {
+        Spacer(Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                modifier = Modifier.size(128.dp),
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = null
+            )
+            Text(
+                stringResource(id = R.string.app_name),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge
+            )
+        }
+        Spacer(Modifier.height(16.dp))
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.MusicNote,
+                    contentDescription = null
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.local_music)) },
+            selected = currentDestination is HomeDestination.LocalMusic,
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onDestinationSelected(HomeDestination.LocalMusic)
+            }
+        )
+        Spacer(Modifier.height(16.dp))
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_piped),
+                    contentDescription = null
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.piped_music)) },
+            selected = currentDestination is HomeDestination.OnlineMusic,
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                onDestinationSelected(HomeDestination.OnlineMusic)
+            }
+        )
+        Spacer(Modifier.height(16.dp))
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.Settings,
+                    contentDescription = null
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.settings_title)) },
+            selected = currentDestination is Destination.Settings,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 onDestinationSelected(Destination.Settings)
