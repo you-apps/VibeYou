@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Destination {
     @Serializable
-    object Home : Destination()
+    data class Home(val destination: Int) : Destination()
 
     @Serializable
     object OnlineSearch : Destination()
@@ -47,10 +47,10 @@ sealed class Destination {
 }
 
 @Serializable
-sealed class HomeDestination {
+sealed class HomeDestination(val destination: Int) {
     @Serializable
-    object LocalMusic : HomeDestination()
+    object LocalMusic : HomeDestination(destination = 0)
 
     @Serializable
-    object OnlineMusic : HomeDestination()
+    object OnlineMusic : HomeDestination(destination = 1)
 }

@@ -163,13 +163,11 @@ private fun MainAppContent(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 ) {
     val navHostController = rememberNavController()
-    val homeNavHostController = rememberNavController()
     if (windowSizeClass.windowHeightSizeClass != WindowHeightSizeClass.COMPACT) {
         when (windowSizeClass.windowWidthSizeClass) {
             WindowWidthSizeClass.COMPACT -> {
                 ModelNavDrawerLayout(
                     navHostController,
-                    homeNavHostController,
                     playerViewModel,
                     settingsModel
                 )
@@ -178,7 +176,6 @@ private fun MainAppContent(
             WindowWidthSizeClass.MEDIUM -> {
                 PermanentNavDrawerLayout(
                     navHostController,
-                    homeNavHostController,
                     playerViewModel,
                     settingsModel
                 )
@@ -187,7 +184,6 @@ private fun MainAppContent(
             WindowWidthSizeClass.EXPANDED -> {
                 PermanentNavDrawerWithPlayerLayout(
                     navHostController,
-                    homeNavHostController,
                     playerViewModel,
                     settingsModel
                 )
@@ -196,7 +192,6 @@ private fun MainAppContent(
     } else {
         PermanentNavDrawerLayout(
             navHostController,
-            homeNavHostController,
             playerViewModel,
             settingsModel,
             horizontalPlayer = true
@@ -207,7 +202,6 @@ private fun MainAppContent(
 @Composable
 private fun ModelNavDrawerLayout(
     navHostController: NavHostController,
-    homeNavHostController: NavHostController,
     playerViewModel: PlayerViewModel,
     settingsModel: SettingsModel
 ) {
@@ -228,11 +222,14 @@ private fun ModelNavDrawerLayout(
                         drawerState.close()
                     }
                     when (it) {
-                        is Destination -> navHostController.navigate(it)
+                        is Destination -> {
+                            navHostController.popBackStack()
+                            navHostController.navigate(it)
+                        }
+
                         is HomeDestination -> {
-                            currentDestination = it
-                            homeNavHostController.popBackStack()
-                            homeNavHostController.navigate(it)
+                            navHostController.popBackStack()
+                            navHostController.navigate(Destination.Home(it.destination))
                         }
                     }
                 }
@@ -246,7 +243,6 @@ private fun ModelNavDrawerLayout(
                     .consumeWindowInsets(pV)
                     .padding(pV),
                 navHostController = navHostController,
-                homeNavHostController = homeNavHostController,
                 onDrawerOpen = {
                     scope.launch {
                         drawerState.open()
@@ -263,7 +259,6 @@ private fun ModelNavDrawerLayout(
 @Composable
 private fun PermanentNavDrawerLayout(
     navHostController: NavHostController,
-    homeNavHostController: NavHostController,
     playerViewModel: PlayerViewModel,
     settingsModel: SettingsModel,
     horizontalPlayer: Boolean = false
@@ -278,10 +273,14 @@ private fun PermanentNavDrawerLayout(
             onDestinationSelected = {
                 currentDestination = it
                 when (it) {
-                    is Destination -> navHostController.navigate(it)
+                    is Destination -> {
+                        navHostController.popBackStack()
+                        navHostController.navigate(it)
+                    }
+
                     is HomeDestination -> {
-                        homeNavHostController.popBackStack()
-                        homeNavHostController.navigate(it)
+                        navHostController.popBackStack()
+                        navHostController.navigate(Destination.Home(it.destination))
                     }
                 }
             }
@@ -294,7 +293,6 @@ private fun PermanentNavDrawerLayout(
                     .consumeWindowInsets(pV)
                     .padding(pV),
                 navHostController = navHostController,
-                homeNavHostController = homeNavHostController,
                 onDrawerOpen = null,
                 playerViewModel,
                 settingsModel
@@ -306,7 +304,6 @@ private fun PermanentNavDrawerLayout(
 @Composable
 private fun PermanentNavDrawerWithPlayerLayout(
     navHostController: NavHostController,
-    homeNavHostController: NavHostController,
     playerViewModel: PlayerViewModel,
     settingsModel: SettingsModel
 ) {
@@ -320,10 +317,14 @@ private fun PermanentNavDrawerWithPlayerLayout(
             onDestinationSelected = {
                 currentDestination = it
                 when (it) {
-                    is Destination -> navHostController.navigate(it)
+                    is Destination -> {
+                        navHostController.popBackStack()
+                        navHostController.navigate(it)
+                    }
+
                     is HomeDestination -> {
-                        homeNavHostController.popBackStack()
-                        homeNavHostController.navigate(it)
+                        navHostController.popBackStack()
+                        navHostController.navigate(Destination.Home(it.destination))
                     }
                 }
             }
@@ -335,7 +336,6 @@ private fun PermanentNavDrawerWithPlayerLayout(
                     .fillMaxHeight()
                     .weight(1f),
                 navHostController = navHostController,
-                homeNavHostController = homeNavHostController,
                 onDrawerOpen = null,
                 playerViewModel,
                 settingsModel

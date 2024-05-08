@@ -12,6 +12,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import app.suhasdissa.vibeyou.domain.models.primary.Album
 import app.suhasdissa.vibeyou.domain.models.primary.Artist
 import app.suhasdissa.vibeyou.presentation.screens.album.AlbumScreen
@@ -37,7 +38,6 @@ import kotlin.reflect.typeOf
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    homeNavHostController: NavHostController,
     onDrawerOpen: (() -> Unit)?,
     playerViewModel: PlayerViewModel,
     settingsModel: SettingsModel
@@ -45,11 +45,19 @@ fun AppNavHost(
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = Destination.Home
+        startDestination = Destination.Home(HomeDestination.LocalMusic.destination)
     ) {
         composable<Destination.Home>(
             enterTransition = {
-                scaleIn(initialScale = 3f / 4) + fadeIn()
+                if (listOf(
+                        Destination.Home::class,
+                        Destination.Settings::class
+                    ).any { initialState.destination.hasRoute(it) }
+                ) {
+                    fadeIn()
+                } else {
+                    scaleIn(initialScale = 3f / 4) + fadeIn()
+                }
             },
             exitTransition = {
                 if (listOf(Destination.OnlineSearch::class, Destination.LocalSearch::class)
@@ -60,10 +68,16 @@ fun AppNavHost(
                     scaleOut(targetScale = 0f) + fadeOut()
                 }
             }
-        ) {
+        ) { navBackStackEntry ->
+            val startDestinationIndex: Int =
+                navBackStackEntry.toRoute<Destination.Home>().destination
+
+            val startDestination =
+                if (startDestinationIndex == 0) HomeDestination.LocalMusic else HomeDestination.OnlineMusic
+
             HomeScreen(onNavigate = { destination ->
                 navHostController.navigate(destination)
-            }, onDrawerOpen = onDrawerOpen, homeNavHostController, playerViewModel)
+            }, onDrawerOpen = onDrawerOpen, playerViewModel, startDestination = startDestination)
         }
 
         composable<Destination.OnlineSearch>(

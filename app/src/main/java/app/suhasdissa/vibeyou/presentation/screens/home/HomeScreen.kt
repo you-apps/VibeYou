@@ -37,9 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import app.suhasdissa.vibeyou.MainActivity
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
@@ -54,14 +54,15 @@ import app.suhasdissa.vibeyou.utils.PermissionHelper
 fun HomeScreen(
     onNavigate: (Destination) -> Unit,
     onDrawerOpen: (() -> Unit)?,
-    navController: NavHostController,
-    playerViewModel: PlayerViewModel
+    playerViewModel: PlayerViewModel,
+    startDestination: HomeDestination
 ) {
+    val navController = rememberNavController()
     val view = LocalView.current
     val mainActivity = (LocalContext.current as MainActivity)
 
     var selectedRoute by remember {
-        mutableStateOf<HomeDestination>(HomeDestination.LocalMusic)
+        mutableStateOf(startDestination)
     }
 
     // listen for destination changes (e.g. back presses)
@@ -137,7 +138,7 @@ fun HomeScreen(
     }) { pV ->
         NavHost(
             navController,
-            startDestination = HomeDestination.LocalMusic,
+            startDestination = startDestination,
             Modifier
                 .fillMaxSize()
                 .consumeWindowInsets(pV)
