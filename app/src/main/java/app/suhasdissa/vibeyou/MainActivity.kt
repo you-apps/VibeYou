@@ -10,7 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +22,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.PermanentNavigationDrawer
+import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -34,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,6 +50,9 @@ import app.suhasdissa.vibeyou.presentation.components.MiniPlayerScaffold
 import app.suhasdissa.vibeyou.presentation.components.ModalNavDrawerContent
 import app.suhasdissa.vibeyou.presentation.components.PermanentNavDrawerContent
 import app.suhasdissa.vibeyou.presentation.screens.player.FullScreenPlayer
+import app.suhasdissa.vibeyou.presentation.screens.player.components.EqualizerSheet
+import app.suhasdissa.vibeyou.presentation.screens.player.components.QueueSheet
+import app.suhasdissa.vibeyou.presentation.screens.player.components.SongOptionsSheet
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.settings.model.SettingsModel
 import app.suhasdissa.vibeyou.ui.theme.VibeYouTheme
@@ -86,9 +90,11 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(Unit) {
                     (application as MellowMusicApplication).accentColor = primaryColor
                 }
-                MainAppContent(
-                    playerViewModel, settingsModel
-                )
+                Surface {
+                    MainAppContent(
+                        playerViewModel, settingsModel
+                    )
+                }
             }
         }
 
@@ -342,13 +348,36 @@ private fun PermanentNavDrawerWithPlayerLayout(
                         Modifier
                             .fillMaxHeight()
                             .width(400.dp)
-                            .background(MaterialTheme.colorScheme.surface)
                     ) {
+                        var showQueueSheet by remember { mutableStateOf(false) }
+                        var showSongOptions by remember { mutableStateOf(false) }
+                        var showEqualizerSheet by remember {
+                            mutableStateOf(false)
+                        }
                         FullScreenPlayer(
                             controller,
                             onCollapse = null,
-                            playerViewModel
+                            playerViewModel,
+                            onClickShowQueueSheet = { showQueueSheet = true },
+                            onClickShowSongOptions = { showSongOptions = true }
                         )
+                        if (showQueueSheet) QueueSheet(onDismissRequest = {
+                            showQueueSheet = false
+                        }, playerViewModel)
+                        if (showSongOptions) SongOptionsSheet(
+                            onDismissRequest = { showSongOptions = false },
+                            playerViewModel,
+                            onClickShowEqualizer = { showEqualizerSheet = true }
+                        )
+                        if (showEqualizerSheet) {
+                            val app =
+                                LocalContext.current.applicationContext as MellowMusicApplication
+                            EqualizerSheet(
+                                equalizerData = app.supportedEqualizerData!!,
+                                onDismissRequest = { showEqualizerSheet = false },
+                                playerViewModel = playerViewModel
+                            )
+                        }
                     }
                 }
             }

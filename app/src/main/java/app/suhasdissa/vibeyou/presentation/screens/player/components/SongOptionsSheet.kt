@@ -25,7 +25,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -45,7 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SongOptionsSheet(
     onDismissRequest: () -> Unit,
-    playerViewModel: PlayerViewModel
+    playerViewModel: PlayerViewModel,
+    onClickShowEqualizer: () -> Unit
 ) {
     val playerSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -53,10 +53,6 @@ fun SongOptionsSheet(
     val scope = rememberCoroutineScope()
     val view = LocalView.current
     val app = LocalContext.current.applicationContext as MellowMusicApplication
-
-    var showEqualizerSheet by remember {
-        mutableStateOf(false)
-    }
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -122,18 +118,11 @@ fun SongOptionsSheet(
         Spacer(modifier = Modifier.height(10.dp))
         if (app.supportedEqualizerData != null) {
             Button(modifier = Modifier.padding(start = 10.dp), onClick = {
-                showEqualizerSheet = true
+                onClickShowEqualizer.invoke()
             }) {
                 Text(text = stringResource(id = R.string.equalizer))
             }
         }
         Spacer(modifier = Modifier.height(30.dp))
-    }
-
-    if (showEqualizerSheet) {
-        EqualizerSheet(
-            equalizerData = app.supportedEqualizerData!!,
-            onDismissRequest = { showEqualizerSheet = false }, playerViewModel = playerViewModel
-        )
     }
 }

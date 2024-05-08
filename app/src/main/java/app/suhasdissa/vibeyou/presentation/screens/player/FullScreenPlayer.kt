@@ -61,8 +61,6 @@ import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.models.PlayerRepeatMode
 import app.suhasdissa.vibeyou.backend.models.PlayerState
-import app.suhasdissa.vibeyou.presentation.screens.player.components.QueueSheet
-import app.suhasdissa.vibeyou.presentation.screens.player.components.SongOptionsSheet
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.utils.IS_LOCAL_KEY
 import app.suhasdissa.vibeyou.utils.isPlayingState
@@ -77,11 +75,10 @@ import coil.compose.SubcomposeAsyncImageContent
 fun FullScreenPlayer(
     controller: MediaController,
     onCollapse: (() -> Unit)?,
-    playerViewModel: PlayerViewModel
+    playerViewModel: PlayerViewModel,
+    onClickShowSongOptions: () -> Unit,
+    onClickShowQueueSheet: () -> Unit
 ) {
-    var showQueueSheet by remember { mutableStateOf(false) }
-    var showSongOptions by remember { mutableStateOf(false) }
-
     val view = LocalView.current
     CenterAlignedTopAppBar(navigationIcon = {
         onCollapse?.let { onCollapse ->
@@ -96,7 +93,7 @@ fun FullScreenPlayer(
             }
         }
     }, title = { Text(stringResource(R.string.now_playing)) }, actions = {
-        IconButton(onClick = { showSongOptions = true }) {
+        IconButton(onClick = onClickShowSongOptions) {
             Icon(Icons.Rounded.MoreVert, contentDescription = stringResource(R.string.song_options))
         }
     })
@@ -178,28 +175,20 @@ fun FullScreenPlayer(
         ) {
             IconButton(onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                showQueueSheet = true
+                onClickShowQueueSheet.invoke()
             }) {
                 Icon(Icons.AutoMirrored.Rounded.QueueMusic, stringResource(R.string.show_queue))
             }
         }
     }
-    if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false }, playerViewModel)
-    if (showSongOptions) SongOptionsSheet(
-        onDismissRequest = { showSongOptions = false },
-        playerViewModel
-    )
 }
 
 @Composable
 fun FullScreenPlayerHorizontal(
     controller: MediaController,
-    onCollapse: (() -> Unit)?,
-    playerViewModel: PlayerViewModel
+    playerViewModel: PlayerViewModel,
+    onClickShowQueueSheet: () -> Unit
 ) {
-    var showQueueSheet by remember { mutableStateOf(false) }
-    var showSongOptions by remember { mutableStateOf(false) }
-
     val view = LocalView.current
     Row(
         Modifier
@@ -279,7 +268,7 @@ fun FullScreenPlayerHorizontal(
                 ) {
                     IconButton(onClick = {
                         view.playSoundEffect(SoundEffectConstants.CLICK)
-                        showQueueSheet = true
+                        onClickShowQueueSheet.invoke()
                     }) {
                         Icon(
                             Icons.AutoMirrored.Rounded.QueueMusic,
@@ -291,11 +280,6 @@ fun FullScreenPlayerHorizontal(
 
         }
     }
-    if (showQueueSheet) QueueSheet(onDismissRequest = { showQueueSheet = false }, playerViewModel)
-    if (showSongOptions) SongOptionsSheet(
-        onDismissRequest = { showSongOptions = false },
-        playerViewModel
-    )
 }
 
 @Composable
