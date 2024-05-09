@@ -25,12 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.navigation.Destination
-import app.suhasdissa.vibeyou.navigation.HomeDestination
 
 @Composable
 fun ModalNavDrawerContent(
-    currentDestination: HomeDestination,
-    onDestinationSelected: (Any) -> Unit,
+    currentDestination: Destination,
+    onDestinationSelected: (Destination) -> Unit,
 ) {
     val view = LocalView.current
     ModalDrawerSheet(modifier = Modifier.width(250.dp)) {
@@ -60,10 +59,10 @@ fun ModalNavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.local_music)) },
-            selected = currentDestination is HomeDestination.LocalMusic,
+            selected = currentDestination is Destination.LocalMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(HomeDestination.LocalMusic)
+                onDestinationSelected(Destination.LocalMusic)
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -75,10 +74,10 @@ fun ModalNavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.piped_music)) },
-            selected = currentDestination is HomeDestination.OnlineMusic,
+            selected = currentDestination is Destination.OnlineMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(HomeDestination.OnlineMusic)
+                onDestinationSelected(Destination.OnlineMusic)
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -90,7 +89,7 @@ fun ModalNavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.settings_title)) },
-            selected = false,
+            selected = currentDestination is Destination.Settings,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 onDestinationSelected(Destination.Settings)
@@ -101,8 +100,8 @@ fun ModalNavDrawerContent(
 
 @Composable
 fun PermanentNavDrawerContent(
-    currentDestination: Any,
-    onDestinationSelected: (Any) -> Unit,
+    currentDestination: Destination,
+    onDestinationSelected: (Destination) -> Unit,
 ) {
     val view = LocalView.current
     PermanentDrawerSheet(modifier = Modifier.width(250.dp), drawerTonalElevation = 2.dp) {
@@ -132,10 +131,10 @@ fun PermanentNavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.local_music)) },
-            selected = currentDestination is HomeDestination.LocalMusic,
+            selected = currentDestination is Destination.LocalMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(HomeDestination.LocalMusic)
+                onDestinationSelected(Destination.LocalMusic)
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -147,10 +146,10 @@ fun PermanentNavDrawerContent(
                 )
             },
             label = { Text(text = stringResource(id = R.string.piped_music)) },
-            selected = currentDestination is HomeDestination.OnlineMusic,
+            selected = currentDestination is Destination.OnlineMusic,
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
-                onDestinationSelected(HomeDestination.OnlineMusic)
+                onDestinationSelected(Destination.OnlineMusic)
             }
         )
         Spacer(Modifier.height(16.dp))

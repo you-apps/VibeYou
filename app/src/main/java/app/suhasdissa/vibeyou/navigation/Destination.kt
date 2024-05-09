@@ -7,7 +7,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Destination {
     @Serializable
-    data class Home(val destination: Int) : Destination()
+    object OnlineMusic : Destination()
+
+    @Serializable
+    object LocalMusic : Destination()
 
     @Serializable
     object OnlineSearch : Destination()
@@ -44,13 +47,4 @@ sealed class Destination {
 
     @Serializable
     data class LocalArtist(val artist: Artist) : Destination()
-}
-
-@Serializable
-sealed class HomeDestination(val destination: Int) {
-    @Serializable
-    object LocalMusic : HomeDestination(destination = 0)
-
-    @Serializable
-    object OnlineMusic : HomeDestination(destination = 1)
 }

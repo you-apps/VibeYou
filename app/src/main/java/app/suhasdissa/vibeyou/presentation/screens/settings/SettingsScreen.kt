@@ -1,5 +1,6 @@
 package app.suhasdissa.vibeyou.presentation.screens.settings
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,12 +9,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.Landscape
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.SettingsBackupRestore
 import androidx.compose.material.icons.rounded.Storage
 import androidx.compose.material.icons.rounded.Web
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -27,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,17 +46,32 @@ import app.suhasdissa.vibeyou.presentation.screens.settings.components.SettingIt
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    onNavigate: (Destination) -> Unit
+    onNavigate: (Destination) -> Unit,
+    onDrawerOpen: (() -> Unit)?,
 ) {
     var showLoginDialog by remember { mutableStateOf(false) }
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var showImageCacheDialog by remember { mutableStateOf(false) }
 
+    val view = LocalView.current
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         LargeTopAppBar(
             title = { Text(stringResource(R.string.settings_title)) },
-            scrollBehavior = topBarBehavior
+            scrollBehavior = topBarBehavior,
+            navigationIcon = {
+                if (onDrawerOpen != null) {
+                    IconButton(onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        onDrawerOpen()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Menu,
+                            contentDescription = "Open Navigation Drawer",
+                        )
+                    }
+                }
+            }
         )
     }) { innerPadding ->
         LazyColumn(

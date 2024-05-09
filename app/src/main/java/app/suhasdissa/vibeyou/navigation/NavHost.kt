@@ -12,7 +12,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import app.suhasdissa.vibeyou.domain.models.primary.Album
 import app.suhasdissa.vibeyou.domain.models.primary.Artist
 import app.suhasdissa.vibeyou.presentation.screens.album.AlbumScreen
@@ -21,8 +20,9 @@ import app.suhasdissa.vibeyou.presentation.screens.album.model.OnlinePlaylistVie
 import app.suhasdissa.vibeyou.presentation.screens.artist.ArtistScreen
 import app.suhasdissa.vibeyou.presentation.screens.artist.model.LocalArtistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.artist.model.OnlineArtistViewModel
-import app.suhasdissa.vibeyou.presentation.screens.home.HomeScreen
+import app.suhasdissa.vibeyou.presentation.screens.localmusic.LocalMusicScreen
 import app.suhasdissa.vibeyou.presentation.screens.localsearch.LocalSearchScreen
+import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.OnlineMusicScreen
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.SearchScreen
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import app.suhasdissa.vibeyou.presentation.screens.playlists.model.PlaylistInfoViewModel
@@ -45,12 +45,12 @@ fun AppNavHost(
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = Destination.Home(HomeDestination.LocalMusic.destination)
+        startDestination = Destination.LocalMusic
     ) {
-        composable<Destination.Home>(
+        composable<Destination.LocalMusic>(
             enterTransition = {
                 if (listOf(
-                        Destination.Home::class,
+                        Destination.OnlineMusic::class,
                         Destination.Settings::class
                     ).any { initialState.destination.hasRoute(it) }
                 ) {
@@ -60,7 +60,12 @@ fun AppNavHost(
                 }
             },
             exitTransition = {
-                if (listOf(Destination.OnlineSearch::class, Destination.LocalSearch::class)
+                if (listOf(
+                        Destination.OnlineMusic::class,
+                        Destination.Settings::class,
+                        Destination.OnlineSearch::class,
+                        Destination.LocalSearch::class
+                    )
                         .any { targetState.destination.hasRoute(it) }
                 ) {
                     fadeOut()
@@ -68,17 +73,44 @@ fun AppNavHost(
                     scaleOut(targetScale = 0f) + fadeOut()
                 }
             }
-        ) { navBackStackEntry ->
-            val startDestinationIndex: Int =
-                navBackStackEntry.toRoute<Destination.Home>().destination
-
-            val startDestination =
-                if (startDestinationIndex == 0) HomeDestination.LocalMusic else HomeDestination.OnlineMusic
-
-            HomeScreen(onNavigate = { destination ->
-                navHostController.navigate(destination)
-            }, onDrawerOpen = onDrawerOpen, playerViewModel, startDestination = startDestination)
+        ) {
+            LocalMusicScreen(onNavigate = {
+                navHostController.navigate(it)
+            }, playerViewModel = playerViewModel, onDrawerOpen = onDrawerOpen)
         }
+
+        composable<Destination.OnlineMusic>(
+            enterTransition = {
+                if (listOf(
+                        Destination.LocalMusic::class,
+                        Destination.Settings::class
+                    ).any { initialState.destination.hasRoute(it) }
+                ) {
+                    fadeIn()
+                } else {
+                    scaleIn(initialScale = 3f / 4) + fadeIn()
+                }
+            },
+            exitTransition = {
+                if (listOf(
+                        Destination.LocalMusic::class,
+                        Destination.Settings::class,
+                        Destination.OnlineSearch::class,
+                        Destination.LocalSearch::class
+                    )
+                        .any { targetState.destination.hasRoute(it) }
+                ) {
+                    fadeOut()
+                } else {
+                    scaleOut(targetScale = 0f) + fadeOut()
+                }
+            }
+        ) {
+            OnlineMusicScreen(onNavigate = {
+                navHostController.navigate(it)
+            }, playerViewModel = playerViewModel, onDrawerOpen = onDrawerOpen)
+        }
+
 
         composable<Destination.OnlineSearch>(
             enterTransition = {
@@ -112,6 +144,12 @@ fun AppNavHost(
         composable<Destination.Settings>(
             enterTransition = {
                 if (listOf(
+                        Destination.OnlineMusic::class,
+                        Destination.LocalMusic::class
+                    ).any { initialState.destination.hasRoute(it) }
+                ) {
+                    fadeIn()
+                } else if (listOf(
                         Destination.About::class,
                         Destination.NetworkSettings::class,
                         Destination.DatabaseSettings::class,
@@ -130,6 +168,12 @@ fun AppNavHost(
             },
             exitTransition = {
                 if (listOf(
+                        Destination.OnlineMusic::class,
+                        Destination.LocalMusic::class
+                    ).any { targetState.destination.hasRoute(it) }
+                ) {
+                    fadeOut()
+                } else if (listOf(
                         Destination.About::class,
                         Destination.NetworkSettings::class,
                         Destination.DatabaseSettings::class,
@@ -147,7 +191,7 @@ fun AppNavHost(
             }) {
             SettingsScreen(onNavigate = { route ->
                 navHostController.navigate(route)
-            })
+            }, onDrawerOpen = onDrawerOpen)
         }
 
         composable<Destination.About>(
