@@ -2,6 +2,7 @@ package app.suhasdissa.vibeyou.presentation.screens.player
 
 import android.text.format.DateUtils
 import android.view.SoundEffectConstants
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,6 +58,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.media3.common.MediaItem
 import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.backend.models.PlayerRepeatMode
@@ -67,6 +69,7 @@ import app.suhasdissa.vibeyou.utils.isPlayingState
 import app.suhasdissa.vibeyou.utils.maxResThumbnail
 import app.suhasdissa.vibeyou.utils.mediaItemState
 import app.suhasdissa.vibeyou.utils.positionAndDurationState
+import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 
@@ -118,30 +121,14 @@ fun FullScreenPlayer(
                     isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
                 }
             }
-            var thumbnailUrl by remember {
-                mutableStateOf(it.maxResThumbnail)
-            }
 
-            SubcomposeAsyncImage(
+            AlbumArtBox(
                 modifier = Modifier
                     .size(300.dp)
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = it.maxResThumbnail.ifEmpty { it.mediaMetadata.artworkUri },
-                contentDescription = stringResource(id = R.string.album_art),
-                contentScale = ContentScale.Crop,
-                onError = { _ ->
-                    if (thumbnailUrl != it.mediaMetadata.artworkUri.toString()) {
-                        thumbnailUrl = it.mediaMetadata.artworkUri.toString()
-                    }
-                },
-                error = {
-                    SubcomposeAsyncImageContent(
-                        painter = painterResource(id = R.drawable.music_placeholder),
-                        contentScale = contentScale
-                    )
-                }
+                it
             )
             val title = it.mediaMetadata.title.toString()
             val artist = it.mediaMetadata.artist.toString()
@@ -210,30 +197,13 @@ fun FullScreenPlayerHorizontal(
                     isFavourite.value = playerViewModel.isFavourite(mediaItem!!.mediaId)
                 }
             }
-            var thumbnailUrl by remember {
-                mutableStateOf(it.maxResThumbnail)
-            }
-
-            SubcomposeAsyncImage(
+            AlbumArtBox(
                 modifier = Modifier
                     .size(250.dp)
                     .padding(16.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(16.dp)),
-                model = it.maxResThumbnail.ifEmpty { it.mediaMetadata.artworkUri },
-                contentDescription = stringResource(id = R.string.album_art),
-                contentScale = ContentScale.Crop,
-                onError = { _ ->
-                    if (thumbnailUrl != it.mediaMetadata.artworkUri.toString()) {
-                        thumbnailUrl = it.mediaMetadata.artworkUri.toString()
-                    }
-                },
-                error = {
-                    SubcomposeAsyncImageContent(
-                        painter = painterResource(id = R.drawable.music_placeholder),
-                        contentScale = contentScale
-                    )
-                }
+                it
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
@@ -278,6 +248,41 @@ fun FullScreenPlayerHorizontal(
                 }
             }
 
+        }
+    }
+}
+
+@Composable
+private fun AlbumArtBox(
+    modifier: Modifier = Modifier,
+    mediaItem: MediaItem
+) {
+    SubcomposeAsyncImage(
+        modifier = modifier,
+        model = mediaItem.maxResThumbnail,
+        contentDescription = stringResource(id = R.string.album_art),
+        contentScale = ContentScale.Crop
+    ) {
+        val maxResPainterState = painter.state
+        if (maxResPainterState !is AsyncImagePainter.State.Success) {
+            SubcomposeAsyncImage(
+                model = mediaItem.mediaMetadata.artworkUri,
+                contentDescription,
+                contentScale = contentScale
+            ) {
+                val lowResPainterState = painter.state
+                if (lowResPainterState !is AsyncImagePainter.State.Success) {
+                    Image(
+                        painter = painterResource(id = R.drawable.music_placeholder),
+                        contentDescription,
+                        contentScale = contentScale
+                    )
+                } else {
+                    SubcomposeAsyncImageContent(contentScale = contentScale)
+                }
+            }
+        } else {
+            SubcomposeAsyncImageContent(contentScale = contentScale)
         }
     }
 }
