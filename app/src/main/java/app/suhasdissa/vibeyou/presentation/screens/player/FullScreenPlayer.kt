@@ -406,7 +406,7 @@ fun PlayerController(
                         IconButton(onClick = {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.ALL
-                            controller.repeatMode = repeatState.mode
+                            controller.repeatMode = PlayerRepeatMode.ALL.mode
                         }) {
                             Icon(
                                 Icons.Rounded.Repeat,
@@ -419,7 +419,7 @@ fun PlayerController(
                         IconButton(onClick = {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.ONE
-                            controller.repeatMode = repeatState.mode
+                            controller.repeatMode = PlayerRepeatMode.ONE.mode
                         }) {
                             Icon(
                                 Icons.Rounded.RepeatOn,
@@ -432,7 +432,7 @@ fun PlayerController(
                         IconButton(onClick = {
                             view.playSoundEffect(SoundEffectConstants.CLICK)
                             repeatState = PlayerRepeatMode.OFF
-                            controller.repeatMode = repeatState.mode
+                            controller.repeatMode = PlayerRepeatMode.OFF.mode
                         }) {
                             Icon(
                                 Icons.Rounded.RepeatOneOn,
