@@ -254,14 +254,12 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createDataSourceFactory(): DataSource.Factory {
-        val chunkLength = 512 * 1024L
-
         val defaultDataSource = DefaultDataSource.Factory(this@PlayerService)
         val resolvingDataSource = ResolvingDataSource.Factory(createCacheDataSource()) { dataSpec ->
             val videoId = dataSpec.key ?: error("A key must be set")
-
-            if (cache.isCached(videoId, dataSpec.position, chunkLength)) {
-                dataSpec
+            val cacheLength = cache.getCachedBytes(videoId, dataSpec.position, Long.MAX_VALUE)
+            if (cacheLength > 0) {
+                dataSpec.subrange(dataSpec.position, dataSpec.position + cacheLength)
             } else {
                 val url = runBlocking(Dispatchers.IO) {
                     container.pipedMusicRepository.getAudioSource(videoId)
