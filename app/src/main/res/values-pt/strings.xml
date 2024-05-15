@@ -91,4 +91,10 @@
     <string name="system">Sistema</string>
     <string name="dark">Escuro</string>
     <string name="amoled">AMOLED</string>
+    <string name="equalizer">Equalizador</string>
+    <string name="equalizer_preset">Predefinição de equalizador</string>
+    <string name="enabled">Ativado</string>
+    <string name="none">Nenhum</string>
+    <string name="reset_equalizer">Reiniciar o equalizador</string>
+    <string name="catppuccin">Catppuccin</string>
 </resources>
