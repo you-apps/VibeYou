@@ -84,4 +84,17 @@
     <string name="disable_search_history">Desativar histórico de pesquisa</string>
     <string name="delete_playlist">Excluir lista de reprodução</string>
     <string name="delete_playlist_and_songs">Excluir lista de reprodução e músicas</string>
+    <string name="enabled">Ativo</string>
+    <string name="none">Nenhum</string>
+    <string name="reset_equalizer">Redefinir equalizador</string>
+    <string name="equalizer_preset">Predefinição do Equalizador</string>
+    <string name="equalizer">Equalizador</string>
+    <string name="hyperpipe_api_url">URL de API do Hyperpipe</string>
+    <string name="catppuccin">Catppuccin</string>
+    <string name="system">Sistema</string>
+    <string name="light">Claro</string>
+    <string name="dark">Escuro</string>
+    <string name="amoled">AMOLED</string>
+    <string name="color_scheme">Esquema de Cores</string>
+    <string name="theme">Tema</string>
 </resources>
