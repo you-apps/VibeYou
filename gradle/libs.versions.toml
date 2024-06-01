@@ -18,16 +18,15 @@ media3Exoplayer = "1.3.1"
 media3ExoplayerHls = "1.3.1"
 media3Session = "1.3.1"
 media3Ui = "1.3.1"
-navigationCompose = "2.8.0-beta02"
+navigationCompose = "2.8.0-alpha08"
 roomVersion = "2.6.1"
 reorderable = "0.9.6"
 window = "1.3.0"
 retrofit = "2.11.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
-kotlin = "1.9.24"
-ksp = "1.9.24-1.0.20"
-kotlinSerialization = "1.9.24"
-kotlinParcelize = "1.9.24"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
+kotlinSerialization = "2.0.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -70,4 +69,4 @@ androidLibrary = { id = "com.android.library", version.ref = "androidlibrary" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
-kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
