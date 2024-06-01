@@ -19,6 +19,7 @@ data class Song(
                 title = title,
                 artistsText = subtitle,
                 durationText = null,
+                thumbnailUri = thumbnails.maxByOrNull { it.height }?.url?.toUri()
             )
         }
 
