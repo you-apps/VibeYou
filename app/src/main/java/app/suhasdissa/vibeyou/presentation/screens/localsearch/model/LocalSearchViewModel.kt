@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.vibeyou.MellowMusicApplication
 import app.suhasdissa.vibeyou.backend.models.LocalSearchFilter
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.SearchState
 import kotlinx.coroutines.launch

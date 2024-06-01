@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.toRoute
 import app.suhasdissa.vibeyou.MellowMusicApplication
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.domain.models.primary.Album
 import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.AlbumInfoState

@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlin)
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "app.suhasdissa.vibeyou"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 5
         versionName = "4.1"
@@ -51,7 +51,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -62,55 +62,51 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.05.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.compose.material:material-icons-extended:1.6.7")
+    implementation(libs.androidx.material.icons.extended)
 
-    implementation("io.coil-kt:coil-compose:2.6.0")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.compose.material3.adaptive:adaptive-android:1.0.0-alpha12")
-
-    val media3Version = "1.1.1"
+    implementation(libs.coil.compose)
+    implementation(libs.material)
+    implementation(libs.androidx.adaptive.android)
 
     // For media playback using ExoPlayer
-    implementation("androidx.media3:media3-exoplayer:$media3Version")
+    implementation(libs.androidx.media3.exoplayer)
     // For HLS playback support with ExoPlayer
-    implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
+    implementation(libs.androidx.media3.exoplayer.hls)
     // For building media playback UIs
-    implementation("androidx.media3:media3-ui:$media3Version")
+    implementation(libs.androidx.media3.ui)
 
-    implementation("androidx.media3:media3-session:$media3Version")
+    implementation(libs.androidx.media3.session)
 
-    val roomVersion = "2.6.1"
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.reorderable)
+    implementation(libs.lazycolumnscrollbar)
+    implementation(libs.androidx.window)
 
-    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
-    implementation("com.github.nanihadesuka:LazyColumnScrollbar:1.8.0")
-    implementation("androidx.window:window:1.2.0")
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.05.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

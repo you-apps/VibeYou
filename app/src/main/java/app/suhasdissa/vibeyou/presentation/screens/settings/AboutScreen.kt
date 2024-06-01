@@ -17,13 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.presentation.screens.settings.components.SettingItem
 import app.suhasdissa.vibeyou.presentation.screens.settings.model.CheckUpdateViewModel
-import app.suhasdissa.vibeyou.utils.openBrowser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +34,8 @@ fun AboutScreen(
     val context = LocalContext.current
     val githubRepo = "https://github.com/you-apps/VibeYou"
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val version = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+    val uriHandler = LocalUriHandler.current
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         LargeTopAppBar(
@@ -51,7 +53,7 @@ fun AboutScreen(
                 SettingItem(
                     title = stringResource(R.string.readme),
                     description = stringResource(R.string.check_repo_and_readme),
-                    onClick = { openBrowser(context, githubRepo) },
+                    onClick = { uriHandler.openUri(githubRepo) },
                     icon = Icons.Rounded.Description
                 )
             }
@@ -59,12 +61,7 @@ fun AboutScreen(
                 SettingItem(
                     title = stringResource(R.string.latest_release),
                     description = "${updateViewModel.latestVersion}",
-                    onClick = {
-                        openBrowser(
-                            context,
-                            "$githubRepo/releases/latest"
-                        )
-                    },
+                    onClick = { uriHandler.openUri("$githubRepo/releases/latest") },
                     icon = Icons.Rounded.NewReleases
                 )
             }
@@ -72,20 +69,14 @@ fun AboutScreen(
                 SettingItem(
                     title = stringResource(R.string.github_issue),
                     description = stringResource(R.string.github_issue_description),
-                    onClick = {
-                        openBrowser(
-                            context,
-                            "$githubRepo/issues"
-                        )
-                    },
+                    onClick = { uriHandler.openUri("$githubRepo/issues") },
                     icon = Icons.AutoMirrored.Rounded.ContactSupport
                 )
             }
             item {
                 SettingItem(
                     title = stringResource(R.string.current_version),
-                    description = "${updateViewModel.currentVersion}",
-                    onClick = {},
+                    description = version,
                     icon = Icons.Rounded.Info
                 )
             }

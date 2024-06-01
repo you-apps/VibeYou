@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class CheckUpdateViewModel : ViewModel() {
     var latestVersion: Float? by mutableStateOf(null)
-    val currentVersion = UpdateUtil.currentVersion
 
     init {
         getLatestRelease()

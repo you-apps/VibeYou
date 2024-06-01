@@ -7,31 +7,31 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Destination {
     @Serializable
-    object OnlineMusic : Destination()
+    data object OnlineMusic : Destination()
 
     @Serializable
-    object LocalMusic : Destination()
+    data object LocalMusic : Destination()
 
     @Serializable
-    object OnlineSearch : Destination()
+    data object OnlineSearch : Destination()
 
     @Serializable
-    object LocalSearch : Destination()
+    data object LocalSearch : Destination()
 
     @Serializable
-    object Settings : Destination()
+    data object Settings : Destination()
 
     @Serializable
-    object About : Destination()
+    data object About : Destination()
 
     @Serializable
-    object NetworkSettings : Destination()
+    data object NetworkSettings : Destination()
 
     @Serializable
-    object DatabaseSettings : Destination()
+    data object DatabaseSettings : Destination()
 
     @Serializable
-    object AppearanceSettings : Destination()
+    data object AppearanceSettings : Destination()
 
     @Serializable
     data class Playlists(val album: Album) : Destination()

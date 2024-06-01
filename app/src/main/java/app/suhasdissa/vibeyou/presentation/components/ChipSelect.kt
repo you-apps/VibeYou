@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 inline fun <reified T : Enum<T>> ChipSelector(
     crossinline onItemSelected: (T) -> Unit,

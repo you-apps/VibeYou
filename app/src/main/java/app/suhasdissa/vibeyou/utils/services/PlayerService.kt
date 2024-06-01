@@ -14,12 +14,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.annotation.ColorInt
+import androidx.annotation.OptIn
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.audio.SonicAudioProcessor
+import androidx.media3.common.util.BitmapLoader
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DataSource
@@ -33,14 +36,13 @@ import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.audio.AudioRendererEventListener
+import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
 import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor
-import androidx.media3.exoplayer.audio.SonicAudioProcessor
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
-import androidx.media3.session.BitmapLoader
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
@@ -109,7 +111,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         }
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         val maxMBytes = Pref.sharedPreferences.getInt(Pref.exoCacheKey, 0)
@@ -139,7 +141,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
             .build()
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createPlayer(): ExoPlayer {
         return ExoPlayer.Builder(this, createRendersFactory(), createMediaSourceFactory())
             .setHandleAudioBecomingNoisy(true)
@@ -159,6 +161,11 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
 
     @SuppressLint("UnsafeOptInUsageError")
     inner class CustomBitmapLoader(private val context: Context) : BitmapLoader {
+
+        override fun supportsMimeType(mimeType: String): Boolean {
+            TODO("Not yet implemented")
+        }
+
         private val scope = CoroutineScope(Dispatchers.IO)
         override fun decodeBitmap(data: ByteArray): ListenableFuture<Bitmap> {
             val future = SettableFuture.create<Bitmap>()
@@ -222,7 +229,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         }
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onDestroy() {
         player.removeListener(this)
         mediaSession?.run {
@@ -237,7 +244,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         super.onDestroy()
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createCacheDataSource(): DataSource.Factory {
         return CacheDataSource.Factory().setCache(cache).apply {
             setUpstreamDataSourceFactory(
@@ -252,7 +259,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         }
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createDataSourceFactory(): DataSource.Factory {
         val defaultDataSource = DefaultDataSource.Factory(this@PlayerService)
         val resolvingDataSource = ResolvingDataSource.Factory(createCacheDataSource()) { dataSpec ->
@@ -330,12 +337,12 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         )
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun createMediaSourceFactory(): MediaSource.Factory {
         return DefaultMediaSourceFactory(createDataSourceFactory())
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onAddMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
@@ -348,12 +355,11 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
         return Futures.immediateFuture(updatedMediaItems)
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(UnstableApi::class)
     private fun createRendersFactory(): RenderersFactory {
-        val audioSink = DefaultAudioSink.Builder()
+        val audioSink = DefaultAudioSink.Builder(this)
             .setEnableFloatOutput(false)
             .setEnableAudioTrackPlaybackParams(false)
-            .setOffloadMode(DefaultAudioSink.OFFLOAD_MODE_DISABLED)
             .setAudioProcessorChain(
                 DefaultAudioSink.DefaultAudioProcessorChain(
                     emptyArray(),
@@ -362,6 +368,7 @@ class PlayerService : MediaSessionService(), MediaSession.Callback, Player.Liste
                 )
             )
             .build()
+
         return RenderersFactory { handler: Handler?, _, audioListener: AudioRendererEventListener?, _, _ ->
             arrayOf(
                 MediaCodecAudioRenderer(

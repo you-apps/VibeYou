@@ -36,7 +36,6 @@ class MellowMusicApplication : Application(), ImageLoaderFactory {
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         container = DefaultAppContainer(database, controllerFuture, contentResolver)
         Pref.sharedPreferences = preferences
-        UpdateUtil.getCurrentVersion(this.applicationContext)
     }
 
     override fun newImageLoader(): ImageLoader {

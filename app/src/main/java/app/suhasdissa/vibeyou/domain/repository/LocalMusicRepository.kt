@@ -1,13 +1,18 @@
-package app.suhasdissa.vibeyou.backend.repository
+package app.suhasdissa.vibeyou.domain.repository
 
 import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment.getExternalStorageDirectory
 import android.provider.MediaStore
 import android.text.format.DateUtils
+import android.util.Size
 import androidx.core.net.toUri
 import app.suhasdissa.vibeyou.data.database.dao.SearchDao
 import app.suhasdissa.vibeyou.data.database.entities.SearchQuery
@@ -18,6 +23,7 @@ import app.suhasdissa.vibeyou.utils.Pref
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileNotFoundException
 
 class LocalMusicRepository(
     private val contentResolver: ContentResolver,
@@ -422,6 +428,21 @@ class LocalMusicRepository(
             arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
         } else {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+}
+
+suspend fun getMusicArt(context: Context, uri: Uri?): ByteArray? {
+    return withContext(Dispatchers.IO) {
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.use {
+                it.setDataSource(context, uri)
+                it.embeddedPicture
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

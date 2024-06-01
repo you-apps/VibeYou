@@ -23,20 +23,28 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
+import app.suhasdissa.vibeyou.domain.repository.getMusicArt
 import coil.compose.AsyncImage
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,6 +56,13 @@ fun SongCard(
 ) {
     val view = LocalView.current
     val haptic = LocalHapticFeedback.current
+    var art: ByteArray? by remember { mutableStateOf(byteArrayOf()) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        art = getMusicArt(context, song.id.toUri())
+    }
+
     Row(
         Modifier
             .fillMaxWidth()
@@ -69,7 +84,7 @@ fun SongCard(
                 .padding(8.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(8.dp)),
-            model = song.thumbnailUri,
+            model = art,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.music_placeholder)
@@ -189,7 +204,12 @@ fun SongCardCompact(
 @Composable
 private fun SongCardPreview() {
     SongCard(
-        Song("", "Title", "Artist", "0:00"),
+        Song(
+            id = "",
+            title = "Title",
+            artistsText = "Artist",
+            durationText = "0:00"
+        ),
         onClickCard = {},
         onLongPress = {}
     )

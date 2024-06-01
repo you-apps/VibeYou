@@ -14,7 +14,6 @@ import retrofit2.http.Headers
 import java.util.regex.Pattern
 
 object UpdateUtil {
-    var currentVersion = 0f
 
     private suspend fun getLatestRelease(): LatestRelease? {
         return try {
@@ -27,20 +26,6 @@ object UpdateUtil {
     suspend fun getLatestVersion(): Float? {
         return getLatestRelease()?.let {
             it.tagName.toVersion()
-        }
-    }
-
-    fun getCurrentVersion(context: Context) {
-        currentVersion = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.packageManager.getPackageInfo(
-                context.packageName,
-                PackageManager.PackageInfoFlags.of(0)
-            ).versionName.toFloat()
-        } else {
-            context.packageManager.getPackageInfo(
-                context.packageName,
-                0
-            ).versionName.toFloat()
         }
     }
 

@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import androidx.media3.session.MediaController
 import app.suhasdissa.vibeyou.backend.repository.AuthRepository
 import app.suhasdissa.vibeyou.backend.repository.AuthRepositoryImpl
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PlaylistRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository

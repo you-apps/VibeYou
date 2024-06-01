@@ -27,6 +27,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,14 +37,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
+import app.suhasdissa.vibeyou.domain.repository.getMusicArt
 import app.suhasdissa.vibeyou.presentation.screens.onlinemusic.model.SongOptionsViewModel
 import app.suhasdissa.vibeyou.presentation.screens.player.model.PlayerViewModel
 import coil.compose.AsyncImage
@@ -60,6 +64,13 @@ fun SongSettingsSheet(
         skipPartiallyExpanded = true
     )
     val view = LocalView.current
+    var art: ByteArray? by remember { mutableStateOf(byteArrayOf()) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        art = getMusicArt(context, song.id.toUri())
+    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = songSettingsSheetState,
@@ -77,7 +88,7 @@ fun SongSettingsSheet(
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
-                model = song.thumbnailUri,
+                model = art,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.music_placeholder)
@@ -171,6 +182,13 @@ fun SongSettingsSheetSearchPage(
     val songSettingsSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    var art: ByteArray? by remember { mutableStateOf(byteArrayOf()) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        art = getMusicArt(context, song.id.toUri())
+    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = songSettingsSheetState,
@@ -188,7 +206,7 @@ fun SongSettingsSheetSearchPage(
                     .padding(8.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
-                model = song.thumbnailUri,
+                model = art,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.music_placeholder)

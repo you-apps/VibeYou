@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.suhasdissa.vibeyou.MellowMusicApplication
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.domain.models.primary.Album
 import app.suhasdissa.vibeyou.domain.models.primary.Artist
 import app.suhasdissa.vibeyou.domain.models.primary.Song

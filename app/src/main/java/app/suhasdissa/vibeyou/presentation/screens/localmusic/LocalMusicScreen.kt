@@ -47,7 +47,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.suhasdissa.vibeyou.MainActivity
 import app.suhasdissa.vibeyou.R
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.presentation.components.SongListView
 import app.suhasdissa.vibeyou.presentation.screens.album.components.AlbumList

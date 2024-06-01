@@ -19,7 +19,7 @@ import androidx.media3.common.PlaybackParameters
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionCommand
 import app.suhasdissa.vibeyou.MellowMusicApplication
-import app.suhasdissa.vibeyou.backend.repository.LocalMusicRepository
+import app.suhasdissa.vibeyou.domain.repository.LocalMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.PipedMusicRepository
 import app.suhasdissa.vibeyou.backend.repository.SongDatabaseRepository
 import app.suhasdissa.vibeyou.domain.models.primary.Song
@@ -42,8 +42,7 @@ class PlayerViewModel(
     private val musicRepository: PipedMusicRepository,
     private val localMusicRepository: LocalMusicRepository,
     private val controllerFuture: ListenableFuture<MediaController>
-) :
-    ViewModel() {
+) : ViewModel() {
     var controller: MediaController? by mutableStateOf(null)
         private set
 

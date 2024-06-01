@@ -4,7 +4,9 @@ import android.net.Uri
 import android.os.Parcelable
 import app.suhasdissa.vibeyou.utils.UriSerializer
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
+
 
 @Serializable
 @Parcelize

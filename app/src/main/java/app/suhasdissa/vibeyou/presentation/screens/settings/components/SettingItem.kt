@@ -19,12 +19,17 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingItem(title: String, description: String, icon: ImageVector?, onClick: () -> Unit) {
+fun SettingItem(
+    title: String,
+    description: String,
+    icon: ImageVector?,
+    onClick: (() -> Unit)? = null
+) {
     val view = LocalView.current
     Surface(
         modifier = Modifier.clickable {
             view.playSoundEffect(SoundEffectConstants.CLICK)
-            onClick()
+            onClick?.invoke()
         }
     ) {
         Row(
