@@ -56,12 +56,6 @@ fun SongCard(
 ) {
     val view = LocalView.current
     val haptic = LocalHapticFeedback.current
-    var art: ByteArray? by remember { mutableStateOf(byteArrayOf()) }
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-        art = getMusicArt(context, song.id.toUri())
-    }
 
     Row(
         Modifier
@@ -84,7 +78,7 @@ fun SongCard(
                 .padding(8.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(8.dp)),
-            model = art,
+            model = song.thumbnailUri,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.music_placeholder)
@@ -229,4 +223,77 @@ private fun SongCardCompactPreview() {
         },
         onClickVideoCard = {}
     )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LocalSongCard(
+    song: Song,
+    onClickCard: () -> Unit,
+    onLongPress: () -> Unit
+) {
+    val view = LocalView.current
+    val haptic = LocalHapticFeedback.current
+    var art: ByteArray? by remember { mutableStateOf(byteArrayOf()) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        art = getMusicArt(context, song.id.toUri())
+    }
+
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    onClickCard()
+                },
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onLongPress()
+                }
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .size(80.dp)
+                .padding(8.dp)
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(8.dp)),
+            model = art,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.music_placeholder)
+        )
+        Column(
+            Modifier
+                .weight(1f)
+                .padding(8.dp)
+        ) {
+            Text(
+                song.title,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            song.artistsText?.let {
+                Text(
+                    it,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        song.durationText?.let {
+            Text(
+                it,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }

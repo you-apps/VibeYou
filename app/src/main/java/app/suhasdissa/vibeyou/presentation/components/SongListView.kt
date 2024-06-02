@@ -92,7 +92,7 @@ fun SongListView(
                     }
                 }
                 items(items = group.value) { item ->
-                    SongCard(
+                    LocalSongCard(
                         song = item,
                         onClickCard = {
                             playerViewModel.playSong(item)

@@ -47,6 +47,7 @@ import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.presentation.components.LoadingScreen
+import app.suhasdissa.vibeyou.presentation.components.LocalSongCard
 import app.suhasdissa.vibeyou.presentation.components.SongCard
 import app.suhasdissa.vibeyou.presentation.components.SongSettingsSheetSearchPage
 import app.suhasdissa.vibeyou.presentation.screens.album.model.NewPlaylistViewModel
@@ -80,7 +81,7 @@ fun AlbumScreen(
                     AlbumHeader(state, playerViewModel, playlistViewModel)
                 }
                 items(items = state.songs) { item ->
-                    SongCard(
+                    LocalSongCard(
                         song = item,
                         onClickCard = {
                             playerViewModel.playSong(item)

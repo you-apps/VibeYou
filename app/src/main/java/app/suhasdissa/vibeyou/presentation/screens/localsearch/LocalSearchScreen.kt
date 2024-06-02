@@ -43,7 +43,7 @@ import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.presentation.components.ChipSelector
 import app.suhasdissa.vibeyou.presentation.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.presentation.components.LoadingScreen
-import app.suhasdissa.vibeyou.presentation.components.SongCard
+import app.suhasdissa.vibeyou.presentation.components.LocalSongCard
 import app.suhasdissa.vibeyou.presentation.components.SongList
 import app.suhasdissa.vibeyou.presentation.components.SongSettingsSheetSearchPage
 import app.suhasdissa.vibeyou.presentation.screens.album.components.AlbumList
@@ -138,7 +138,7 @@ fun LocalSearchScreen(
                             style = MaterialTheme.typography.titleSmall
                         )
                         localSearchViewModel.songSearchSuggestion.forEach { item ->
-                            SongCard(
+                            LocalSongCard(
                                 song = item,
                                 onClickCard = {
                                     playerViewModel.playSong(item)
