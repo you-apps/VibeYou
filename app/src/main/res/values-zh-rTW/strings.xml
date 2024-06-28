@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="songs">歌曲</string>
+    <string name="about_title">關於</string>
+    <string name="settings_title">設定</string>
+    <string name="current_version">目前版本</string>
+</resources>
