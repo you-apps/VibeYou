@@ -395,6 +395,9 @@ class LocalMusicRepository(
     suspend fun getAlbumInfo(albumId: Long): List<Song> {
         return getAllSongs()
             .filter { it.albumId == albumId }
+            // sort by title first in case the track number is always the same / not existent
+            .sortedBy { it.title.lowercase() }
+            // sort by track number if the tracks provide any
             .sortedBy { it.trackNumber }
     }
 
