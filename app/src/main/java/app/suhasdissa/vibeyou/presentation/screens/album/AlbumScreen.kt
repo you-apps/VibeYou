@@ -6,17 +6,13 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LibraryAdd
@@ -47,7 +43,7 @@ import app.suhasdissa.vibeyou.R
 import app.suhasdissa.vibeyou.domain.models.primary.Song
 import app.suhasdissa.vibeyou.presentation.components.IllustratedMessageScreen
 import app.suhasdissa.vibeyou.presentation.components.LoadingScreen
-import app.suhasdissa.vibeyou.presentation.components.SongCard
+import app.suhasdissa.vibeyou.presentation.components.SongList
 import app.suhasdissa.vibeyou.presentation.components.SongSettingsSheetSearchPage
 import app.suhasdissa.vibeyou.presentation.screens.album.model.NewPlaylistViewModel
 import app.suhasdissa.vibeyou.presentation.screens.onlinesearch.model.state.AlbumInfoState
@@ -70,31 +66,21 @@ fun AlbumScreen(
         is AlbumInfoState.Success -> {
             var showSongSettings by remember { mutableStateOf(false) }
             var selectedSong by remember { mutableStateOf<Song?>(null) }
-            LazyColumn(
-                Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                item {
-                    AlbumHeader(state, playerViewModel, playlistViewModel)
+
+            SongList(
+                items = state.songs,
+                header = { AlbumHeader(state, playerViewModel, playlistViewModel) },
+                onClickCard = { item ->
+                    playerViewModel.playSong(item)
+                    if (!item.isLocal) {
+                        playerViewModel.saveSong(item)
+                    }
+                },
+                onLongPress = { item ->
+                    selectedSong = item
+                    showSongSettings = true
                 }
-                items(items = state.songs) { item ->
-                    SongCard(
-                        song = item,
-                        onClickCard = {
-                            playerViewModel.playSong(item)
-                            if (!item.isLocal) {
-                                playerViewModel.saveSong(item)
-                            }
-                        },
-                        onLongPress = {
-                            selectedSong = item
-                            showSongSettings = true
-                        }
-                    )
-                }
-            }
+            )
 
             if (showSongSettings) {
                 selectedSong?.let {

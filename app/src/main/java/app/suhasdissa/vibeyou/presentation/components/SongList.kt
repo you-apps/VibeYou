@@ -15,6 +15,7 @@ import app.suhasdissa.vibeyou.domain.models.primary.Song
 @Composable
 fun SongList(
     items: List<Song>,
+    header: @Composable (() -> Unit)? = null,
     onClickCard: (song: Song) -> Unit,
     onLongPress: (song: Song) -> Unit
 ) {
@@ -27,6 +28,9 @@ fun SongList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     ) {
+        if (header != null) {
+            item { header() }
+        }
         items(items = items) { item ->
             SongCard(
                 song = item,
