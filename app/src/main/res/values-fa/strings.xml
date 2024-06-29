@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="songs">آواها</string>
+    <string name="readme">مرابخوان</string>
+    <string name="latest_release">جدیدترین رهانش</string>
+    <string name="favourite_songs">مورد علاقه ها</string>
+    <string name="play_song">پخش آوا</string>
+    <string name="settings">تنظیمات</string>
+    <string name="play">پخش</string>
+    <string name="remove_item_from_queue">حذف مورد از صف</string>
+    <string name="player_queue">صف پخش</string>
+    <string name="network_settings">تنظیمات شبکه</string>
+    <string name="change_server">تغییر سرور</string>
+    <string name="select_server">انتخاب سرور</string>
+    <string name="show_queue">دیدن صف</string>
+    <string name="artist">هنرمند</string>
+    <string name="password">رمز عبور</string>
+    <string name="recent_songs">آواهای اخیر</string>
+    <string name="close_search">بستن جستجو</string>
+    <string name="albums">آلبوم ها</string>
+    <string name="artists">هنرمندان</string>
+    <string name="ok">باشه</string>
+    <string name="about_title">درباره</string>
+    <string name="unlimited">بی نهایت</string>
+    <string name="playback_speed">سرعت پخش</string>
+    <string name="play_all">پخش همه</string>
+    <string name="cancel">لغو</string>
+    <string name="appearance_settings">تنظیمات ظاهر</string>
+    <string name="system">سیستم</string>
+    <string name="light">روشن</string>
+    <string name="dark">تاریک</string>
+    <string name="enabled">فعال</string>
+    <string name="settings_title">تنظیمات</string>
+    <string name="current_version">نسخه فعلی</string>
+    <string name="enqueue_song">اضافه کردن به صف</string>
+    <string name="delete_song">حذف آوا</string>
+    <string name="now_playing">در حال پخش</string>
+    <string name="clear_search">پاک کردن جستجو</string>
+    <string name="login">ورود</string>
+    <string name="username">نام کاربری</string>
+    <string name="search_songs">جستجوی آواها</string>
+    <string name="search_for_a_song">جستجو برای یک آوا</string>
+    <string name="song_options">تنظیمات آوا</string>
+    <string name="close_queue">بستن صف</string>
+</resources>
