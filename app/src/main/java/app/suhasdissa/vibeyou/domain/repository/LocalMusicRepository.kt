@@ -51,19 +51,34 @@ class LocalMusicRepository(
             MediaStore.Audio.Media.ARTIST_ID,
             MediaStore.Audio.Media.DATE_MODIFIED,
             MediaStore.Audio.Media.DATE_ADDED,
-            MediaStore.Audio.Media.CD_TRACK_NUMBER
+            MediaStore.Audio.Media.CD_TRACK_NUMBER,
+            MediaStore.Audio.Media.RELATIVE_PATH
         )
 
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
 
+        val showAllMusic = Pref.sharedPreferences.getBoolean(Pref.showAllMusicKey, true)
+        val musicDirectories = Pref.sharedPreferences.getStringSet(Pref.musicDirectoriesKey, setOf()).orEmpty()
+
+        var sqlQueryString = ""
+        if (!showAllMusic) {
+            for (index in musicDirectories.indices) {
+                sqlQueryString += "${MediaStore.Audio.Media.RELATIVE_PATH} LIKE ?"
+                if (index != musicDirectories.size - 1) sqlQueryString += " OR "
+            }
+        }
+
         val query = contentResolver.query(
             collection,
             projection,
-            null,
-            null,
+            sqlQueryString,
+            if (!showAllMusic) musicDirectories.map {
+                path -> "${path}%"
+            }.toTypedArray() else null,
             sortOrder
         )
         query?.use { cursor ->
+            val pathColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.RELATIVE_PATH)
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
             val titleColumn =
                 cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)

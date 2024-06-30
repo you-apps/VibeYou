@@ -23,6 +23,8 @@ object Pref {
     const val equalizerKey = "equalizer"
     const val equalizerPresetKey = "equalizerPreset"
     const val equalizerBandsKey = "equalizerBands"
+    const val showAllMusicKey = "showAllMusicKey"
+    const val musicDirectoriesKey = "musicDirectoriesKey"
 
     lateinit var sharedPreferences: SharedPreferences
 

@@ -98,4 +98,8 @@
     <string name="enabled">Enabled</string>
     <string name="none">None</string>
     <string name="reset_equalizer">Reset equalizer</string>
+    <string name="local_music_paths">Local music paths</string>
+    <string name="local_music_paths_description">Select where to load local music from.</string>
+    <string name="add_folder">Add folder</string>
+    <string name="all_available_music">All available music</string>
 </resources>

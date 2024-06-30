@@ -40,6 +40,7 @@ import app.suhasdissa.vibeyou.backend.models.Login
 import app.suhasdissa.vibeyou.backend.viewmodel.AuthViewModel
 import app.suhasdissa.vibeyou.navigation.Destination
 import app.suhasdissa.vibeyou.presentation.screens.settings.components.CacheSizeDialog
+import app.suhasdissa.vibeyou.presentation.screens.settings.components.LocalMusicPathsDialog
 import app.suhasdissa.vibeyou.presentation.screens.settings.components.SettingItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,7 @@ fun SettingsScreen(
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory)
     val topBarBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var showImageCacheDialog by remember { mutableStateOf(false) }
+    var showSelectMusicPathsDialog by remember { mutableStateOf(false) }
 
     val view = LocalView.current
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
@@ -115,6 +117,16 @@ fun SettingsScreen(
                     icon = Icons.Rounded.Storage
                 )
             }
+            item {
+                SettingItem(
+                    title = stringResource(R.string.local_music_paths),
+                    description = stringResource(R.string.local_music_paths_description),
+                    onClick = {
+                        showSelectMusicPathsDialog = true
+                    },
+                    icon = Icons.Rounded.Landscape
+                )
+            }
             /*
             item {
                 SettingItem(
@@ -167,6 +179,11 @@ fun SettingsScreen(
     if (showImageCacheDialog) {
         CacheSizeDialog {
             showImageCacheDialog = false
+        }
+    }
+    if (showSelectMusicPathsDialog) {
+        LocalMusicPathsDialog {
+            showSelectMusicPathsDialog = false
         }
     }
 }
