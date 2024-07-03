@@ -97,4 +97,8 @@
     <string name="enabled">Povolen</string>
     <string name="none">Žádný</string>
     <string name="reset_equalizer">Resetovat ekvalizér</string>
+    <string name="local_music_paths">Cesty lokální hudby</string>
+    <string name="local_music_paths_description">Vyberte, odkud načítat lokální hudbu.</string>
+    <string name="add_folder">Přidat složku</string>
+    <string name="all_available_music">Veškerá dostupná hudba</string>
 </resources>
