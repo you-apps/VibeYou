@@ -97,4 +97,8 @@
     <string name="reset_equalizer">Dengeleyiciyi sıfırla</string>
     <string name="equalizer">Dengeleyici</string>
     <string name="equalizer_preset">Dengeleyici Ön Ayarı</string>
+    <string name="local_music_paths">Yerel müzik konumları</string>
+    <string name="local_music_paths_description">Yerel müziğin nereden yükleneceğini seçin.</string>
+    <string name="add_folder">Klasör ekle</string>
+    <string name="all_available_music">Tüm kullanılabilir müzikler</string>
 </resources>
