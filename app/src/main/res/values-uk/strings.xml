@@ -97,4 +97,6 @@
     <string name="catppuccin">Catppuccin</string>
     <string name="color_scheme">Колірна гамма</string>
     <string name="theme">Тема</string>
+    <string name="local_music_paths">Локальний шлях до музики</string>
+    <string name="local_music_paths_description">Виберіть, звідки завантажувати локальну музику.</string>
 </resources>
