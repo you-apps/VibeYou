@@ -93,4 +93,8 @@
     <string name="reset_equalizer">Equalizer zurücksetzen</string>
     <string name="equalizer">Equalizer</string>
     <string name="equalizer_preset">Equalizer Voreinstellung</string>
+    <string name="local_music_paths_description">Wählen Sie aus, von wo lokale Musik geladen werden soll.</string>
+    <string name="add_folder">Ordner hinzufügen</string>
+    <string name="all_available_music">Alle verfügbare Musik</string>
+    <string name="local_music_paths">Lokale Musikpfade</string>
 </resources>
