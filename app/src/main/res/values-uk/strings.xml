@@ -99,4 +99,6 @@
     <string name="theme">Тема</string>
     <string name="local_music_paths">Локальний шлях до музики</string>
     <string name="local_music_paths_description">Виберіть, звідки завантажувати локальну музику.</string>
+    <string name="all_available_music">Вся доступна музика</string>
+    <string name="add_folder">Додати теку</string>
 </resources>
