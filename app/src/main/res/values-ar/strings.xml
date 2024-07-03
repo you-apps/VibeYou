@@ -97,4 +97,8 @@
     <string name="enabled">مفعل</string>
     <string name="none">لاشيء</string>
     <string name="reset_equalizer">اعادة تعيين المعادل</string>
+    <string name="local_music_paths_description">حدد مكان تحميل الموسيقى المحلية منه.</string>
+    <string name="add_folder">أضِف ملف</string>
+    <string name="all_available_music">جميع الموسيقى المتاحة</string>
+    <string name="local_music_paths">مسارات الموسيقى المحلية</string>
 </resources>
