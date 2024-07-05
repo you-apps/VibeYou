@@ -97,4 +97,8 @@
     <string name="none">कोई नहीं</string>
     <string name="equalizer">तुल्यकारक</string>
     <string name="reset_equalizer">तुल्यकारक रीसेट करें</string>
+    <string name="local_music_paths">स्थानीय संगीत पथ</string>
+    <string name="add_folder">फोल्डर जोड़ें</string>
+    <string name="local_music_paths_description">स्थानीय संगीत को कहां से लोड करना है, इसका चयन करें।</string>
+    <string name="all_available_music">सभी उपलब्ध संगीत</string>
 </resources>
