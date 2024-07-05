@@ -97,4 +97,8 @@
     <string name="enabled">Включен</string>
     <string name="none">Нет</string>
     <string name="reset_equalizer">Сбросить настройку</string>
+    <string name="local_music_paths">Локальные каталоги с музыкой</string>
+    <string name="local_music_paths_description">Выберите локальные каталоги с музыкой.</string>
+    <string name="add_folder">Добавить каталог</string>
+    <string name="all_available_music">Вся доступная музыка</string>
 </resources>
