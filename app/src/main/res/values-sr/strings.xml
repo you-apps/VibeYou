@@ -97,4 +97,8 @@
     <string name="equalizer_preset">Унапред подешен еквилајзер</string>
     <string name="none">Ниједно</string>
     <string name="reset_equalizer">Ресетуј еквилајзер</string>
+    <string name="local_music_paths">Локалне путање музике</string>
+    <string name="local_music_paths_description">Изаберите одакле ћете учитати локалну музику.</string>
+    <string name="add_folder">Додај фолдер</string>
+    <string name="all_available_music">Сва доступна музика</string>
 </resources>
