@@ -97,4 +97,8 @@
     <string name="enabled">Kasutusel</string>
     <string name="none">Pole kasutusel</string>
     <string name="reset_equalizer">Lähtesta ekvalaiser</string>
+    <string name="local_music_paths">Muusika asukoht siin nutiseadmes</string>
+    <string name="local_music_paths_description">Vali kaust, kust otsime ja esitame muusikat.</string>
+    <string name="add_folder">Lisa kaust</string>
+    <string name="all_available_music">Kõik leiduv muusika</string>
 </resources>
