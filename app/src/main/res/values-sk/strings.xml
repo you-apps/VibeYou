@@ -97,4 +97,8 @@
     <string name="fallback_thumnail_accent">Návrat pôvodnej miniatúry oznámenia</string>
     <string name="fallback_thumnail_accent_description">Ak žiadny akcent nie je, vráťte sa k použitiu zvýrazňujúcej farby systému alebo témy ako miniatúry oznámenia.</string>
     <string name="none">Žiadny</string>
+    <string name="local_music_paths">Cesty lokálnej hudby</string>
+    <string name="local_music_paths_description">Vyberte, odkiaľ sa má načítať lokálna hudba.</string>
+    <string name="add_folder">Pridať zložku</string>
+    <string name="all_available_music">Všetka dostupná hudba</string>
 </resources>
