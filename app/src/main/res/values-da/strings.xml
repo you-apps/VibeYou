@@ -97,4 +97,8 @@
     <string name="api_url">API-URL</string>
     <string name="image_proxy_url">Proxy-URL for billeder</string>
     <string name="hyperpipe_api_url">Hyperpipe API-URL</string>
+    <string name="local_music_paths">Lokale musikstier</string>
+    <string name="local_music_paths_description">Vælg, hvor den lokale musik skal indlæses fra.</string>
+    <string name="add_folder">Tilføj mappe</string>
+    <string name="all_available_music">Alt tilgængeligt musik</string>
 </resources>
