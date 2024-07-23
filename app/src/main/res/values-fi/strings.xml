@@ -66,4 +66,25 @@
     <string name="added_all_the_songs_to_the_library">Kaikki kappaleet lisättiin kirjastoon</string>
     <string name="add_all_songs_to_the_library">Lisää kaikki kappaleet kirjastoon</string>
     <string name="clear_queue">Tyhjennä jono</string>
+    <string name="local_music_paths">Paikalliset musiikkipolut</string>
+    <string name="local_music_paths_description">Valitse mistä musiikki ladataan.</string>
+    <string name="add_folder">Lisää kansio</string>
+    <string name="all_available_music">Kaikki saatavilla oleva musiikki</string>
+    <string name="invalid_url">Virheellinen URL-osoite</string>
+    <string name="amoled">AMOLED</string>
+    <string name="color_scheme">Väriteema</string>
+    <string name="equalizer_preset">Taajuuskorjaimen esiasetus</string>
+    <string name="none">Ei mitään</string>
+    <string name="reset_equalizer">Nollaa taajuuskorjain</string>
+    <string name="dark">Tumma</string>
+    <string name="theme">Teema</string>
+    <string name="equalizer">Taajuuskorjain</string>
+    <string name="enabled">Käytössä</string>
+    <string name="playback_speed">Toistonopeus</string>
+    <string name="system">Järjestelmä</string>
+    <string name="light">Vaalea</string>
+    <string name="github_issue_description">Lähetä virheilmoituksia ja ominaisuuspyyntöjä</string>
+    <string name="player_queue">Toistojono</string>
+    <string name="change_music_cache_size">Muuta musiikin välimuistin kokoa</string>
+    <string name="music_cache_limit">Musiikin välimuistin koko</string>
 </resources>
