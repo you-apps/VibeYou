@@ -84,4 +84,16 @@
     <string name="delete_playlist_and_songs">Supprimer une liste de lecture et les chansons</string>
     <string name="clear_playlist">Effacer la liste de lecture</string>
     <string name="disable_search_history">Désactiver l\'historique de recherche</string>
+    <string name="enabled">Activé</string>
+    <string name="none">Aucun</string>
+    <string name="local_music_paths_description">Sélectionnez l\'emplacement depuis lequel charger la musique locale.</string>
+    <string name="all_available_music">Toutes les musiques disponibles</string>
+    <string name="add_folder">Ajouter un dossier</string>
+    <string name="hyperpipe_api_url">URL de l\'API Hyperpipe</string>
+    <string name="system">Système</string>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="amoled">Noir pur</string>
+    <string name="color_scheme">Schéma de couleur</string>
+    <string name="theme">Thème</string>
 </resources>
