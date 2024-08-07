@@ -14,8 +14,8 @@ android {
         applicationId = "app.suhasdissa.vibeyou"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
-        versionName = "4.1"
+        versionCode = 6
+        versionName = "5.0"
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
