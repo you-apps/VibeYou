@@ -1,3 +1,6 @@
+> [!WARNING]  
+> This repository is no longer maintained! The app is considered feature-complete though and will continue to work in the future, even though no further updates will be released.
+
 <div align="center">
   <img width="200" height="200" src="fastlane/metadata/android/en-US/images/icon.png" alt="App icon">
   <h1 align="center">Vibe You</h1>
