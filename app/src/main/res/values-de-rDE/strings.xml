@@ -4,7 +4,7 @@
     <string name="songs">Lieder</string>
     <string name="about_title">Über</string>
     <string name="readme">LIESMICH</string>
-    <string name="check_repo_and_readme">Check_repo_und_lese</string>
+    <string name="check_repo_and_readme">Repository und README überprüfen</string>
     <string name="latest_release">Neueste Veröffentlichung</string>
     <string name="current_version">Aktuelle Version</string>
     <string name="github_issue">GitHub Fehlermeldungen</string>
@@ -93,4 +93,8 @@
     <string name="reset_equalizer">Equalizer zurücksetzen</string>
     <string name="equalizer">Equalizer</string>
     <string name="equalizer_preset">Equalizer Voreinstellung</string>
+    <string name="local_music_paths_description">Wählen Sie aus, von wo lokale Musik geladen werden soll.</string>
+    <string name="add_folder">Ordner hinzufügen</string>
+    <string name="all_available_music">Alle verfügbare Musik</string>
+    <string name="local_music_paths">Lokale Musikpfade</string>
 </resources>

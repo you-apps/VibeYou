@@ -97,4 +97,8 @@
     <string name="enabled">Activado</string>
     <string name="none">Ninguno</string>
     <string name="reset_equalizer">Restablecer ecualizador</string>
+    <string name="local_music_paths">Rutas de la música local</string>
+    <string name="local_music_paths_description">Seleccione desde dónde cargar la música.</string>
+    <string name="all_available_music">Toda la música disponible</string>
+    <string name="add_folder">Agregar carpeta</string>
 </resources>
